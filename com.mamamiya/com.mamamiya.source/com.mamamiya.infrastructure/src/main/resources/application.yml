@@ -17,3 +17,9 @@ spring:
       test-on-borrow: false
       test-on-return: false
 
+  data:
+    mongodb:
+      authentication-database: mongodb://localhost:7001
+      database: mamamiya
+
+

@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="web-admin" />
         <module name="com.mamamiya.admin" />
         <module name="com.mamamiya.infrastructure" />
-        <module name="com.mamamiya.web" />
         <module name="com.mamamiya.source" />
-        <module name="web-admin" />
+        <module name="com.mamamiya.web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

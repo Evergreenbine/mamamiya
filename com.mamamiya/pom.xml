@@ -13,7 +13,6 @@
         <module>com.mamamiya.web</module>
         <module>com.mamamiya.source/com.mamamiya.admin</module>
         <module>com.mamamiya.web/web-admin</module>
-        <module>com.mamamiya.source/untitled</module>
         <module>com.mamamiya.source/com.mamamiya.infrastructure</module>
     </modules>
 

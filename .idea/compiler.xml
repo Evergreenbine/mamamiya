@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="com.mamamiya.infrastructure" />
+        <module name="com.mamamiya.web" />
+        <module name="com.mamamiya.admin" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.mamamiya" target="1.5" />
+      <module name="com.mamamiya.admin" target="1.5" />
+      <module name="com.mamamiya.infrastructure" target="1.5" />
+      <module name="com.mamamiya.source" target="1.5" />
+      <module name="com.mamamiya.web" target="1.5" />
+      <module name="com.mamamiya.web2" target="1.5" />
+      <module name="web-admin" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="com.mamamiya.infrastructure" options="" />
+    </option>
+  </component>
+</project>

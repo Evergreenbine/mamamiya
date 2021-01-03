@@ -22,7 +22,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 *   短信服务
 *   定位服务等
 * */
-public class packageInfo {
+//public class packageInfo {
     /*
             参考链接：
             http://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/index.html
@@ -30,42 +30,42 @@ public class packageInfo {
         */
     //@Configuration
     /* 废弃测试*/
-    public static class MybatisConfig {
-
-        /* ConfigurationProperties : 读取配置文件里前缀为“spring.datasource”的属性*/
-       @Bean("data222")
-       @Primary
-       @ConfigurationProperties(prefix = "spring.datasource")
-       public DataSourceProperties dataSourceProperties(){
-           return new DataSourceProperties();
-       }
-
-       @Bean(name = "druidDataSource")
-       public DruidDataSource dataSource(@Qualifier("data222") DataSourceProperties properties) {
-           DruidDataSource druidDataSource = (DruidDataSource) properties.initializeDataSourceBuilder().build();
-           return druidDataSource;
-       }
-
-       @Bean("ship")
-       public SqlSessionFactory sqlSessionFactory(DruidDataSource druidDataSource) {
-           SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-           sqlSessionFactoryBean.setDataSource(druidDataSource);
-           SqlSessionFactory sqlSessionFactory = null;
-           try {
-               ResourcePatternResolver resolver =new PathMatchingResourcePatternResolver();
-               sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:*Mapper.xml"));
-               sqlSessionFactory = sqlSessionFactoryBean.getObject();
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-           return sqlSessionFactory;
-       }
-
-       @Bean(value = "mysql")
-       @Primary
-       public SqlSessionTemplate sqlSessionTemplate(@Qualifier("ship") SqlSessionFactory sqlSessionFactory){
-           return new SqlSessionTemplate(sqlSessionFactory);
-       }
-
-    }
-}
+//    public static class MybatisConfig {
+//
+//        /* ConfigurationProperties : 读取配置文件里前缀为“spring.datasource”的属性*/
+//       @Bean("data222")
+//       @Primary
+//       @ConfigurationProperties(prefix = "spring.datasource")
+//       public DataSourceProperties dataSourceProperties(){
+//           return new DataSourceProperties();
+//       }
+//
+//       @Bean(name = "druidDataSource")
+//       public DruidDataSource dataSource(@Qualifier("data222") DataSourceProperties properties) {
+//           DruidDataSource druidDataSource = (DruidDataSource) properties.initializeDataSourceBuilder().build();
+//           return druidDataSource;
+//       }
+//
+//       @Bean("ship")
+//       public SqlSessionFactory sqlSessionFactory(DruidDataSource druidDataSource) {
+//           SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+//           sqlSessionFactoryBean.setDataSource(druidDataSource);
+//           SqlSessionFactory sqlSessionFactory = null;
+//           try {
+//               ResourcePatternResolver resolver =new PathMatchingResourcePatternResolver();
+//               sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:*Mapper.xml"));
+//               sqlSessionFactory = sqlSessionFactoryBean.getObject();
+//           } catch (Exception e) {
+//               e.printStackTrace();
+//           }
+//           return sqlSessionFactory;
+//       }
+//
+//       @Bean(value = "mysql")
+//       @Primary
+//       public SqlSessionTemplate sqlSessionTemplate(@Qualifier("ship") SqlSessionFactory sqlSessionFactory){
+//           return new SqlSessionTemplate(sqlSessionFactory);
+//       }
+//
+//    }
+//}

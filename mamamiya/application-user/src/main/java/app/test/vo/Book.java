@@ -1,4 +1,4 @@
-package app.Test;
+package app.test.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

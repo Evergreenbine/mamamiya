@@ -1,6 +1,6 @@
 Spring boot启动会扫描以下位置的配置文件,从上到下优先级由高到低
- - file:./config/
+ - file:./app/
  - file:../
- - classpath:/config/
+ - classpath:/app/
  - classpath:/
-我们也可以通过配置spring.config.location来改变默认位置
+我们也可以通过配置spring.app.location来改变默认位置

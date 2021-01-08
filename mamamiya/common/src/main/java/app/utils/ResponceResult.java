@@ -17,4 +17,6 @@ public class ResponceResult<T> {
     private RowBounds rowBounds;
     /* 每页条数*/
     private Integer numsOfPage;
+
+
 }

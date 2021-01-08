@@ -89,21 +89,21 @@ public class JwtUtils {
         return createJWT(map, TOKEN_EXPIRED_TIME);
     }
 
-    public static void main(String[] args) {
-        // 生成token
-        String s = generateToken("123", 20);
-        System.out.println(s);
-
-      // 验证
-      String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJvcGVuSWQiOiIxMjMiLCJleHAiOjE2MDk5NDY3MTcsInVzZXJJZCI6MjAsImlhdCI6MTYwOTk0NDEyNSwianRpIjoidG9rZW5JZCJ9.XPzW9XbjVDjtXtTvJj36iCeIrvmXJbq_m2I6sBsWIlA";
-      Claims claims = verifyJwt(token);
-      String subject = claims.getSubject();
-      Integer userId = (Integer)claims.get("userId");
-      String openId = (String)claims.get("openId");
-      String sub = (String)claims.get("sub");
-      System.out.println("subject:" + subject);
-      System.out.println("userId:" + userId);
-      System.out.println("openId:" + openId);
-      System.out.println("sub:" + sub);
-}
+//    public static void main(String[] args) {
+//        // 生成token
+//        String s = generateToken("123", 20);
+//        System.out.println(s);
+//
+//      // 验证
+//      String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJvcGVuSWQiOiIxMjMiLCJleHAiOjE2MDk5NDY3MTcsInVzZXJJZCI6MjAsImlhdCI6MTYwOTk0NDEyNSwianRpIjoidG9rZW5JZCJ9.XPzW9XbjVDjtXtTvJj36iCeIrvmXJbq_m2I6sBsWIlA";
+//      Claims claims = verifyJwt(token);
+//      String subject = claims.getSubject();
+//      Integer userId = (Integer)claims.get("userId");
+//      String openId = (String)claims.get("openId");
+//      String sub = (String)claims.get("sub");
+//      System.out.println("subject:" + subject);
+//      System.out.println("userId:" + userId);
+//      System.out.println("openId:" + openId);
+//      System.out.println("sub:" + sub);
+//}
 }

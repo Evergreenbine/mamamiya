@@ -13,7 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 public class UserController {
@@ -24,7 +23,7 @@ public class UserController {
     @PostMapping("/app/login")
     @ResponseBody
     public ResponceResult Login(@RequestBody Params<User> params) {
-        System.out.println("已经请求");
+        System.out.println("已经请求"+params);
         ResponceResult responceResult = new ResponceResult();
         String finaltoken = JwtUtils.generateToken(params.getParams().getUsername(), params.getParams().getUserid());
         System.out.println(finaltoken);

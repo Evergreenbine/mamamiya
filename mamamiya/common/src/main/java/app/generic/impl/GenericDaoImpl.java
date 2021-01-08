@@ -3,9 +3,12 @@ package app.generic.impl;
 import app.generic.GenericDao;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /*
@@ -16,6 +19,9 @@ public class GenericDaoImpl implements GenericDao {
 
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
+
+    @Autowired
+    private BeanFactory beanFactory;
 
     public SqlSessionTemplate sqlSessionTemplate() {
         return this.sqlSessionTemplate;
@@ -67,5 +73,10 @@ public class GenericDaoImpl implements GenericDao {
         return update;
     }
 
+    public void getDataSource(){
+        DataSource bean = (DataSource) beanFactory.getBean("customedDruidDataSource");
 
+        System.out.println(bean.getClass().getName());
+
+    }
 }

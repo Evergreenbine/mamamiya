@@ -23,6 +23,7 @@ public class UserController {
     @PostMapping("/app/login")
     @ResponseBody
     public ResponceResult Login(@RequestBody Params<User> params) {
+        System.out.println("测试热更新");
         System.out.println("已经请求"+params);
         ResponceResult responceResult = new ResponceResult();
         String finaltoken = JwtUtils.generateToken(params.getParams().getUsername(), params.getParams().getUserid());

@@ -23,5 +23,7 @@ public interface GenericDao  {
 
     int updateOrDelete(String statement,Object params);
 
+    void getDataSource();
+
 
 }

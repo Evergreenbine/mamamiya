@@ -10,25 +10,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.*;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
-    private static int count = 0;
+
     @Autowired
     private UserService userService;
+
+    @ResponseBody
+    @GetMapping("/api/user/{uid}")
+    public ResponceResult<User> getUser(@PathVariable("uid") Integer uid){
+        ResponceResult<User> result = null;
+        try{
+            User user = userService.findUser(uid);
+            result = ResponceResult.successMessage(HttpStatus.OK,"处理成功",user);
+        }catch (Exception e){
+            result = ResponceResult.failMessage(HttpStatus.NO_CONTENT,"处理失败,没有找到该用户",null);
+        }
+        return result;
+    }
 
     @PostMapping("/app/login")
     @ResponseBody
     public ResponceResult Login(@RequestBody Params<User> params) {
+//        ResponceResult responceResult = new ResponceResult();
 //        System.out.println("测试热更新");
 //        System.out.println("已经请求"+params);
-        System.out.println("这是"+ count++ +"请求");
+        System.out.println(params);
         ResponceResult responceResult = new ResponceResult();
         String finaltoken = JwtUtils.generateToken(params.getParams().getUsername(), params.getParams().getUserid());
         System.out.println(finaltoken);
@@ -59,6 +68,8 @@ public class UserController {
             responceResult.setHttpStatus(HttpStatus.UNAUTHORIZED);
             responceResult.setMessage("验证失败");
         }
+
         return responceResult;
     }
+
 }

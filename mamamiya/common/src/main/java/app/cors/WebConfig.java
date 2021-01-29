@@ -13,8 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
     /* 配置跨域*/
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/app/**")
-                .allowedOrigins("http://localhost:9000")
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:8000")
                 .allowedMethods("POST","GET")
                 .allowedHeaders("*")
                 .allowCredentials(true).maxAge(3600);

@@ -17,8 +17,14 @@ public class UserServiceImpl implements UserService {
     public User findUser(Params<User> params) {
         String statement = User.class.getName();
         User u = params.getParams();
-        genericDao.getDataSource();
         User user = genericDao.selectOne(statement+"."+"findUser", u);
+        return user;
+    }
+
+    @Override
+    public User findUser(Integer uid) {
+        String statement = User.class.getName();
+        User user = genericDao.selectOne(statement+"."+"findUser",uid);
         return user;
     }
 }

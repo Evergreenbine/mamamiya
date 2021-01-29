@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.vo.Milk">
+
+    <select id="list"  resultType="app.vo.Milk">
+        select m.img,b.bname,m.price,m.recommend,m.rate,m.gid from milk m,brand b where m.bid = b.bid ;
+    </select>
+</mapper>

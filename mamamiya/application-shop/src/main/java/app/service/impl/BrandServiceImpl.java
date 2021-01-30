@@ -21,6 +21,12 @@ public class BrandServiceImpl implements app.service.BrandService {
     }
 
     @Override
+    public List<Brand> listWithLimit(int limit) {
+        List<Brand> listbrand = genericDao.selectList(statement+"list",limit);
+        return listbrand;
+    }
+
+    @Override
     public Brand selectOne(Integer bid) {
         return null;
     }

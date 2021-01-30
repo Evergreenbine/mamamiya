@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -22,11 +23,17 @@ public class BrandController {
 
 
     @ResponseBody
-    @GetMapping("/api/brand")
-    public ResponceResult<Brand>  listAll(){
+    @GetMapping("/api/brand/{limit}")
+    public ResponceResult<Brand>  listAll(@PathVariable("limit") Integer limit){
+        System.out.println(limit);
         ResponceResult<Brand> result ;
         try{
-            List<Brand> list = brandService.list();
+            List<Brand> list;
+            if (0 != limit){
+              list = brandService.listWithLimit(limit);
+            }else {
+              list = brandService.list();
+            }
             result = ResponceResult.successMessage(HttpStatus.OK,"查找成功",list);
         }catch (Exception e){
             result = ResponceResult.failMessage(HttpStatus.NO_CONTENT,"查找失败",null);

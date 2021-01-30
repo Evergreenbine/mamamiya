@@ -8,6 +8,8 @@ public interface BrandService {
 
     List<Brand> list();
 
+    List<Brand> listWithLimit(int limit);
+
     Brand selectOne(Integer bid);
 
     boolean deleteOne(Integer bid);

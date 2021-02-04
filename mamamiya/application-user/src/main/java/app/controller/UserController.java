@@ -31,7 +31,7 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/app/login")
+    @PostMapping("/api/login")
     @ResponseBody
     public ResponceResult Login(@RequestBody Params<User> params) {
 //        ResponceResult responceResult = new ResponceResult();

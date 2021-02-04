@@ -59,10 +59,10 @@ public class PinYinUtil {
         }
         return str;
     }
-    public static void main(String[] args) {
-//       char at = getAllFirstLetter("帮宝适").charAt(0);
-//        System.out.println(at);
-       int i = 109;
-        System.out.println(i == 'm');
-    }
+//    public static void main(String[] args) {
+////       char at = getAllFirstLetter("帮宝适").charAt(0);
+////        System.out.println(at);
+//       int i = 109;
+//        System.out.println(i == 'm');
+//    }
 }

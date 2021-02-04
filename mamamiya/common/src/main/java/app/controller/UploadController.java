@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+
 public class UploadController {
     @Value("${shopimgpath}")
     private String dirPath ;

@@ -17,4 +17,11 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+
+#userconfig:
+#  tokenHeader: Authorization
+#  refreshedTokenHeader
 

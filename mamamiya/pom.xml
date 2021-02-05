@@ -23,6 +23,7 @@
         <module>application-user</module>
         <module>application-admin</module>
         <module>application-shop</module>
+        <module>application-bbs</module>
     </modules>
 
     <properties>

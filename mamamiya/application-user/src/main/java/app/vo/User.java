@@ -13,4 +13,7 @@ public class User {
     private String password;
     private String address;
     private String avator;
+//    状态标志
+    private Integer tag;
+    private String email;
 }

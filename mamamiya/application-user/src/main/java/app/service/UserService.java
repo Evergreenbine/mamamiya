@@ -7,5 +7,7 @@ public interface UserService {
 
     User findUser(Params<User> params);
 
-    User findUser(Integer uid);
+    User findUser(Integer useraccount);
+
+    int update(User user);
 }

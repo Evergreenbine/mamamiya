@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="application-bbs" />
         <module name="application-shop" />
         <module name="application-user" />
         <module name="common" />
@@ -19,6 +20,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="application-admin" options="-parameters" />
+      <module name="application-bbs" options="-parameters" />
       <module name="application-shop" options="-parameters" />
       <module name="application-user" options="-parameters" />
       <module name="common" options="-parameters" />

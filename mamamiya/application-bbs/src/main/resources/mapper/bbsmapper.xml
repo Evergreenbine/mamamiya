@@ -11,4 +11,10 @@
         </if>
 
     </select>
+
+    <insert id="createPost" parameterType="app.vo.Post">
+        insert  into post(title, author, content, time, useraccount, cid) value (
+        #{title},#{author},#{content},#{time},#{useraccount},#{cid}
+        )
+    </insert>
 </mapper>

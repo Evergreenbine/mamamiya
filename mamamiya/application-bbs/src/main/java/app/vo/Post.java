@@ -1,5 +1,14 @@
 package app.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Post {
     //贴子编号
     private Long pid;
@@ -15,5 +24,6 @@ public class Post {
     private Integer useraccount;
     //圈子id
     private Integer cid;
+
 
 }

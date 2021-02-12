@@ -15,4 +15,5 @@ public class Circle {
     private String cname;
     private String introduce;
     private Integer postnums;
+    private String avator;
 }

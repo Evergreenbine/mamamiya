@@ -1,0 +1,31 @@
+server:
+  port: 8005
+
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 123
+    url: jdbc:mysql://localhost:3306/mamamiya?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    initialSize: 5
+    minIdle: 5
+  devtools:
+    add-properties: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+#     为什么在这配置没用咧？
+
+#  mvc:
+#    static-path-pattern: /static/**
+#  resources:
+#    static-locations: classpath:/static
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+#shopimgpath: G:\SchoolProject\mamamiya\mamamiya\application-shop\src\main\resources\static\
+#bbsimgpath: G:\SchoolProject\mamamiya\mamamiya\application-bbs\src\main\resources\static

@@ -5,6 +5,6 @@
 <mapper namespace="app.vo.Milk">
 
     <select id="list"  resultType="app.vo.Milk">
-        select m.img,b.bname,m.price,m.recommend,m.rate,m.gid,m.store from milk m,brand b where m.bid = b.bid ;
+        select * from milk m,brand b where m.bid = b.bid
     </select>
 </mapper>

@@ -55,4 +55,13 @@
      constraint pcid foreign key(cid) references circle(cid)
  )`
  
+ 管理员表
+ `create table Role(
+      aid int auto_increment primary key ,
+      name varchar(20) default null,
+      password varchar(20) default null,
+      tag int(2) default 0,
+      rid int default 0
+  );`
+ 
  

@@ -7,7 +7,10 @@ import app.vo.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class BbsServiceImpl implements BbsService {
 
@@ -23,6 +26,16 @@ public class BbsServiceImpl implements BbsService {
         return circleList;
     }
 
+    @Override
+    public List<Post> getPost(Map m) {
+        List<Post> post = null;
+        try {
+            post = genericDao.selectList(statement + "queryPost", m);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return post;
+    }
 
     @Override
     public Integer savePost(Post post) {
@@ -35,4 +48,5 @@ public class BbsServiceImpl implements BbsService {
         }
         return i;
     }
+
 }

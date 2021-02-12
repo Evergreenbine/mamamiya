@@ -10,4 +10,6 @@ public interface BbsService {
     List<Circle> listCircle();
 
     Integer savePost(Post post);
+
+    List<Post> getPost(Map m);
 }

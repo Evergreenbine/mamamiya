@@ -25,5 +25,16 @@ public class Post {
     //圈子id
     private Integer cid;
 
+    //user的字段，懒得写resultmap了
+    private Integer userid;
+
+    private String username;
+    private String password;
+    private String address;
+    private String avator;
+    //    状态标志
+    private Integer tag;
+    private String email;
+
 
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.vo.ShopAdmin">
+
+<!--    商品管理员为1-->
+    <select id="findadmin" parameterType="map" resultType="app.vo.ShopAdmin">
+        select * from role where name = #{name} and password = #{password} and
+        role = #{role}
+    </select>
+
+    <insert id="createmilk" parameterType="app.vo.shop.Milk">
+        insert into milk(gname, price, store, createtime, recommend, rate, cata, stage, age, bid, img)
+        value (#{gname},#{price},#{store},#{createtime},#{recommend},#{rate},#{cata},#{stage},#{age},#{bid},#{img})
+    </insert>
+    </mapper>

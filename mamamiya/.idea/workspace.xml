@@ -22,47 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00b8b11a-2891-4eea-a411-f0115cbf62ee" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/konwleage/KnowlegeVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/shop/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application-bbs/src/main/java/app/controller/KonwlegeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application-bbs/src/main/java/app/service/KonwlegeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application-bbs/src/main/java/app/vo/KnowlegeVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/src/main/java/app/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/controller/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/src/main/java/app/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/service/AdminService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/src/main/java/app/service/AdminServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/service/AdminServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/shop/Brand.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/shop/Brand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/shop/Goods.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/shop/Goods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/shop/Milk.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/src/main/java/app/vo/shop/Milk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/src/main/resources/mapper/adminmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/src/main/resources/mapper/adminmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/target/classes/app/controller/AdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/target/classes/app/controller/AdminController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/target/classes/app/service/AdminService.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/target/classes/app/service/AdminService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/target/classes/app/service/AdminServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/target/classes/app/service/AdminServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/target/classes/app/vo/shop/Brand.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/target/classes/app/vo/shop/Brand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/target/classes/app/vo/shop/Goods.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/target/classes/app/vo/shop/Goods.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/target/classes/app/vo/shop/Milk.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/target/classes/app/vo/shop/Milk.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-admin/target/classes/mapper/adminmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-admin/target/classes/mapper/adminmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-bbs/src/main/resources/mapper/bbsmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-bbs/src/main/resources/mapper/bbsmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-bbs/target/classes/mapper/bbsmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-bbs/target/classes/mapper/bbsmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/java/app/controller/BrandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/java/app/controller/BrandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/java/app/controller/MilkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/java/app/controller/MilkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/java/app/service/BrandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/java/app/service/BrandService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/java/app/service/MilkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/java/app/service/MilkService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/java/app/service/impl/BrandServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/java/app/service/impl/BrandServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/java/app/service/impl/MilkServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/java/app/service/impl/MilkServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/java/app/vo/Milk.java" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/java/app/vo/Milk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/resources/mapper/brandmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/resources/mapper/brandmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/src/main/resources/mapper/milkmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/src/main/resources/mapper/milkmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/app/controller/BrandController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/app/controller/BrandController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/app/controller/MilkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/app/controller/MilkController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/app/service/MilkService.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/app/service/MilkService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/app/service/impl/BrandServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/app/service/impl/BrandServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/app/service/impl/MilkServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/app/service/impl/MilkServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/app/vo/Milk.class" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/app/vo/Milk.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/mapper/brandmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/mapper/brandmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application-shop/target/classes/mapper/milkmapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application-shop/target/classes/mapper/milkmapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/app/sql/sql.md" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/app/sql/sql.md" afterDir="false" />
-    </list>
+    <list default="true" id="00b8b11a-2891-4eea-a411-f0115cbf62ee" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -313,7 +273,7 @@
       <workItem from="1613045930111" duration="57000" />
       <workItem from="1613046022437" duration="50000" />
       <workItem from="1613046086990" duration="1777000" />
-      <workItem from="1613048229369" duration="67233000" />
+      <workItem from="1613048229369" duration="67862000" />
     </task>
     <servers />
   </component>

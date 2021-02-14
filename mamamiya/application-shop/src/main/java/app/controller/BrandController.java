@@ -67,5 +67,12 @@ public class BrandController {
         return result;
     }
 
+//    获取指定的品牌
+    @GetMapping("/api/brands/{bid}")
+    @ResponseBody
+    public Brand getBrand(@PathVariable("bid") Integer bid){
+        Brand brand = brandService.selectOne(bid);
+        return brand;
+    }
 
 }

@@ -29,4 +29,16 @@
             and u.useraccount = #{useraccount}
         </if>
     </select>
+
+<!--    知识的-->
+    <select id="queryKonwById" parameterType="int" resultType="app.vo.KnowlegeVo">
+        select * from konwledge
+        where kid = #{kid};
+    </select>
+
+    <select id="querykonw" resultType="app.vo.KnowlegeVo">
+        select * from konwledge where cata = #{cid}
+    </select>
+
+
 </mapper>

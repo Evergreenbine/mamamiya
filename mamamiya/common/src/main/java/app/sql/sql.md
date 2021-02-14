@@ -1,3 +1,4 @@
+
 用户表
 `create table user
  (   userid int(20) not null auto_increment,
@@ -63,5 +64,24 @@
       tag int(2) default 0,
       rid int default 0
   );`
+  
+  知识表
+  `create table konwledge(
+       kid int not null auto_increment primary key ,
+       title varchar(20) default null,
+       content text default null,
+       createtime varchar(20) default null,
+       price double default 0,
+       isfree int(2) default 1
+   )`
+   
+   `
+   0:准备怀孕
+   1：怀孕期
+   2：分娩必读
+   3：婴儿期
+   4：幼儿期
+   `
+   
  
  

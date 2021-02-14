@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class MilkServiceImpl implements MilkService {
 
@@ -19,6 +21,19 @@ public class MilkServiceImpl implements MilkService {
     public List<Milk> list() {
         List<Milk> milks = genericDao.selectList(statement+"list",null);
         System.out.println(milks);
+        return milks;
+    }
+
+    @Override
+    public List<Milk> goodmilklist() {
+        List<Milk> milks = genericDao.selectList(statement + "goodmilk", null);
+        return milks;
+    }
+
+//    带条件查询
+    @Override
+    public List<Milk> list(Map m) {
+        List<Milk> milks = genericDao.selectList(statement + "list", m);
         return milks;
     }
 }

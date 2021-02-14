@@ -28,7 +28,8 @@ public class BrandServiceImpl implements app.service.BrandService {
 
     @Override
     public Brand selectOne(Integer bid) {
-        return null;
+        Brand brand = genericDao.selectOne(statement + "selectBrand", bid);
+        return brand;
     }
 
     @Override

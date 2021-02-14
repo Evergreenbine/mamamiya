@@ -11,7 +11,52 @@
     </select>
 
     <insert id="createmilk" parameterType="app.vo.shop.Milk">
-        insert into milk(gname, price, store, createtime, recommend, rate, cata, stage, age, bid, img)
-        value (#{gname},#{price},#{store},#{createtime},#{recommend},#{rate},#{cata},#{stage},#{age},#{bid},#{img})
+        insert into milk(gname, price, store, createtime, recommend, rate, cata, stage, age, bid, img,tag)
+        value (#{gname},#{price},#{store},#{createtime},#{recommend},#{rate},#{cata},#{stage},#{age},#{bid},#{img},1)
     </insert>
-    </mapper>
+
+    <update id="updatemilk" parameterType="app.vo.shop.Milk">
+        update milk
+        <set>
+             <if test="gname != null and gname != ''">
+                 gname = #{gname},
+             </if>
+             <if test="price != null and price != '' ">
+                 price = #{price},
+             </if>
+             <if test="store != null and store != '' ">
+                 store = #{store},
+             </if>
+             <if test="recommend != null and recommend != ''">
+                 recommend = #{recommend},
+             </if>
+             <if test="rate != null ">
+                 rate = #{rate},
+             </if>
+             <if test="cata != null and cata != ''">
+                 cata = #{cata},
+             </if>
+             <if test="stage != null and stage != '' ">
+                 stage = #{stage},
+             </if>
+             <if test="age != null and age != ''">
+                 age = #{age},
+             </if>
+             <if test="bid != null and bid != ''">
+                 bid = #{bid},
+             </if>
+             <if test="img != null and img != '' ">
+                 img = #{img},
+             </if>
+             <if test="tag != null and tag != ''">
+                 tag = #{tag}
+             </if>
+        </set>
+        where gid = #{gid}
+    </update>
+
+    <update id="delemilk" parameterType="int">
+        update milk set tag = 0 where gid = #{gid}
+    </update>
+
+</mapper>

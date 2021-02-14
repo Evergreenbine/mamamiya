@@ -11,4 +11,8 @@
         </if>
 
     </select>
+
+    <select id="selectBrand" parameterType="Integer" resultType="app.vo.Brand">
+        select * from brand where brand.bid = #{bid}
+    </select>
 </mapper>

@@ -5,8 +5,11 @@ import app.vo.ShopAdmin;
 import app.vo.shop.Brand;
 import app.vo.shop.Goods;
 import app.vo.shop.Milk;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -24,7 +27,10 @@ public class AdminServiceImpl implements AdminService{
     public Integer createGoods(Milk goods){
         Integer i = 1;
         try {
-            System.out.println(goods);
+//            System.out.println(goods);
+            Date date = new Date();
+            String format = DateFormatUtils.format(date, "yyyy/mm/dd");
+            goods.setCreatetime(format);
             genericDao.updateOrDelete(statement+"createmilk",goods);
         } catch (Exception e) {
             i = 0;

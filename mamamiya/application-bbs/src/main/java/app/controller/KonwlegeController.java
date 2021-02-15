@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -28,5 +30,17 @@ public class KonwlegeController {
     @ResponseBody
     public List<KnowlegeVo> getKonws(@PathVariable("cata") Integer cata){
         return konwlegeService.getKonwAll(cata);
+    }
+
+//    查看知识是否免费
+    @GetMapping("/api/konws/isfree")
+    @ResponseBody
+    public Integer queryIsFree(HttpServletRequest request){
+        String kid = request.getParameter("kid");
+        String useraccount = request.getParameter("useraccount");
+        HashMap<Object, Object> map = new HashMap<>(2);
+        map.put("kid",kid);
+        map.put("useraccount",useraccount);
+        return konwlegeService.queryIsFree(map);
     }
 }

@@ -12,4 +12,6 @@ public interface MilkService {
 //    带条件查询
     List<Milk> list(Map m);
 
+    Integer purchase(List<Milk> milk);
+
 }

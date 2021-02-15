@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.tags.Param;
 
@@ -69,5 +71,13 @@ public class MilkController {
         return  goodmilklist;
     }
 
+    @ResponseBody
+    @PostMapping("/api/milks/purchase")
+    public Integer purchase(@RequestBody List<Milk> milk){
+        for (Milk milk1 : milk) {
+            System.out.println(milk1.getCount());
+        }
+        return 0;
+    }
 
 }

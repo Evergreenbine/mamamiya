@@ -36,4 +36,13 @@ public class MilkServiceImpl implements MilkService {
         List<Milk> milks = genericDao.selectList(statement + "list", m);
         return milks;
     }
+
+    @Override
+    public Integer purchase(List<Milk> milk) {
+        for (Milk m : milk) {
+
+            genericDao.updateOrDelete(statement+"purchase",m.getGid());
+        }
+        return null;
+    }
 }

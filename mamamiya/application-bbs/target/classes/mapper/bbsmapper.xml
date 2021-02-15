@@ -31,13 +31,19 @@
     </select>
 
 <!--    知识的-->
+<!--    查询指定id-->
     <select id="queryKonwById" parameterType="int" resultType="app.vo.KnowlegeVo">
         select * from konwledge
         where kid = #{kid};
     </select>
 
+<!--    根据分类查询所有知识-->
     <select id="querykonw" resultType="app.vo.KnowlegeVo">
         select * from konwledge where cata = #{cid}
+    </select>
+<!--    查看该用户对应的知识是否免费-->
+    <select id="queryIsFree" parameterType="map" resultType="map">
+        select * from konwuser where kid = #{kid} and userid = #{useraccount}
     </select>
 
 

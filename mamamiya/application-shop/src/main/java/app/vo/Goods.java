@@ -20,4 +20,7 @@ public class Goods extends Brand {
         private String recommend;
         /* 评分*/
         private Integer rate;
+
+        /* 选购的数量*/
+        private Integer count;
 }

@@ -30,4 +30,13 @@
     <select id="goodmilk" resultType="app.vo.Milk">
         select * from milk m,brand b where m.bid = b.bid and m.tag = 1 and b.tag = 1 order by rate desc
     </select>
+
+<!--    购买商品-->
+    <update id="purchase" parameterType="int" >
+        update milk set store -= 1 where gid = #{gid}
+    </update>
+
+    <select id="queryid" parameterType="int" resultType="app.vo.Milk">
+        select * from where gid = #{gid}
+    </select>
 </mapper>

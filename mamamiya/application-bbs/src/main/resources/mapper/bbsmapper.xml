@@ -58,5 +58,10 @@
         select monney from user where useraccount = #{useraccount}
     </select>
 
+<!--    查询问题分类-->
+    <select id="queryQuesCata"  resultType="app.vo.Qcata">
+        select * from qcata;
+    </select>
+
 
 </mapper>

@@ -2,6 +2,7 @@ package app.controller;
 
 import app.service.KonwlegeService;
 import app.vo.KnowlegeVo;
+import app.vo.Qcata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -64,5 +65,13 @@ public class KonwlegeController {
         map.put("price",p);
 
         return konwlegeService.purchase((HashMap) map);
+    }
+
+//    问答controller
+
+    @GetMapping("/api/ques/all")
+    @ResponseBody
+    public List<Qcata> quesCata(){
+        return konwlegeService.qcatas();
     }
 }

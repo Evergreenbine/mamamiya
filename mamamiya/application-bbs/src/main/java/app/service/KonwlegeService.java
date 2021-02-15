@@ -3,6 +3,7 @@ package app.service;
 import app.generic.GenericDao;
 import app.vo.Circle;
 import app.vo.KnowlegeVo;
+import app.vo.Qcata;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,4 +67,11 @@ public class KonwlegeService {
         return i;
     }
 
+//    问答服务
+
+//    查询所有问题分类
+    public List<Qcata> qcatas(){
+        List<Qcata> qcatas = genericDao.selectList(statement + "queryQuesCata", null);
+        return qcatas;
+    }
 }

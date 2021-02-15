@@ -40,9 +40,6 @@
 <!--    根据分类查询所有知识-->
     <select id="querykonw" resultType="app.vo.KnowlegeVo">
         select * from konwledge where cata = #{cid}
-        <if test="tag != null">
-            limit 18
-        </if>
     </select>
 <!--    查看该用户对应的知识是否免费-->
     <select id="queryIsFree" parameterType="map" resultType="map">
@@ -59,6 +56,11 @@
     </update>
     <select id="getmoney" parameterType="int" resultType="double">
         select monney from user where useraccount = #{useraccount}
+    </select>
+
+<!--    查询问题分类-->
+    <select id="queryQuesCata"  resultType="app.vo.Qcata">
+        select * from qcata;
     </select>
 
 

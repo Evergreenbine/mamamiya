@@ -1,15 +1,16 @@
 package app.service;
 
 import app.generic.GenericDao;
-import app.vo.Circle;
-import app.vo.KnowlegeVo;
-import app.vo.Qcata;
+import app.vo.*;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 @Service
 public class KonwlegeService {
@@ -73,5 +74,34 @@ public class KonwlegeService {
     public List<Qcata> qcatas(){
         List<Qcata> qcatas = genericDao.selectList(statement + "queryQuesCata", null);
         return qcatas;
+    }
+
+//    发布提问
+    public Integer publishQues(Question question){
+        Date date = new Date();
+        String date2 = DateFormatUtils.format(date, "yyyy/mm/dd");
+        question.setCreatetime(date2);
+        return genericDao.create(statement+"createques",question);
+    }
+
+//    按分类查询问题
+    public List<Question> queryQues(Integer qcid){
+        HashMap map = new HashMap(2);
+        map.put("qcid",qcid);
+        List<Question> ques = genericDao.selectList(statement + "queryQuesbycata", map);
+        return ques;
+    }
+// 按qid查询问题
+    public Question quesryQuesByqid(Integer qid){
+        HashMap map = new HashMap(2);
+        map.put("qid",qid);
+        Question ques = genericDao.selectOne(statement + "quesryQuesByqid", map);
+        return ques;
+    }
+
+//    按qid查找回复
+    public List<Reply> quesReply(Integer qid){
+        List<Reply> re = genericDao.selectList(statement + "quesreply", qid);
+        return  re;
     }
 }

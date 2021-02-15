@@ -3,13 +3,12 @@ package app.controller;
 import app.service.KonwlegeService;
 import app.vo.KnowlegeVo;
 import app.vo.Qcata;
+import app.vo.Question;
+import app.vo.Reply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -69,9 +68,38 @@ public class KonwlegeController {
 
 //    问答controller
 
+
+//    查询所有问题分类
     @GetMapping("/api/ques/all")
     @ResponseBody
     public List<Qcata> quesCata(){
         return konwlegeService.qcatas();
+    }
+    //插入指定问题
+    @PostMapping("/api/ques")
+    @ResponseBody
+    public Integer createQues(@RequestBody Question question){
+        System.out.println(question);
+        return konwlegeService.publishQues(question);
+    }
+//    按分类来查问题
+    @GetMapping("/api/ques/{qcid}")
+    @ResponseBody
+    public List<Question> query(@PathVariable("qcid") Integer qcid){
+        return konwlegeService.queryQues(qcid);
+    }
+
+// 按qid查找问题
+    @GetMapping("/api/quesbyqid/{qid}")
+    @ResponseBody
+    public Question queryByqid(@PathVariable("qid") Integer qid){
+    return konwlegeService.quesryQuesByqid(qid);
+}
+
+    //按照qid查找回复
+    @GetMapping("/api/quesreply/{qid}")
+    @ResponseBody
+    public List<Reply> queryReply(@PathVariable("qid") Integer qid){
+        return konwlegeService.quesReply(qid);
     }
 }

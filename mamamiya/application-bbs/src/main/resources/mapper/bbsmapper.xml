@@ -63,5 +63,28 @@
         select * from qcata;
     </select>
 
+<!--    新建提问-->
+    <insert id="createques" parameterType="app.vo.Question">
+        insert into question(useraccount, title, content, qcid, createtime)
+        value(#{useraccount},#{title},#{content},#{qcid},#{createtime})
+    </insert>
+
+<!--    按类型查询问题-->
+    <select id="queryQuesbycata" parameterType="map" resultType="app.vo.Question">
+        select * from question q,user u where  q.useraccount = u.useraccount and qcid = #{qcid}
+    </select>
+
+<!--    按qid查找问题-->
+    <select id="quesryQuesByqid" parameterType="map" resultType="app.vo.Question">
+         select * from question q,user u where  q.useraccount = u.useraccount and qid = #{qid}
+    </select>
+
+<!--    按qid 查找回复-->
+    <select id="quesreply" parameterType="int" resultType="app.vo.Reply">
+        select * from reply r ,user u where r.useraccount = u.useraccount and r.qid = #{qid}
+    </select>
+
+
+
 
 </mapper>

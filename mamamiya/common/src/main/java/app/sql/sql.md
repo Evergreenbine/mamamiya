@@ -83,5 +83,21 @@
    4：幼儿期
    `
    
+   回复表
+   `
+   create table reply(
+   
+       rid int auto_increment primary key ,
+       //回复谁？
+       ruid int(100) ,
+       //这个回复属于谁的
+       useraccount int(100),
+       content varchar(200) default null,
+       //回复的问题的id
+       qid int(100)
+   
+   )
+   `
+   
  
  

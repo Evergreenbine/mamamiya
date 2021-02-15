@@ -33,4 +33,37 @@ public class KonwlegeService {
         return o == null ? 0 : 1;
     }
 
+//    知识付费
+    public Integer purchase(HashMap map){
+        int i = 1;
+        try {
+//            查询用户余额
+            Double monney = genericDao.selectOne(statement + "getmoney", map);
+//            价格
+            Double price = (Double) map.get("price");
+//          余额
+            Double remain = monney - price;
+//            判断是否够钱
+            if(remain >= 0){
+//                钱够就做购买操作
+//                插入购买记录表
+
+//              减去钱的操作
+                map.put("monney",remain);
+                genericDao.updateOrDelete(statement + "demoney", map);
+
+//               插入记录表
+                genericDao.updateOrDelete(statement + "purchasekonw", map);
+            }else{
+//                否则购买失败
+                i=0;
+            }
+        }catch (Exception e){
+            i=0;
+            System.out.println("知识付费失败");
+            e.printStackTrace();
+        }
+        return i;
+    }
+
 }

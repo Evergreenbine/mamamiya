@@ -47,4 +47,16 @@
     </select>
 
 
+<!--    知识付费-->
+    <insert id="purchasekonw" parameterType="map" >
+        insert into konwuser(kid, userid) value (#{kid},#{useraccount})
+    </insert>
+    <update id="demoney" parameterType="map">
+        update user set monney = #{monney} where useraccount = #{useraccount}
+    </update>
+    <select id="getmoney" parameterType="int" resultType="double">
+        select monney from user where useraccount = #{useraccount}
+    </select>
+
+
 </mapper>

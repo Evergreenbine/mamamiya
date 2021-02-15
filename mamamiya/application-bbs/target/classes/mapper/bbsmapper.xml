@@ -40,10 +40,25 @@
 <!--    根据分类查询所有知识-->
     <select id="querykonw" resultType="app.vo.KnowlegeVo">
         select * from konwledge where cata = #{cid}
+        <if test="tag != null">
+            limit 18
+        </if>
     </select>
 <!--    查看该用户对应的知识是否免费-->
     <select id="queryIsFree" parameterType="map" resultType="map">
         select * from konwuser where kid = #{kid} and userid = #{useraccount}
+    </select>
+
+
+<!--    知识付费-->
+    <insert id="purchasekonw" parameterType="map" >
+        insert into konwuser(kid, userid) value (#{kid},#{useraccount})
+    </insert>
+    <update id="demoney" parameterType="map">
+        update user set monney = #{monney} where useraccount = #{useraccount}
+    </update>
+    <select id="getmoney" parameterType="int" resultType="double">
+        select monney from user where useraccount = #{useraccount}
     </select>
 
 

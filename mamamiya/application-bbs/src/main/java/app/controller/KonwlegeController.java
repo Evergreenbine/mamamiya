@@ -102,4 +102,12 @@ public class KonwlegeController {
     public List<Reply> queryReply(@PathVariable("qid") Integer qid){
         return konwlegeService.quesReply(qid);
     }
+
+//    插入回复
+    @PostMapping("/api/reply")
+    @ResponseBody
+    public Integer createReply(@RequestBody Reply reply){
+        System.out.println(reply);
+        return konwlegeService.createReply(reply);
+    }
 }

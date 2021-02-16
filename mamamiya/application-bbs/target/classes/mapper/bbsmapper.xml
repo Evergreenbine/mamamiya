@@ -3,15 +3,36 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.vo.Circle">
+    <!--    新建圈子-->
+    <insert id="createCircle" parameterType="app.vo.Circle">
+        insert into circle(cname, introduce,avator)
+        value(#{cname},#{introduce},#{avator})
+    </insert>
 
+<!--    删除圈子-->
+    <update id="deletecircle" parameterType="int">
+        update circle set tag = 0 where  cid = #{cid}
+    </update>
+<!--    删除贴子-->
+    <update id="deletepost" parameterType="map">
+        update post set tag = 0 where 1=1
+        <if test="cid != null">
+            and cid = #{cid}
+        </if>
+        <if test="pid !=null">
+            and pid = #{pid}
+        </if>
+    </update>
+<!-- 列出所有圈子-->
     <select id="listCircle" parameterType="Integer" resultType="app.vo.Circle">
-        select * from circle
+        select * from circle where tag = 1
         <if test="limit != null">
             limit #{limit} ;
         </if>
 
     </select>
 
+<!--    创建贴子-->
     <insert id="createPost" parameterType="app.vo.Post">
         insert  into post(title, author, content, time, useraccount, cid) value (
         #{title},#{author},#{content},#{time},#{useraccount},#{cid}
@@ -19,9 +40,9 @@
     </insert>
 
 
-
+<!--    查询所有贴子-->
     <select id="queryPost" parameterType="map" resultType="app.vo.Post">
-        select * from post p ,user u where p.useraccount = u.useraccount and p.cid = #{cid}
+        select * from post p ,user u where p.useraccount = u.useraccount and p.cid = #{cid} and p.tag = 1
         <if test="pid != null">
              and p.pid = #{pid}
         </if>
@@ -30,6 +51,10 @@
         </if>
     </select>
 
+<!--    查询圈子的关注人数-->
+    <select id="follonums" parameterType="int" resultType="app.vo.Circle">
+        select  count(*) as "follownums" from follow where cid = #{cid}
+    </select>
 <!--    知识的-->
 <!--    查询指定id-->
     <select id="queryKonwById" parameterType="int" resultType="app.vo.KnowlegeVo">
@@ -84,6 +109,11 @@
         select * from reply r ,user u where r.useraccount = u.useraccount and r.qid = #{qid}
     </select>
 
+<!--    回复信息-->
+    <insert id="createreply" parameterType="app.vo.Reply">
+        insert into  reply(ruid, useraccount, content, qid, createtime)
+        value (#{ruid},#{useraccount},#{content},#{qid},#{createtime})
+    </insert>
 
 
 

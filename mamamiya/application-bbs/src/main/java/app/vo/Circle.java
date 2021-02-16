@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Circle {
     private Integer cid;
-    private List<Integer> follownums;
+    private Integer follownums;
     private String cname;
     private String introduce;
     private Integer postnums;

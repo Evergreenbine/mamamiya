@@ -2,6 +2,7 @@ package app.service;
 
 import app.generic.GenericDao;
 import app.vo.*;
+import cn.hutool.core.date.DateUtil;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,5 +104,24 @@ public class KonwlegeService {
     public List<Reply> quesReply(Integer qid){
         List<Reply> re = genericDao.selectList(statement + "quesreply", qid);
         return  re;
+    }
+
+//    插入回复
+    public Integer createReply(Reply reply){
+        int i= 1;
+        try {
+            String format = DateUtil.format(new Date(), "yyyy/MM/dd");
+            reply.setCreatetime(format);
+            genericDao.create(statement+"createreply",reply);
+        }catch (Exception e){
+            i = 0;
+            System.out.println("插入回复失败");
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    public static void main(String[] args) {
+        System.out.println();
     }
 }

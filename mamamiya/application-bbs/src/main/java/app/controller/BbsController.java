@@ -4,6 +4,8 @@ import app.service.impl.BbsService;
 import app.utils.ResponceResult;
 import app.vo.Circle;
 import app.vo.Post;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.unit.DataUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +36,12 @@ public class BbsController {
    //防止XSS攻击还没做
     @PostMapping("/api/post")
     @ResponseBody
-    public ResponceResult savePost(HttpServletRequest request, @RequestBody Post post) {
-        ResponceResult res = null;
+    public Integer savePost(HttpServletRequest request, @RequestBody Post post) {
 
-        String postcircle = request.getParameter("postcircle");
-        post.setContent(postcircle);
-        post.setTime(DateFormatUtils.format(new Date(), "yyyyMMddHHmmss", TimeZone.getDefault()));
-
-        System.out.println(post);
-        if (bbsService.savePost(post)==1){
-            res = ResponceResult.successMessage(HttpStatus.OK,"处理完成",null);
-        }else {
-            res = ResponceResult.failMessage(HttpStatus.EXPECTATION_FAILED,"处理失败",null);
-        }
-        return res;
+        Date date =new Date();
+        String date2 = DateFormatUtils.format(date, "yyyy/mm/dd");
+        post.setTime(date2);
+        return  bbsService.savePost(post);
     }
 
 //    根据圈子id 查询所有帖子
@@ -107,12 +101,66 @@ public class BbsController {
          return bbsService.deleteCirlceOrPost(map);
 
     }
-
+//    查询圈子的关注人数
     @GetMapping("/api/follownums/{cid}")
     @ResponseBody
     public Integer follownums(@PathVariable int cid){
         return bbsService.follow(cid);
     }
+
+//    关注某个圈子
+    @GetMapping("/api/followcircle")
+    @ResponseBody
+    public Integer follow(HttpServletRequest request){
+        String cid,useraccount;
+        Map map = new HashMap(2);
+        if (!org.springframework.util.StringUtils.isEmpty(cid = request.getParameter("cid"))) {
+            int c = Integer.parseInt(cid);
+            map.put("cid",c);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(useraccount = request.getParameter("useraccount"))) {
+            int u1 = Integer.parseInt(useraccount);
+            map.put("useraccount",u1);
+        }
+
+        return  bbsService.foucsCircle((HashMap) map);
+
+    }
+
+//    查询是否关注
+    @GetMapping("/api/isfollow")
+    @ResponseBody
+    public Integer isfollow(HttpServletRequest request){
+        String cid,useraccount;
+        Map map = new HashMap(2);
+        if (!org.springframework.util.StringUtils.isEmpty(cid = request.getParameter("cid"))) {
+            int c = Integer.parseInt(cid);
+            map.put("cid",c);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(useraccount = request.getParameter("useraccount"))) {
+            int u1 = Integer.parseInt(useraccount);
+            map.put("useraccount",u1);
+        }
+
+        return  bbsService.isfollow((HashMap) map);
+
+    }
+
+    @GetMapping("/api/nofollow")
+    @ResponseBody
+   public Integer nofollow(HttpServletRequest request){
+        String cid,useraccount;
+        Map map = new HashMap(2);
+        if (!org.springframework.util.StringUtils.isEmpty(cid = request.getParameter("cid"))) {
+            int c = Integer.parseInt(cid);
+            map.put("cid",c);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(useraccount = request.getParameter("useraccount"))) {
+            int u1 = Integer.parseInt(useraccount);
+            map.put("useraccount",u1);
+        }
+        return bbsService.nofollow((HashMap) map);
+   }
 
 
 

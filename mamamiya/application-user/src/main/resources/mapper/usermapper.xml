@@ -5,8 +5,8 @@
 <mapper namespace="app.vo.User">
 
     <select id="findUser" parameterType="int" resultType="app.vo.User">
-        select user.username,user.useraccount,user.password,user.avator,user.address from user where
-        useraccount = #{useraccount};
+        select * from user where
+        useraccount = #{useraccount} and tag = 1;
     </select>
     
     <update id="updateUser" parameterType="app.vo.User">

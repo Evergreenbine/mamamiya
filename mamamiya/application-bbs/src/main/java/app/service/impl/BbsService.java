@@ -18,5 +18,12 @@ public interface BbsService {
 
     Integer deleteCirlceOrPost(HashMap map);
 
+//
     Integer follow(int cid);
+
+    Integer foucsCircle(HashMap map);
+
+    Integer isfollow(HashMap map);
+
+    Integer nofollow(HashMap map);
 }

@@ -102,4 +102,42 @@ public class BbsServiceImpl implements BbsService {
             return -1;
         }
     }
+
+//    关注圈子
+   public Integer foucsCircle(HashMap map){
+        int i = 1;
+        try{
+            genericDao.create(statement+"focuscircle",map);
+        }catch (Exception e){
+            System.out.println("关注圈子出错");
+            i=0;
+            e.printStackTrace();
+        }
+        return i;
+   }
+//  是否关注圈子
+    @Override
+    public Integer isfollow(HashMap map) {
+        int i;
+        try{
+            i =  genericDao.selectOne(statement + "isfocuscircle", map);
+        }catch (Exception e){
+            i = 0;
+        }
+        return i;
+    }
+//    取消关注
+
+    @Override
+    public Integer nofollow(HashMap map) {
+        int i=1;
+        try{
+            genericDao.updateOrDelete(statement+"nofollow",map);
+        }catch (Exception e){
+            System.out.println("取消关注有异常");
+            i = 0;
+            e.printStackTrace();
+        }
+        return i;
+    }
 }

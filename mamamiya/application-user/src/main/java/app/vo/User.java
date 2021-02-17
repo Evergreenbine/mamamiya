@@ -13,6 +13,7 @@ public class User {
     private String password;
     private String address;
     private String avator;
+    private String monney;
 //    状态标志
     private Integer tag;
     private String email;

@@ -39,6 +39,20 @@
         )
     </insert>
 
+<!--    关注圈子-->
+    <insert id="focuscircle" parameterType="map">
+        insert into follow(cid, useraccount) value (#{cid},#{useraccount})
+    </insert>
+<!--    取消关注圈子-->
+    <delete id="nofollow" parameterType="map">
+        delete from follow where cid = #{cid} and useraccount = #{useraccount}
+    </delete>
+<!--    查询某人是否关注圈子-->
+    <select id="isfocuscircle" parameterType="map" resultType="int">
+        select count(*) from follow where cid = #{cid} and useraccount = #{useraccount}
+    </select>
+
+
 
 <!--    查询所有贴子-->
     <select id="queryPost" parameterType="map" resultType="app.vo.Post">
@@ -55,6 +69,8 @@
     <select id="follonums" parameterType="int" resultType="app.vo.Circle">
         select  count(*) as "follownums" from follow where cid = #{cid}
     </select>
+
+
 <!--    知识的-->
 <!--    查询指定id-->
     <select id="queryKonwById" parameterType="int" resultType="app.vo.KnowlegeVo">

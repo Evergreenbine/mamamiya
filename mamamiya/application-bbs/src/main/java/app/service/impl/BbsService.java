@@ -2,6 +2,7 @@ package app.service.impl;
 
 import app.vo.Circle;
 import app.vo.Post;
+import app.vo.ReplyPost;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,4 +27,6 @@ public interface BbsService {
     Integer isfollow(HashMap map);
 
     Integer nofollow(HashMap map);
+
+
 }

@@ -137,5 +137,10 @@
         value (#{useraccount},#{content},#{pid},#{createtime},#{ruid})
     </insert>
 
+<!--    查询所有回复的贴子-->
+    <select id="querypost" parameterType="map" resultType="app.vo.ReplyPost">
+        select * from replypost r,user u where r.useraccount = u.useraccount and r.tag =1 and u.tag = 1 and pid = #{pid};
+    </select>
+
 
 </mapper>

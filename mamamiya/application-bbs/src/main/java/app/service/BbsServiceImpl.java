@@ -4,6 +4,7 @@ import app.generic.GenericDao;
 import app.service.impl.BbsService;
 import app.vo.Circle;
 import app.vo.Post;
+import app.vo.ReplyPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -140,4 +141,6 @@ public class BbsServiceImpl implements BbsService {
         }
         return i;
     }
+//    查看回复帖子
+
 }

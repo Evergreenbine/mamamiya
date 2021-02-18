@@ -131,6 +131,16 @@
         value (#{ruid},#{useraccount},#{content},#{qid},#{createtime})
     </insert>
 
+<!--    回复贴子-->
+    <insert id="createreplypost" parameterType="app.vo.ReplyPost">
+        insert into replypost(useraccount, content, pid, createtime, ruid)
+        value (#{useraccount},#{content},#{pid},#{createtime},#{ruid})
+    </insert>
+
+<!--    查询所有回复的贴子-->
+    <select id="querypost" parameterType="map" resultType="app.vo.ReplyPost">
+        select * from replypost r,user u where r.useraccount = u.useraccount and r.tag =1 and u.tag = 1 and pid = #{pid};
+    </select>
 
 
 </mapper>

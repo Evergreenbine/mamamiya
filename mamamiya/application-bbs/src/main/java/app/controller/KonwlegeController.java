@@ -1,10 +1,7 @@
 package app.controller;
 
 import app.service.KonwlegeService;
-import app.vo.KnowlegeVo;
-import app.vo.Qcata;
-import app.vo.Question;
-import app.vo.Reply;
+import app.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -109,5 +106,22 @@ public class KonwlegeController {
     public Integer createReply(@RequestBody Reply reply){
         System.out.println(reply);
         return konwlegeService.createReply(reply);
+    }
+
+//    查询所有回复贴子
+    @GetMapping("/api/replypost/{pid}")
+    @ResponseBody
+    public List<ReplyPost> queryReplyPost(@PathVariable("pid")Integer pid){
+        System.out.println(pid);
+        HashMap map = new HashMap(2);
+        map.put("pid",pid);
+        List<ReplyPost> replyPosts = konwlegeService.queryReplyPost(map);
+        return replyPosts;
+    }
+
+    @PostMapping("/api/createReplyPost")
+    @ResponseBody
+    public Integer createReplyPost(@RequestBody ReplyPost replyPost){
+        return konwlegeService.createReplyPost(replyPost);
     }
 }

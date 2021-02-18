@@ -121,7 +121,34 @@ public class KonwlegeService {
         return i;
     }
 
-    public static void main(String[] args) {
-        System.out.println();
+
+//    查询所有贴子
+    public List<ReplyPost> queryReplyPost(HashMap map){
+        try{
+
+            List<ReplyPost> objects = genericDao.selectList(statement + "querypost", map);
+            return objects;
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("查询回帖子错误");
+            return null;
+        }
+    }
+
+//    回复帖子
+    public Integer createReplyPost(ReplyPost replyPost){
+        int i =1;
+        try {
+            Date date = new Date();
+            String format = DateUtil.format(date, "yyyy/MM/dd");
+            replyPost.setCreatetime(format);
+            genericDao.create(statement+"createreplypost",replyPost);
+        }catch (Exception e){
+            i = 0;
+            e.printStackTrace();
+        }
+        return i;
     }
 }
+
+

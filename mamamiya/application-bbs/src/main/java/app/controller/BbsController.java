@@ -146,6 +146,7 @@ public class BbsController {
 
     }
 
+//    取消关注的接口
     @GetMapping("/api/nofollow")
     @ResponseBody
    public Integer nofollow(HttpServletRequest request){

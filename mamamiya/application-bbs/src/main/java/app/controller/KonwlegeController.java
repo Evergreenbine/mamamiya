@@ -119,9 +119,13 @@ public class KonwlegeController {
         return replyPosts;
     }
 
+//    创建回复
     @PostMapping("/api/createReplyPost")
     @ResponseBody
     public Integer createReplyPost(@RequestBody ReplyPost replyPost){
+        System.out.println("已经请求创建回复贴子接口");
+        System.out.println(replyPost);
         return konwlegeService.createReplyPost(replyPost);
+//        return konwlegeService.createReplyPost(replyPost);
     }
 }

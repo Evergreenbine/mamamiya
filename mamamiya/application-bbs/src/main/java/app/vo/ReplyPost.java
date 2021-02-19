@@ -21,6 +21,12 @@ public class ReplyPost {
     private Integer pid;
 
     private String createtime;
+//    这是回复层主，层主的回复内容摘要
+    private String rcontent;
+//    层主在第几层楼
+    private Integer floor;
+//    层主的名字
+    private String rname;
 
 
 //    存放用户信息的字段

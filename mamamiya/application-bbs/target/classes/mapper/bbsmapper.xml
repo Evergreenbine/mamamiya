@@ -133,14 +133,41 @@
 
 <!--    回复贴子-->
     <insert id="createreplypost" parameterType="app.vo.ReplyPost">
-        insert into replypost(useraccount, content, pid, createtime, ruid)
-        value (#{useraccount},#{content},#{pid},#{createtime},#{ruid})
+        insert into replypost(useraccount, content, pid, createtime, ruid,rcontent,floor,rname)
+        value (#{useraccount},#{content},#{pid},#{createtime},#{ruid},#{rcontent},#{floor},#{rname})
     </insert>
 
 <!--    查询所有回复的贴子-->
     <select id="querypost" parameterType="map" resultType="app.vo.ReplyPost">
         select * from replypost r,user u where r.useraccount = u.useraccount and r.tag =1 and u.tag = 1 and pid = #{pid};
     </select>
+<!--    查询被回复者信息-->
 
 
+
+
+<!--    资讯网-->
+<!--    修改资讯标签-->
+    <update id="updateTag" parameterType="map">
+        update infocata
+        <set>
+            <if test="tagname != null">
+                tagname = #{tagname},
+            </if>
+            <if test="avator != null">
+                avator != null
+            </if>
+        </set>
+        where icid = #{icid}
+    </update>
+
+<!--    查询所有资讯标签-->
+    <select id="querytag" resultType="int">
+        select icid from infocata
+    </select>
+<!--    查询所有资讯-->
+    <select id="queryallnew" parameterType="map" resultType="app.vo.News">
+        select infoid,title,content,inf.icid,infc.tagname from info inf,infocata infc where inf.icid = infc.icid group by inf.icid,inf.infoid
+
+    </select>
 </mapper>

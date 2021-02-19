@@ -23,6 +23,7 @@ public class FileUtils {
         img.put(".bmp", "image/bmp");
         img.put(".png", "image/png");
         img.put(".gif", "image/gif");
+
     }
 
     public static ArrayList<String> saveMultiUploadFile(String savePath,MultipartFile[] files){

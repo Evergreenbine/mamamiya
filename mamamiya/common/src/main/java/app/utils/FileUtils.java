@@ -23,6 +23,8 @@ public class FileUtils {
         img.put(".bmp", "image/bmp");
         img.put(".png", "image/png");
         img.put(".gif", "image/gif");
+//        视频类型
+        img.put(".flv","ok");
 
     }
 

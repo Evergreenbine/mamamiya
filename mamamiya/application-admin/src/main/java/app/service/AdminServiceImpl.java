@@ -1,20 +1,19 @@
 package app.service;
 
 import app.generic.GenericDao;
-import app.vo.ShopAdmin;
-import app.vo.shop.Brand;
-import app.vo.shop.Goods;
+import app.vo.Admin;
 import app.vo.shop.Milk;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 
 @Service
 public class AdminServiceImpl implements AdminService{
 
-    private final static String statement = ShopAdmin.class.getName() + ".";
+    private final static String statement = Admin.class.getName() + ".";
     @Autowired
     private GenericDao genericDao;
 
@@ -66,6 +65,33 @@ public class AdminServiceImpl implements AdminService{
     }
 
 
+//    登录的逻辑
 
 
+    @Override
+    public HashMap login(Admin role) {
+//        0 是 失败码，其它为管理员身份码
+        HashMap map = new HashMap();
+
+         try {
+             Admin o = genericDao.selectOne(statement + "findadmin", role);
+             if (o == null) {
+                 map.put("role",0);
+                 map.put("url","/");
+             }
+             if (o.getRole() == 2) {
+                 map.put("role",o.getRole());
+                 map.put("url","/shop");
+             }
+             if (o.getRole() == 1) {
+                 map.put("role",o.getRole());
+                 map.put("url","/main");
+             }
+         }catch (Exception e){
+             map.put("role",0);
+             map.put("url","/");
+             System.out.println("管理员登录出错了");
+         }
+        return map;
+    }
 }

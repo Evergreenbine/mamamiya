@@ -1,10 +1,15 @@
 package app.service;
 
-import app.vo.shop.Brand;
-import app.vo.shop.Goods;
+import app.vo.Admin;
 import app.vo.shop.Milk;
 
+import java.util.HashMap;
+
 public interface AdminService {
+
+//     登录的逻辑
+     HashMap login(Admin role);
+
 //     商品的逻辑
      Integer createGoods(Milk goods);
      Integer updateOrDeleteGood(Milk milk);

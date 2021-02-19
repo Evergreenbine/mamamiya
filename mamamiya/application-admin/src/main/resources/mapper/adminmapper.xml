@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="app.vo.ShopAdmin">
+<mapper namespace="app.vo.Admin">
 
 <!--    商品管理员为1-->
-    <select id="findadmin" parameterType="map" resultType="app.vo.ShopAdmin">
-        select * from role where name = #{name} and password = #{password} and
+    <select id="findadmin" parameterType="map" resultType="app.vo.Admin">
+        select * from role where tag =1 and name = #{adminname} and password = #{password} and
         role = #{role}
     </select>
 

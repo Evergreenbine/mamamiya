@@ -6,9 +6,11 @@
 
     <select id="list" parameterType="map" resultType="app.vo.Milk">
         select * from milk m,brand b where m.bid = b.bid and  m.tag = 1 and b.tag = 1
+--        根据品牌查询
         <if test="bid != null">
             and b.bid = #{bid}
         </if>
+--         查询具体商品
         <if test="gid != null and gid != ''">
             and m.gid = #{gid}
         </if>
@@ -21,8 +23,8 @@
         <if test="age != null">
             and age = #{age}
         </if>
-        <if test="price != null">
-            and price between #{startprice} and #{endprice}
+        <if test="sprice != null and  eprice">
+            and price between #{sprice} and #{eprice}
         </if>
     </select>
 
@@ -36,7 +38,13 @@
         update milk set store -= 1 where gid = #{gid}
     </update>
 
+<!--    根据gid查询具体的商品-->
     <select id="queryid" parameterType="int" resultType="app.vo.Milk">
         select * from where gid = #{gid}
+    </select>
+
+<!--    根据gid查询商品的评分-->
+    <select id="queryreate" parameterType="int" resultType="int">
+
     </select>
 </mapper>

@@ -1,6 +1,7 @@
 package app.generic.impl;
 
 import app.generic.GenericDao;
+import app.utils.PagedResult;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.BeanFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 /*
  *   关系数据库的基础操作类
@@ -79,4 +81,6 @@ public class GenericDaoImpl implements GenericDao {
         System.out.println(bean.getClass().getName());
 
     }
+
+
 }

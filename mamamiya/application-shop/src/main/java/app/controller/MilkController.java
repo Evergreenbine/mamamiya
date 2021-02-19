@@ -7,6 +7,7 @@ import app.vo.Milk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,17 +45,40 @@ public class MilkController {
 
         ResponceResult result = null;
         Map<String,Object> map = new HashMap<>();
-        System.out.println("请求接口");
+        System.out.println("请求条件查询接口");
         try {
+//            品牌id
             String bid = request.getParameter("bid");
-            String gid = request.getParameter("gid");
-            System.out.println(gid);
-            if (gid != null) {
-                map.put("gid",gid);
+//            阶段
+            String stage = request.getParameter("stage");
+//            年龄段
+            String age = request.getParameter("age");
+//            分类
+            String cata = request.getParameter("cata");
+
+            System.out.println(cata);
+
+            String sprice = request.getParameter("sprice");
+            String eprice =request.getParameter("eprice");
+
+
+            if (!StringUtils.isEmpty(bid)) {
+                map.put("bid",Integer.parseInt(bid));
             }
-            if (bid != null) {
-                map.put("bid",bid);
+            if (!StringUtils.isEmpty(stage)) {
+                map.put("stage",Integer.parseInt(stage));
             }
+            if (!StringUtils.isEmpty(age)) {
+                map.put("age",Integer.parseInt(age));
+            }
+            if (!StringUtils.isEmpty(cata)) {
+                map.put("cata",Integer.parseInt(cata));
+            }
+            if (!StringUtils.isEmpty(sprice)&&!StringUtils.isEmpty(eprice)) {
+                map.put("sprice",sprice);
+                map.put("eprice",eprice);
+            }
+
             List<Milk> list = milkService.list(map);
 
             result = ResponceResult.successMessage(HttpStatus.OK,"处理成功",list);

@@ -3,6 +3,7 @@ package app.service.impl;
 import app.generic.GenericDao;
 import app.service.MilkService;
 import app.vo.Milk;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class MilkServiceImpl implements MilkService {
 
     @Override
     public List<Milk> list() {
+
         List<Milk> milks = genericDao.selectList(statement+"list",null);
         System.out.println(milks);
         return milks;
@@ -33,7 +35,17 @@ public class MilkServiceImpl implements MilkService {
 //    带条件查询
     @Override
     public List<Milk> list(Map m) {
-        List<Milk> milks = genericDao.selectList(statement + "list", m);
+//        int pageIndex=1, pageSize=10;
+//        int start = pageSize * (pageIndex - 1);
+//        int end = pageSize;
+//        RowBounds rowBounds = new RowBounds(start,end);
+        List<Milk> milks = null;
+        try {
+            milks = genericDao.selectList(statement + "list", m);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return milks;
     }
 

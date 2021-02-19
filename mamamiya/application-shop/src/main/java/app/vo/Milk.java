@@ -20,4 +20,6 @@ public class Milk extends Goods{
     /* 年龄段*/
     private String age;
 
+
+
 }

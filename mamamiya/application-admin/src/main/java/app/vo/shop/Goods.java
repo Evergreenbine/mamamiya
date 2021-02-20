@@ -24,6 +24,8 @@ public class Goods extends Brand {
         private String stage;
         /* 年龄段*/
         private String age;
+        /* 商品分类*/
+        private Integer gcid;
 
         public Goods() {
         }
@@ -33,6 +35,13 @@ public class Goods extends Brand {
         }
 
 
+        public Integer getGcid() {
+                return gcid;
+        }
+
+        public void setGcid(Integer gcid) {
+                this.gcid = gcid;
+        }
 
         public Integer getGid() {
                 return gid;

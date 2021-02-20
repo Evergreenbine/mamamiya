@@ -2,10 +2,14 @@ package app.service;
 
 import app.vo.Milk;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 
 public interface MilkService {
+//    查询商品分类
+    List<Map> queryGoodCata();
 
     List<Milk> list();
 //    好评商品
@@ -13,6 +17,13 @@ public interface MilkService {
 //    带条件查询
     List<Milk> list(Map m);
 
-    Integer purchase(List<Milk> milk);
+    Integer purchase(Integer useraccont,List<Milk> milk,double needmoney);
 
+//    查询具体商品
+    Milk specificGood(Integer gid);
+
+    List<Milk> lastestMilk();
+    List<Milk> mostgood();
+//    查询购买记录
+    Map myrecord(HttpServletRequest req);
 }

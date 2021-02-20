@@ -4,6 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.vo.Milk">
 
+<!--    条件查询带rate语句，不过不用了，要改动的地方太多
+select m.gid,gname,if(u.rate != null,0,u.rate) rate from milk m left join (select gid,rate,count(rate) from  goodsrate group by rate limit 1) u
+on m.gid = u.gid
+-->
+<!--    查询商品的分类-->
+    <select id="selectGoodCata" resultType="map">
+        select * from gcata
+    </select>
+
+<!--根据gid查询特定的商品-->
+    <select id="querygood" parameterType="int" resultType="app.vo.Milk">
+        select * from milk where gid = #{gid}
+    </select>
+
     <select id="list" parameterType="map" resultType="app.vo.Milk">
         select * from milk m,brand b where m.bid = b.bid and  m.tag = 1 and b.tag = 1
 --        根据品牌查询
@@ -28,15 +42,43 @@
         </if>
     </select>
 
-<!--    好评商品-->
-    <select id="goodmilk" resultType="app.vo.Milk">
-        select * from milk m,brand b where m.bid = b.bid and m.tag = 1 and b.tag = 1 order by rate desc
+<!--查询商品评分-->
+    <select id="queryrate" parameterType="int" resultType="map">
+       select gid,rate,count(rate) from  goodsrate where gid = #{gid} group by rate order by count(rate) desc limit 1
     </select>
 
-<!--    购买商品-->
-    <update id="purchase" parameterType="int" >
-        update milk set store -= 1 where gid = #{gid}
-    </update>
+
+<!--    好评商品-->
+    <select id="goodmilk" resultType="app.vo.Milk">
+      select q.*, b.bname
+from (select m.age,
+             m.recommend,
+             m.img,
+             m.price,
+             m.bid,
+             m.gid,
+             gname,
+             if(u.rate is null, 0, u.rate) rate
+      from milk m
+               left join (select * from (select gid, rate, count(rate) from goodsrate group by gid,rate order by count(rate) desc ) u group by gid) u
+                         on m.gid = u.gid
+      where m.tag = 1) q,
+     brand b
+where q.bid = b.bid
+  and b.tag = 1
+order by q.rate desc
+limit 8;
+    </select>
+
+<!--    新品商品-->
+    <select id="latestgood" resultType="app.vo.Milk">
+        select * from milk order by createtime desc limit 8;
+    </select>
+
+<!--    热销商品-->
+    <select id="mostgood" resultType="app.vo.Milk">
+       select b.bid,b.bname,m.*,count(r.useraccount) from recordgood r, brand b,milk m where r.bid = b.bid and r.gid =m.gid group by r.gid order by count(useraccount) desc limit 8
+    </select>
 
 <!--    根据gid查询具体的商品-->
     <select id="queryid" parameterType="int" resultType="app.vo.Milk">
@@ -46,5 +88,41 @@
 <!--    根据gid查询商品的评分-->
     <select id="queryreate" parameterType="int" resultType="int">
 
+    </select>
+
+<!--    根据商品结账******-->
+<!--  1.查询账户余额-->
+    <select id="querymonney" parameterType="int" resultType="double">
+        select monney from user where useraccount = #{useraccount} and tag = 1
+    </select>
+<!--    查库存-->
+    <select id="querystore" parameterType="int" resultType="int">
+        select store from milk where gid = #{gid}
+    </select>
+<!--  2.减金额，减库存-->
+    <update id="purchase" parameterType="map" >
+        update milk set store = store - #{count} where  gid = #{gid}
+    </update>
+    <update id="demoney" parameterType="map">
+        update user set monney = monney - #{monney} where useraccount = #{useraccount}
+    </update>
+<!--    插入购买记录表-->
+    <insert id="newpurchaserecord" parameterType="app.vo.Milk">
+        insert into recordgood(gid, gname, createtime, recommend, cata, stage, age, bid, img, useraccount)
+        value (#{gid},#{gname},#{createtime},#{recommend},#{cata},#{stage},#{age},#{bid},#{img},#{useraccount})
+    </insert>
+<!--    根据商品结账 /////-->
+
+<!--查询我的购买记录-->
+    <select id="queryrecord" parameterType="int" resultType="app.vo.Milk">
+        select
+            r.useraccount,b.bname,m.*
+        from
+            recordgood r,milk m,brand b  where r.gid = m.gid and m.bid = b.bid
+        and
+            useraccount = #{useraccount}
+    </select>
+    <select id="querytotal" parameterType="int" resultType="int">
+        select count(1)  from recordgood r where r.useraccount = #{useraccount}
     </select>
 </mapper>

@@ -28,7 +28,7 @@ public class AdminServiceImpl implements AdminService{
         try {
 //            System.out.println(goods);
             Date date = new Date();
-            String format = DateFormatUtils.format(date, "yyyy/mm/dd");
+            String format = DateFormatUtils.format(date, "yyyy/MM/dd");
             goods.setCreatetime(format);
             genericDao.updateOrDelete(statement+"createmilk",goods);
         } catch (Exception e) {

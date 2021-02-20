@@ -1,6 +1,8 @@
 package app.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 public class Goods extends Brand {
@@ -20,7 +22,37 @@ public class Goods extends Brand {
         private String recommend;
         /* 评分*/
         private Integer rate;
+        /* 购买人账号*/
+        private Integer useraccount;
 
         /* 选购的数量*/
         private Integer count;
+
+        private Integer qcid;
+
+
+        public Goods() {
+        }
+
+        public Goods(Integer gid, String gname, double price, String img, Integer store, String createtime, String recommend, Integer rate, Integer count) {
+                this.gid = gid;
+                this.gname = gname;
+                this.price = price;
+                this.img = img;
+                this.store = store;
+                this.createtime = createtime;
+                this.recommend = recommend;
+                this.rate = rate;
+                this.count = count;
+        }
+
+        public Goods(Integer gid, double price, Integer count){
+
+                this.gid = gid;
+
+                this.price = price;
+
+                this.count = count;
+        }
+
 }

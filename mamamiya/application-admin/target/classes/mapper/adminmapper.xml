@@ -11,8 +11,8 @@
     </select>
 
     <insert id="createmilk" parameterType="app.vo.shop.Milk">
-        insert into milk(gname, price, store, createtime, recommend, rate, cata, stage, age, bid, img,tag)
-        value (#{gname},#{price},#{store},#{createtime},#{recommend},#{rate},#{cata},#{stage},#{age},#{bid},#{img},1)
+        insert into milk(gname, price, store, createtime, recommend, rate, cata, stage, age, bid, img,gcid,tag)
+        value (#{gname},#{price},#{store},#{createtime},#{recommend},#{rate},#{cata},#{stage},#{age},#{bid},#{img},#{gcid},1)
     </insert>
 
     <update id="updatemilk" parameterType="app.vo.shop.Milk">

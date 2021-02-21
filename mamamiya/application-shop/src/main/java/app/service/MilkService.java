@@ -1,5 +1,6 @@
 package app.service;
 
+import app.vo.CommentGood;
 import app.vo.Milk;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,4 +27,10 @@ public interface MilkService {
     List<Milk> mostgood();
 //    查询购买记录
     Map myrecord(HttpServletRequest req);
+
+//    查询商品评论
+    List<Map> commentgood(HttpServletRequest request);
+
+//    评价商品
+    Integer createcommentgood(CommentGood commentGood);
 }

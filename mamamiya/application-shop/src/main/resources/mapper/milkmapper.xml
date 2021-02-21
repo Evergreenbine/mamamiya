@@ -77,7 +77,7 @@ limit 8;
 
 <!--    热销商品-->
     <select id="mostgood" resultType="app.vo.Milk">
-       select b.bid,b.bname,m.*,count(r.useraccount) from recordgood r, brand b,milk m where r.bid = b.bid and r.gid =m.gid group by r.gid order by count(useraccount) desc limit 8
+       select b.bid,b.bname,m.*,count(r.useraccount) from recordgood r, brand b,milk m where m.bid = b.bid and r.gid =m.gid group by r.gid order by count(useraccount) desc limit 8
     </select>
 
 <!--    根据gid查询具体的商品-->
@@ -106,23 +106,45 @@ limit 8;
     <update id="demoney" parameterType="map">
         update user set monney = monney - #{monney} where useraccount = #{useraccount}
     </update>
+<!--    插入订单表-->
+<insert id="createorder" parameterType="map">
+    insert into shoporder(orderid, otime) value (#{orderid},#{otime})
+</insert>
 <!--    插入购买记录表-->
-    <insert id="newpurchaserecord" parameterType="app.vo.Milk">
-        insert into recordgood(gid, gname, createtime, recommend, cata, stage, age, bid, img, useraccount)
-        value (#{gid},#{gname},#{createtime},#{recommend},#{cata},#{stage},#{age},#{bid},#{img},#{useraccount})
+    <insert id="newpurchaserecord" parameterType="map">
+        insert into recordgood(gid, useraccount,orderid)
+        value (#{gid},#{useraccount},#{orderid})
     </insert>
 <!--    根据商品结账 /////-->
 
 <!--查询我的购买记录-->
-    <select id="queryrecord" parameterType="int" resultType="app.vo.Milk">
-        select
-            r.useraccount,b.bname,m.*
-        from
-            recordgood r,milk m,brand b  where r.gid = m.gid and m.bid = b.bid
-        and
-            useraccount = #{useraccount}
+    <select id="queryrecord" parameterType="int" resultType="java.util.Map">
+       select
+            b.bname,b.bid,m.gname,m.img, r.*,count(r.gid) "nums"
+       from
+            recordgood r, milk m, brand b
+       where
+            r.gid = m.gid and m.bid = b.bid and
+        useraccount = #{useraccont} group by orderid, r.gid;
     </select>
+
+<!--    根据用户id查询购买订单的总数-->
     <select id="querytotal" parameterType="int" resultType="int">
-        select count(1)  from recordgood r where r.useraccount = #{useraccount}
+        select count(1) from (select *  from recordgood r where r.useraccount = #{useraccount} group by orderid, r.gid) u
     </select>
+
+<!--   根据gid 查询所有商品评论-->
+    <select id="querycomment" parameterType="int" resultType="java.util.Map">
+        select * from commentgood g,user u where g.useraccount = u.useraccount
+         <if test="gid != null">
+             and gid = #{gid}
+         </if>
+
+    </select>
+
+<!--    评价商品-->
+    <insert id="commentgood" parameterType="app.vo.CommentGood">
+        insert into commentgood( gid, useraccount, content, createtime)
+        value (#{gid},#{useraccount},#{content},#{createtime})
+    </insert>
 </mapper>

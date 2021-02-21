@@ -3,6 +3,7 @@ package app.controller;
 import app.service.MilkService;
 import app.utils.Params;
 import app.utils.ResponceResult;
+import app.vo.CommentGood;
 import app.vo.Milk;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,5 +160,19 @@ public class MilkController {
     @ResponseBody
     public Map myrecord(HttpServletRequest req){
         return milkService.myrecord(req);
+    }
+
+    @GetMapping("/api/comment")
+    @ResponseBody
+    public List<Map> commentgood(HttpServletRequest request){
+
+       return milkService.commentgood(request);
+    }
+
+
+    @PostMapping("/api/commentgood")
+    @ResponseBody
+    public Integer creatCommentGood(@RequestBody CommentGood commentGood){
+        return milkService.createcommentgood(commentGood);
     }
 }

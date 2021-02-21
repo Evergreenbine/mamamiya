@@ -2,7 +2,9 @@ package app.service.impl;
 
 import app.generic.GenericDao;
 import app.service.MilkService;
+import app.vo.CommentGood;
 import app.vo.Milk;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,9 +95,26 @@ public class MilkServiceImpl implements MilkService {
         return milks;
     }
 
+    public  String getOrderId(){
+        Date date = new Date();
+        String day = DateFormatUtils.format(date, "yyyyMMddHHmmss");
+        Random random = new Random();
+        int i = random.nextInt(10000);
+
+       return day+i;
+    }
+
+    public String getTime(){
+        Date date = new Date();
+        String day = DateFormatUtils.format(date, "yyyyMMdd");
+        return day;
+    }
 //    商品结账
     @Override
     public Integer purchase(Integer useraccount ,List<Milk> milk,double needmoney) {
+
+
+
         Integer tag;
 //        购物车里都有库存
         for (Milk m : milk) {
@@ -110,6 +129,14 @@ public class MilkServiceImpl implements MilkService {
 
 //        够钱就继续
         if (monney - needmoney > 0){
+            //        生成订单编号
+            String orderid = getOrderId();
+            HashMap m1 = new HashMap<>();
+            m1.put("orderid",orderid);
+            m1.put("otime",getTime());
+            genericDao.create(statement+"createorder",m1);
+
+
 //            加锁估计没用，只是不会被中断，不知道会不会因为内部异常而被中断，中断会不会回滚？
 //            测试了枷锁没用，只能使用声明式事务
             synchronized (mute){
@@ -127,10 +154,10 @@ public class MilkServiceImpl implements MilkService {
 //                        插入购买记录表
 //                       再做一件偷懒的傻逼的事，乱写的这里
 //                        这里应该由前端传过来的，但是我懒得去改前端的购物车了，泰马烦了，偷懒
-                        Milk o = genericDao.selectOne(statement + "querygood", m.getGid());
-                        o.setUseraccount(useraccount);
+//                        (#{gid},#{useraccount},#{orderid})
+                        map.put("orderid",orderid);
                         for (int i = 0; i < m.getCount(); i++) {
-                            genericDao.create(statement+"newpurchaserecord",o);
+                            genericDao.create(statement+"newpurchaserecord",map);
                         }
 
                     }
@@ -159,24 +186,58 @@ public class MilkServiceImpl implements MilkService {
 //        String ps = req.getParameter("pagesize");
 
         Integer curPage = Integer.parseInt(cp);
+        System.out.println(curPage);
 //        规定每页8条
-        Integer pageSize = 8;
+        Integer pageSize = 5;
 //        总的记录数
         int total = genericDao.selectOne(statement+"querytotal",useraccount);
 //        总页数
         int totalPageNums = (total+pageSize-1)/pageSize;
 
         int start = pageSize*(curPage - 1);
+        System.out.println(start);
         int end = start + pageSize;
+        System.out.println(end);
+        RowBounds rowBounds = new RowBounds(start,5);
+        List<Map> map2 = null;
+        try{
+            map2 = genericDao.selectList(statement + "queryrecord", useraccount, rowBounds);}
 
-        RowBounds rowBounds = new RowBounds(start,end);
-        List<Milk> milk = genericDao.selectList(statement + "queryrecord", useraccount, rowBounds);
+        catch (Exception e){
+            e.printStackTrace();
+        }
+//        System.out.println(map2);
         HashMap<Object, Object> map = new HashMap<>();
 
-        map.put("resp",milk);
+        map.put("resp",map2);
         map.put("totalpage",totalPageNums);
         map.put("total",total);
         return map;
 
+    }
+
+    @Override
+    public List<Map> commentgood(HttpServletRequest request) {
+        String gid = request.getParameter("gid");
+        int i = Integer.parseInt(gid);
+        HashMap<Object, Object> param = new HashMap<>();
+        param.put("gid",i);
+        List<Map> o = genericDao.selectList(statement + "querycomment", param);
+        return o;
+    }
+
+    @Override
+    public Integer createcommentgood(CommentGood commentGood) {
+        Integer i = 1;
+        try{
+            String date = DateFormatUtils.format(new Date(), "yyyy/MM/dd");
+            commentGood.setCreatetime(date);
+            genericDao.create(statement+"commentgood",commentGood);
+        }catch (Exception e){
+            i=0;
+            System.out.println("添加商品评论出错");
+            e.printStackTrace();
+        }
+        return i;
     }
 }

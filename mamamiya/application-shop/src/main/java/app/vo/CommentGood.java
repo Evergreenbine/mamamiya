@@ -13,4 +13,5 @@ public class CommentGood {
     private Integer useraccount;
     private String content;
     private String createtime;
+    private Integer rate;
 }

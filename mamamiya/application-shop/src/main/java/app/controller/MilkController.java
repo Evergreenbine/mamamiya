@@ -175,4 +175,10 @@ public class MilkController {
     public Integer creatCommentGood(@RequestBody CommentGood commentGood){
         return milkService.createcommentgood(commentGood);
     }
+
+    @GetMapping("/api/lastestrate")
+    @ResponseBody
+    public Map lastestGoodRate(){
+        return milkService.lastestGoodRate();
+    }
 }

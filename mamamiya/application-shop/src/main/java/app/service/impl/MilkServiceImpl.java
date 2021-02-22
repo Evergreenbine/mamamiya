@@ -22,20 +22,27 @@ public class MilkServiceImpl implements MilkService {
     @Autowired
     private GenericDao genericDao;
 
+//    热销商品
     public List<Milk> mostgood(){
         List<Milk> mm = genericDao.selectList(statement + "mostgood", null);
         for (Milk milk : mm) {
             Map object = genericDao.selectOne(statement + "queryrate", milk.getGid());
-            milk.setRate((Integer) object.get("rate"));
+//            这有个脑残问题就是，不是所有商品他都有评分的
+            if (object != null) {
+
+               milk.setRate((Integer) object.get("rate"));
+            }
         }
         return mm;
     }
-
+//最新商品
     public List<Milk> lastestMilk(){
         List<Milk> milks = genericDao.selectList(statement + "latestgood", null);
         for (Milk milk : milks) {
             Map object = genericDao.selectOne(statement + "queryrate", milk.getGid());
-            milk.setRate((Integer) object.get("rate"));
+            if (object != null) {
+                milk.setRate((Integer) object.get("rate"));
+            }
         }
         return milks;
     }
@@ -233,11 +240,30 @@ public class MilkServiceImpl implements MilkService {
             String date = DateFormatUtils.format(new Date(), "yyyy/MM/dd");
             commentGood.setCreatetime(date);
             genericDao.create(statement+"commentgood",commentGood);
+            genericDao.create(statement+"rategood",commentGood);
         }catch (Exception e){
             i=0;
             System.out.println("添加商品评论出错");
             e.printStackTrace();
         }
         return i;
+    }
+
+//    每个用户最新好评
+
+    public Map lastestGoodRate(){
+        int i = 1;
+        List<Map> map = null;
+        try {
+            map = genericDao.selectList(statement + "querygg", null);
+        } catch (Exception e) {
+            i=0;
+            System.out.println("每个用户最新好评出错");
+            e.printStackTrace();
+        }
+        HashMap<Object, Object> map1 = new HashMap<>();
+        map1.put("res",map);
+        map1.put("code",i);
+        return map1;
     }
 }

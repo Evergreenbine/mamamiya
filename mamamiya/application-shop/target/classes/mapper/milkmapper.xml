@@ -47,6 +47,11 @@ on m.gid = u.gid
        select gid,rate,count(rate) from  goodsrate where gid = #{gid} group by rate order by count(rate) desc limit 1
     </select>
 
+<!--找出每个用户中按时间和评分排序的 评论-->
+    <select id="querygg" resultType="map">
+       select m.gname,m.recommend,m.img,b.bname,b.bid,s.* from (select * from (select *,row_number() over (partition by useraccount order by createtime,rate desc) "oid"from commentgood) u group by useraccount) s,milk m,brand b
+where s.gid = m.gid and b.bid = m.bid limit 3
+    </select>
 
 <!--    好评商品-->
     <select id="goodmilk" resultType="app.vo.Milk">
@@ -62,7 +67,7 @@ from (select m.age,
       from milk m
                left join (select * from (select gid, rate, count(rate) from goodsrate group by gid,rate order by count(rate) desc ) u group by gid) u
                          on m.gid = u.gid
-      where m.tag = 1) q,
+      where m.tag = 1 and m.gcid = 1) q,
      brand b
 where q.bid = b.bid
   and b.tag = 1
@@ -87,7 +92,7 @@ limit 8;
 
 <!--    根据gid查询商品的评分-->
     <select id="queryreate" parameterType="int" resultType="int">
-
+         select gid,rate,count(rate) from  goodsrate where gid = #{gid} group by rate order by count(rate) desc limit 1
     </select>
 
 <!--    根据商品结账******-->
@@ -142,9 +147,17 @@ limit 8;
 
     </select>
 
+
+<!--    特别说明一下，goodsrate 和 commentgood 的评分数据其实是同步的，因为只有这么一个地方插入，新建多一个goodsrate
+是为了统计，因为有些模块统计评分时是不需要那么多信息的，即不用关心是谁评论的，但有些事需要
+-->
 <!--    评价商品-->
     <insert id="commentgood" parameterType="app.vo.CommentGood">
-        insert into commentgood( gid, useraccount, content, createtime)
-        value (#{gid},#{useraccount},#{content},#{createtime})
+        insert into commentgood( gid, useraccount, content, createtime,rate)
+        value (#{gid},#{useraccount},#{content},#{createtime},#{rate})
+    </insert>
+<!--    商品评分-->
+    <insert id="rategood" parameterType="app.vo.CommentGood">
+        insert into goodsrate(gid,rate) value (#{gid},#{rate})
     </insert>
 </mapper>

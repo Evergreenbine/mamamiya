@@ -33,4 +33,6 @@ public interface MilkService {
 
 //    评价商品
     Integer createcommentgood(CommentGood commentGood);
+
+    Map lastestGoodRate();
 }

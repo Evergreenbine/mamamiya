@@ -59,4 +59,6 @@
         update milk set tag = 0 where gid = #{gid}
     </update>
 
+
+
 </mapper>

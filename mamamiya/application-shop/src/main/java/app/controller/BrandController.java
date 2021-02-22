@@ -7,13 +7,16 @@ import app.vo.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -21,22 +24,72 @@ public class BrandController {
 
     @Autowired
     private BrandService brandService;
+//    中间变量
+    private HttpServletRequest req = null;
+//    过渡的接口,下面的接口到时删了
+
+//    转化方法
+    private Integer getParamater(String paramsName){
+        String parameter = this.req.getParameter(paramsName);
+        int i;
+        if (!StringUtils.isEmpty(parameter)) {
+           i =  Integer.parseInt(parameter);
+        }else {
+            throw new NullPointerException("参数为空");
+        }
+        return i;
+    }
+
+    @GetMapping("/api/brand")
+    @ResponseBody
+    public Map listBrand(HttpServletRequest req){
+        Map<String, Object> map = new HashMap<>(2);
+        this.req =req;
+        Integer limit = this.getParamater("limit");
+        Integer gcid = this.getParamater("gcid");
+
+        if (limit != 0) {
+            map.put("limit",limit);
+        }
+        map.put("gcid",gcid);
+
+        List<Brand> list = null;
+
+        list = brandService.listWithLimit(map);
 
 
+
+        map = new HashMap<>(2);
+        map.put("code",1);
+        map.put("resp",list);
+        return map;
+    }
+
+
+    @GetMapping("/api/sellgoodbrand/{gcid}")
+    @ResponseBody
+    public Map sellGoodBrand(@PathVariable("gcid") Integer gcid){
+      return   brandService.sellGoodBrand(gcid);
+    }
+
+
+//    这个基本没用了
     @ResponseBody
     @GetMapping("/api/brand/{limit}")
-    public ResponceResult<Brand>  listAll(@PathVariable("limit") Integer limit, HttpServletRequest req){
-        System.out.println(limit);
+    public ResponceResult<Brand>  listAll(@PathVariable("limit") Integer limit){
+        HashMap<Object, Object> map = new HashMap<>();
         ResponceResult<Brand> result ;
         try{
             List<Brand> list;
             if (0 != limit){
-              list = brandService.listWithLimit(limit,req);
+              map.put("limit",limit);
+              list = brandService.listWithLimit(map);
             }else {
               list = brandService.list();
             }
             result = ResponceResult.successMessage(HttpStatus.OK,"查找成功",list);
         }catch (Exception e){
+            e.printStackTrace();
             result = ResponceResult.failMessage(HttpStatus.NO_CONTENT,"查找失败",null);
         }
         return result;

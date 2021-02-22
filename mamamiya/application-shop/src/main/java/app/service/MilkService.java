@@ -14,7 +14,7 @@ public interface MilkService {
 
     List<Milk> list();
 //    好评商品
-    List<Milk> goodmilklist();
+    List<Milk> goodmilklist(Integer gcid);
 //    带条件查询
     List<Milk> list(Map m);
 
@@ -23,8 +23,9 @@ public interface MilkService {
 //    查询具体商品
     Milk specificGood(Integer gid);
 
-    List<Milk> lastestMilk();
-    List<Milk> mostgood();
+    List<Milk> lastestMilk(Integer gcid);
+
+    List<Milk> mostgood(Integer gcid);
 //    查询购买记录
     Map myrecord(HttpServletRequest req);
 
@@ -34,5 +35,6 @@ public interface MilkService {
 //    评价商品
     Integer createcommentgood(CommentGood commentGood);
 
-    Map lastestGoodRate();
+//    用户最新好评
+    Map lastestGoodRate(Integer gcid);
 }

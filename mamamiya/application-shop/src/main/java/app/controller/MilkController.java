@@ -49,6 +49,7 @@ public class MilkController {
     }
 
 //按条件查询所有商品
+    //
     @GetMapping("/api/milk")
     @ResponseBody
     public ResponceResult<List<Milk>> listMilk(HttpServletRequest request){
@@ -65,12 +66,16 @@ public class MilkController {
             String age = request.getParameter("age");
 //            分类
             String cata = request.getParameter("cata");
-
+//            商品类别
+            String gcid = request.getParameter("gcid");
             System.out.println(cata);
 
             String sprice = request.getParameter("sprice");
             String eprice =request.getParameter("eprice");
 
+            if (!StringUtils.isEmpty(gcid)) {
+                map.put("gcid",Integer.parseInt(gcid));
+            }
 
             if (!StringUtils.isEmpty(bid)) {
                 map.put("bid",Integer.parseInt(bid));
@@ -99,25 +104,26 @@ public class MilkController {
     }
 
 //    好评商品
-    @GetMapping("/api/milks/good")
+    @GetMapping("/api/milks/good/{gcid}")
     @ResponseBody
-    public List<Milk> goodmilklist(){
-        List<Milk> goodmilklist = milkService.goodmilklist();
+    public List<Milk> goodmilklist(@PathVariable("gcid") Integer gcid){
+
+        List<Milk> goodmilklist = milkService.goodmilklist(gcid);
         return  goodmilklist;
     }
 //    最新商品
-    @GetMapping("/api/lastestgood")
+    @GetMapping("/api/lastestgood/{gcid}")
     @ResponseBody
-    public List<Milk> lastestgood(){
-        List<Milk> milks = milkService.lastestMilk();
+    public List<Milk> lastestgood(@PathVariable("gcid") Integer gcid){
+        List<Milk> milks = milkService.lastestMilk(gcid);
         return milks;
     }
 
 //    热销商品
-    @GetMapping("/api/welcome")
+    @GetMapping("/api/welcome/{gcid}")
     @ResponseBody
-    public List<Milk> mostgood(){
-       List<Milk> mm = milkService.mostgood();
+    public List<Milk> mostgood(@PathVariable("gcid") Integer gcid){
+       List<Milk> mm = milkService.mostgood(gcid);
        return mm;
     }
 
@@ -176,9 +182,9 @@ public class MilkController {
         return milkService.createcommentgood(commentGood);
     }
 
-    @GetMapping("/api/lastestrate")
+    @GetMapping("/api/lastestrate/{gcid}")
     @ResponseBody
-    public Map lastestGoodRate(){
-        return milkService.lastestGoodRate();
+    public Map lastestGoodRate(@PathVariable("gcid") Integer gcid){
+        return milkService.lastestGoodRate(gcid);
     }
 }

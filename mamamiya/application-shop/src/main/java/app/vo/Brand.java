@@ -8,4 +8,6 @@ import lombok.NoArgsConstructor;
 public class Brand {
     private int bid;
     private String bname;
+    private String img;
+    private Integer gcid;
 }

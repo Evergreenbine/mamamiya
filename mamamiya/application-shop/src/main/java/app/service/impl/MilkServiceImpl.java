@@ -23,8 +23,8 @@ public class MilkServiceImpl implements MilkService {
     private GenericDao genericDao;
 
 //    热销商品
-    public List<Milk> mostgood(){
-        List<Milk> mm = genericDao.selectList(statement + "mostgood", null);
+    public List<Milk> mostgood(Integer gcid){
+        List<Milk> mm = genericDao.selectList(statement + "mostgood", gcid);
         for (Milk milk : mm) {
             Map object = genericDao.selectOne(statement + "queryrate", milk.getGid());
 //            这有个脑残问题就是，不是所有商品他都有评分的
@@ -36,8 +36,8 @@ public class MilkServiceImpl implements MilkService {
         return mm;
     }
 //最新商品
-    public List<Milk> lastestMilk(){
-        List<Milk> milks = genericDao.selectList(statement + "latestgood", null);
+    public List<Milk> lastestMilk(Integer gcid){
+        List<Milk> milks = genericDao.selectList(statement + "latestgood", gcid);
         for (Milk milk : milks) {
             Map object = genericDao.selectOne(statement + "queryrate", milk.getGid());
             if (object != null) {
@@ -72,8 +72,9 @@ public class MilkServiceImpl implements MilkService {
 
 //    好评商品 最复杂的sql
     @Override
-    public List<Milk> goodmilklist() {
-        List<Milk> milks = genericDao.selectList(statement + "goodmilk", null);
+    public List<Milk> goodmilklist(Integer gcid) {
+
+        List<Milk> milks = genericDao.selectList(statement + "goodmilk", gcid);
         return milks;
     }
 
@@ -251,11 +252,11 @@ public class MilkServiceImpl implements MilkService {
 
 //    每个用户最新好评
 
-    public Map lastestGoodRate(){
+    public Map lastestGoodRate(Integer gcid){
         int i = 1;
         List<Map> map = null;
         try {
-            map = genericDao.selectList(statement + "querygg", null);
+            map = genericDao.selectList(statement + "querygg", gcid);
         } catch (Exception e) {
             i=0;
             System.out.println("每个用户最新好评出错");

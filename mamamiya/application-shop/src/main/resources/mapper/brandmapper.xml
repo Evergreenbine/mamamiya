@@ -5,14 +5,29 @@
 <mapper namespace="app.vo.Brand">
 
     <select id="list" parameterType="map" resultType="app.vo.Brand">
-        select * from brand
+        select * from brand where tag = 1
+        <if test="gcid  !=  null">
+            and gcid = #{gcid}
+        </if>
         <if test="limit != null">
             limit #{limit} ;
         </if>
-
     </select>
 
     <select id="selectBrand" parameterType="Integer" resultType="app.vo.Brand">
         select * from brand where brand.bid = #{bid}
+    </select>
+
+    <!--    查询每个商品类别销量最好的品牌-->
+    <select id="sellgoodbrand" parameterType="int" resultType="map">
+        select b.*,m.gcid, count(r.gid) "nums"
+from recordgood r,
+     milk m,
+     brand b
+where r.gid = m.gid
+  and m.gcid = #{gcid}
+  and b.bid = m.bid
+group by r.gid
+order by nums desc;
     </select>
 </mapper>

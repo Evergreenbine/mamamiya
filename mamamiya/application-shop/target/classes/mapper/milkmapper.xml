@@ -15,11 +15,11 @@
 
     <!--根据gid查询特定的商品 考虑商品类别通过-->
     <select id="querygood" parameterType="int" resultType="app.vo.Milk">
-        select * from milk where gid = #{gid} and tag = 1 and gcid = 1
+        select * from milk where gid = #{gid} and tag = 1
     </select>
-<!--    考虑商品类别通过-->
+<!--    考虑商品类别通过 管理端和服务端公用的-->
     <select id="list" parameterType="map" resultType="app.vo.Milk">
-        select * from milk m,brand b where m.bid = b.bid and m.tag = 1 and b.tag = 1 and gcid = 1
+        select * from milk m,brand b where m.bid = b.bid and m.tag = 1 and b.tag = 1
         -- 根据品牌查询
         <if test="bid != null">
             and b.bid = #{bid}
@@ -37,8 +37,11 @@
         <if test="age != null">
             and age = #{age}
         </if>
-        <if test="sprice != null and  eprice">
+        <if test="sprice != null and  eprice != null">
             and price between #{sprice} and #{eprice}
+        </if>
+        <if test="gcid != null">
+            and m.gcid = #{gcid}
         </if>
     </select>
 
@@ -50,27 +53,29 @@
     </select>
 
     <!--找出每个用户中按时间和评分排序的 评论 -->
+<!--    这里要注意个问题，就是同一天用一个用户的最新评论会有随即性，因为时间精度是按天的，即可能不会一个用户里的多条评论不会显示在同一天内评论的话可能不是最新的
+        这个应该和数据库有关系
+
+        这条语句的意思是：找出每个用户评分最高的物品，但评分相同的话，就会按最时间排序，即一个用户最新的最高评分的商品，
+        在外层后，对用户而言又会按时间对用户的先后顺序排序
+
+        用**的意思是偷懒了哈哈
+-->
 <!--    **** -->
-    <select id="querygg" resultType="map">
-     select m.gname,
-       m.recommend,
-       m.img,
-       b.bname,
-       b.bid,
-       s.*
-from (select *
-      from (select *, row_number() over (partition by useraccount order by createtime,rate desc) "oid"
-            from commentgood) u
-      group by useraccount) s,
-     milk m,
-     brand b
-where s.gid = m.gid
-  and b.bid = m.bid
+    <select id="querygg" parameterType="int" resultType="map">
+select *
+from (select m.img,m.gcid,m.recommend, c.*, row_number() over (partition by useraccount order by rate desc,c.createtime desc ) 'line'
+      from commentgood c,
+           milk m
+      where c.gid = m.gid
+        and m.gcid = #{gcid}) a
+group by useraccount
+order by a.createtime desc
 limit 3
     </select>
 
     <!--    好评商品  删除通过 商品类别通过-->
-    <select id="goodmilk" resultType="app.vo.Milk">
+    <select id="goodmilk" parameterType="map" resultType="app.vo.Milk">
       select q.*, b.bname
 from (select m.age,
              m.recommend,
@@ -83,7 +88,7 @@ from (select m.age,
       from milk m
                left join (select * from (select gid, rate, count(rate) from goodsrate group by gid,rate order by count(rate) desc ) u group by gid) u
                          on m.gid = u.gid
-      where m.tag = 1 and m.gcid = 1) q,
+      where m.tag = 1 and m.gcid = #{gid}) q,
      brand b
 where q.bid = b.bid
   and b.tag = 1
@@ -92,19 +97,19 @@ limit 8;
     </select>
 
     <!--    新品商品 删除通过 商品类别通过-->
-    <select id="latestgood" resultType="app.vo.Milk">
-        select * from milk where gcid = 1 and tag = 1 order by createtime desc limit 8;
+    <select id="latestgood" parameterType="int" resultType="app.vo.Milk">
+        select * from milk where gcid = #{gcid} and tag = 1 order by createtime desc limit 8;
     </select>
 
     <!--    热销商品 删除通过 商品类别通过-->
-    <select id="mostgood" resultType="app.vo.Milk">
+    <select id="mostgood" parameterType="int" resultType="app.vo.Milk">
         select b.bid, b.bname, m.*, count(r.useraccount)
         from recordgood r,
              brand b,
              milk m
         where m.bid = b.bid
           and r.gid = m.gid
-          and m.gcid = 1
+          and m.gcid = #{gcid}
           and m.tag = 1
         group by r.gid
         order by count(useraccount) desc
@@ -186,4 +191,10 @@ limit 8;
     <insert id="rategood" parameterType="app.vo.CommentGood">
         insert into goodsrate(gid,rate) value (#{gid},#{rate})
     </insert>
+
+
+
+<!--                       77777777                        纸尿裤                77777777                                     -->
+
+
 </mapper>

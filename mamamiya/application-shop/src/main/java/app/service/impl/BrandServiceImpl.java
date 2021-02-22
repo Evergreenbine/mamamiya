@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BrandServiceImpl implements app.service.BrandService {
@@ -23,12 +24,7 @@ public class BrandServiceImpl implements app.service.BrandService {
     }
 
     @Override
-    public List<Brand> listWithLimit(int limit, HttpServletRequest req) {
-        String gcid = req.getParameter("gcid");
-        int i = Integer.parseInt(gcid);
-        HashMap<Object, Object> map = new HashMap<>();
-        map.put("gcid",gcid);
-        map.put("limit",limit);
+    public List<Brand> listWithLimit(Map map) {
         List<Brand> listbrand = genericDao.selectList(statement+"list",map);
         return listbrand;
     }
@@ -47,5 +43,21 @@ public class BrandServiceImpl implements app.service.BrandService {
     @Override
     public boolean updateOrDeleteOne(Integer bid) {
         return false;
+    }
+
+//    销量最好的品牌
+    @Override
+    public Map sellGoodBrand(Integer gcid) {
+        HashMap<Object, Object> map = new HashMap<>(2);
+        try {
+            List<Brand> brands = genericDao.selectList(statement + "sellgoodbrand", gcid);
+            map.put("code",1);
+            map.put("result",brands);
+        } catch (Exception e) {
+            map.put("code",0);
+            System.out.println("查询销量最好的品牌出错");
+            e.printStackTrace();
+        }
+        return map;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,13 @@ public class BrandController {
 
     @ResponseBody
     @GetMapping("/api/brand/{limit}")
-    public ResponceResult<Brand>  listAll(@PathVariable("limit") Integer limit){
+    public ResponceResult<Brand>  listAll(@PathVariable("limit") Integer limit, HttpServletRequest req){
         System.out.println(limit);
         ResponceResult<Brand> result ;
         try{
             List<Brand> list;
             if (0 != limit){
-              list = brandService.listWithLimit(limit);
+              list = brandService.listWithLimit(limit,req);
             }else {
               list = brandService.list();
             }
@@ -41,6 +42,7 @@ public class BrandController {
         return result;
     }
 
+//    这个是会划分26个字母的
     @GetMapping("/api/brand/all")
     @ResponseBody
     public ResponceResult list(){

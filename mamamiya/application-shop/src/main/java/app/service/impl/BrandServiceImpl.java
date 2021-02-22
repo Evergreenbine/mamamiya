@@ -5,6 +5,8 @@ import app.vo.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -21,8 +23,13 @@ public class BrandServiceImpl implements app.service.BrandService {
     }
 
     @Override
-    public List<Brand> listWithLimit(int limit) {
-        List<Brand> listbrand = genericDao.selectList(statement+"list",limit);
+    public List<Brand> listWithLimit(int limit, HttpServletRequest req) {
+        String gcid = req.getParameter("gcid");
+        int i = Integer.parseInt(gcid);
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("gcid",gcid);
+        map.put("limit",limit);
+        List<Brand> listbrand = genericDao.selectList(statement+"list",map);
         return listbrand;
     }
 

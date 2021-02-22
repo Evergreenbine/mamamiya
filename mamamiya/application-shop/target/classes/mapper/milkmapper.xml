@@ -4,27 +4,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.vo.Milk">
 
-<!--    条件查询带rate语句，不过不用了，要改动的地方太多
-select m.gid,gname,if(u.rate != null,0,u.rate) rate from milk m left join (select gid,rate,count(rate) from  goodsrate group by rate limit 1) u
-on m.gid = u.gid
--->
-<!--    查询商品的分类-->
+    <!--    条件查询带rate语句，不过不用了，要改动的地方太多
+    select m.gid,gname,if(u.rate != null,0,u.rate) rate from milk m left join (select gid,rate,count(rate) from  goodsrate group by rate limit 1) u
+    on m.gid = u.gid
+    -->
+    <!--    查询商品的分类-->
     <select id="selectGoodCata" resultType="map">
         select * from gcata
     </select>
 
-<!--根据gid查询特定的商品-->
+    <!--根据gid查询特定的商品 考虑商品类别通过-->
     <select id="querygood" parameterType="int" resultType="app.vo.Milk">
-        select * from milk where gid = #{gid}
+        select * from milk where gid = #{gid} and tag = 1 and gcid = 1
     </select>
-
+<!--    考虑商品类别通过-->
     <select id="list" parameterType="map" resultType="app.vo.Milk">
-        select * from milk m,brand b where m.bid = b.bid and  m.tag = 1 and b.tag = 1
---        根据品牌查询
+        select * from milk m,brand b where m.bid = b.bid and m.tag = 1 and b.tag = 1 and gcid = 1
+        -- 根据品牌查询
         <if test="bid != null">
             and b.bid = #{bid}
         </if>
---         查询具体商品
+        -- 查询具体商品
         <if test="gid != null and gid != ''">
             and m.gid = #{gid}
         </if>
@@ -42,18 +42,34 @@ on m.gid = u.gid
         </if>
     </select>
 
-<!--查询商品评分-->
+    <!--查询商品评分-->
+    <!--   这里要想一下是否考虑商品删除-->
+<!--    **** -->
     <select id="queryrate" parameterType="int" resultType="map">
        select gid,rate,count(rate) from  goodsrate where gid = #{gid} group by rate order by count(rate) desc limit 1
     </select>
 
-<!--找出每个用户中按时间和评分排序的 评论-->
+    <!--找出每个用户中按时间和评分排序的 评论 -->
+<!--    **** -->
     <select id="querygg" resultType="map">
-       select m.gname,m.recommend,m.img,b.bname,b.bid,s.* from (select * from (select *,row_number() over (partition by useraccount order by createtime,rate desc) "oid"from commentgood) u group by useraccount) s,milk m,brand b
-where s.gid = m.gid and b.bid = m.bid limit 3
+     select m.gname,
+       m.recommend,
+       m.img,
+       b.bname,
+       b.bid,
+       s.*
+from (select *
+      from (select *, row_number() over (partition by useraccount order by createtime,rate desc) "oid"
+            from commentgood) u
+      group by useraccount) s,
+     milk m,
+     brand b
+where s.gid = m.gid
+  and b.bid = m.bid
+limit 3
     </select>
 
-<!--    好评商品-->
+    <!--    好评商品  删除通过 商品类别通过-->
     <select id="goodmilk" resultType="app.vo.Milk">
       select q.*, b.bname
 from (select m.age,
@@ -75,54 +91,64 @@ order by q.rate desc
 limit 8;
     </select>
 
-<!--    新品商品-->
+    <!--    新品商品 删除通过 商品类别通过-->
     <select id="latestgood" resultType="app.vo.Milk">
-        select * from milk order by createtime desc limit 8;
+        select * from milk where gcid = 1 and tag = 1 order by createtime desc limit 8;
     </select>
 
-<!--    热销商品-->
+    <!--    热销商品 删除通过 商品类别通过-->
     <select id="mostgood" resultType="app.vo.Milk">
-       select b.bid,b.bname,m.*,count(r.useraccount) from recordgood r, brand b,milk m where m.bid = b.bid and r.gid =m.gid group by r.gid order by count(useraccount) desc limit 8
+        select b.bid, b.bname, m.*, count(r.useraccount)
+        from recordgood r,
+             brand b,
+             milk m
+        where m.bid = b.bid
+          and r.gid = m.gid
+          and m.gcid = 1
+          and m.tag = 1
+        group by r.gid
+        order by count(useraccount) desc
+        limit 8
     </select>
 
-<!--    根据gid查询具体的商品-->
+    <!--    根据gid查询具体的商品 废弃-->
     <select id="queryid" parameterType="int" resultType="app.vo.Milk">
         select * from where gid = #{gid}
     </select>
 
-<!--    根据gid查询商品的评分-->
+    <!--    根据gid查询商品的评分 不考虑商品是否删除-->
     <select id="queryreate" parameterType="int" resultType="int">
          select gid,rate,count(rate) from  goodsrate where gid = #{gid} group by rate order by count(rate) desc limit 1
     </select>
 
-<!--    根据商品结账******-->
-<!--  1.查询账户余额-->
+    <!--    根据商品结账******-->
+    <!--  1.查询账户余额-->
     <select id="querymonney" parameterType="int" resultType="double">
         select monney from user where useraccount = #{useraccount} and tag = 1
     </select>
-<!--    查库存-->
+    <!--    查库存-->
     <select id="querystore" parameterType="int" resultType="int">
-        select store from milk where gid = #{gid}
+        select store from milk where gid = #{gid} and tag = 1
     </select>
-<!--  2.减金额，减库存-->
-    <update id="purchase" parameterType="map" >
-        update milk set store = store - #{count} where  gid = #{gid}
+    <!--  2.减金额，减库存-->
+    <update id="purchase" parameterType="map">
+        update milk set store = store - #{count} where  gid = #{gid} and tag = 1
     </update>
     <update id="demoney" parameterType="map">
-        update user set monney = monney - #{monney} where useraccount = #{useraccount}
+        update user set monney = monney - #{monney} where useraccount = #{useraccount} and tag = 1
     </update>
-<!--    插入订单表-->
-<insert id="createorder" parameterType="map">
+    <!--    插入订单表-->
+    <insert id="createorder" parameterType="map">
     insert into shoporder(orderid, otime) value (#{orderid},#{otime})
 </insert>
-<!--    插入购买记录表-->
+    <!--    插入购买记录表-->
     <insert id="newpurchaserecord" parameterType="map">
         insert into recordgood(gid, useraccount,orderid)
         value (#{gid},#{useraccount},#{orderid})
     </insert>
-<!--    根据商品结账 /////-->
+    <!--    根据商品结账 /////-->
 
-<!--查询我的购买记录-->
+    <!--查询我的购买记录 不考虑商品是否删除-->
     <select id="queryrecord" parameterType="int" resultType="java.util.Map">
        select
             b.bname,b.bid,m.gname,m.img, r.*,count(r.gid) "nums"
@@ -133,30 +159,30 @@ limit 8;
         useraccount = #{useraccont} group by orderid, r.gid;
     </select>
 
-<!--    根据用户id查询购买订单的总数-->
+    <!--    根据用户id查询购买订单的总数-->
     <select id="querytotal" parameterType="int" resultType="int">
         select count(1) from (select *  from recordgood r where r.useraccount = #{useraccount} group by orderid, r.gid) u
     </select>
 
-<!--   根据gid 查询所有商品评论-->
+    <!--   根据gid 查询所有商品评论 不考虑商品是否删除-->
     <select id="querycomment" parameterType="int" resultType="java.util.Map">
         select * from commentgood g,user u where g.useraccount = u.useraccount
-         <if test="gid != null">
-             and gid = #{gid}
-         </if>
+        <if test="gid != null">
+            and gid = #{gid}
+        </if>
 
     </select>
 
 
-<!--    特别说明一下，goodsrate 和 commentgood 的评分数据其实是同步的，因为只有这么一个地方插入，新建多一个goodsrate
-是为了统计，因为有些模块统计评分时是不需要那么多信息的，即不用关心是谁评论的，但有些事需要
--->
-<!--    评价商品-->
+    <!--    特别说明一下，goodsrate 和 commentgood 的评分数据其实是同步的，因为只有这么一个地方插入，新建多一个goodsrate
+    是为了统计，因为有些模块统计评分时是不需要那么多信息的，即不用关心是谁评论的，但有些事需要
+    -->
+    <!--    评价商品-->
     <insert id="commentgood" parameterType="app.vo.CommentGood">
         insert into commentgood( gid, useraccount, content, createtime,rate)
         value (#{gid},#{useraccount},#{content},#{createtime},#{rate})
     </insert>
-<!--    商品评分-->
+    <!--    商品评分-->
     <insert id="rategood" parameterType="app.vo.CommentGood">
         insert into goodsrate(gid,rate) value (#{gid},#{rate})
     </insert>

@@ -4,6 +4,48 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.vo.Admin">
 
+<!--查询商品分类-->
+    <select id="selectGoodCata" resultType="map">
+        select * from gcata
+    </select>
+<!--    更新品牌-->
+    <update id="updateBrand" parameterType="app.vo.shop.Brand" >
+        update brand
+        <set>
+            <if test="bname != null">
+                bname = #{bname}
+            </if>
+            <if test="img != null">
+                img = #{img}
+            </if>
+            <if test="gcid != null">
+                gcid = #{gcid}
+            </if>
+            <if test="tag != null">
+                tag = #{tag}
+            </if>
+        </set>
+        where bid = #{bid}
+    </update>
+<!--    新建品牌-->
+    <insert id="insertbrand" parameterType="app.vo.shop.Brand">
+        insert into brand(bname, img, gcid) value (#{bname},#{img},#{gcid})
+    </insert>
+<!--    查找所有品牌-->
+    <select id="listbrand" parameterType="app.vo.shop.Brand" resultType="app.vo.shop.Brand">
+        select * from brand where tag = 1
+        <if test="gcid != null">
+            gcid = #{gcid}
+        </if>
+    </select>
+<!--   查找总数-->
+    <select id="brandtotal" parameterType="int" resultType="int">
+        select count(1) from brand where tag = 1
+        <if test="gcid != null">
+            gcid = #{gcid}
+        </if>
+    </select>
+
 <!--    商品管理员为1-->
     <select id="findadmin" parameterType="map" resultType="app.vo.Admin">
         select * from role where tag =1 and name = #{adminname} and password = #{password} and

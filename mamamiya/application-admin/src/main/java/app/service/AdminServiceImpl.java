@@ -2,13 +2,17 @@ package app.service;
 
 import app.generic.GenericDao;
 import app.vo.Admin;
+import app.vo.shop.Brand;
 import app.vo.shop.Milk;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -92,6 +96,68 @@ public class AdminServiceImpl implements AdminService{
              map.put("url","/");
              System.out.println("管理员登录出错了");
          }
+        return map;
+    }
+
+//    查询上品牌的分类
+    public Map queryBrandCate(){
+        HashMap<Object, Object> map = new HashMap<>();
+        try {
+            List<Map> brands = genericDao.selectList(statement + "selectGoodCata", null);
+            map.put("result",brands);
+            map.put("code",1);
+        } catch (Exception e) {
+            map.put("code",0);
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    @Override
+    public Integer saveBrand(Brand brand) {
+        int i = 1;
+        try {
+            if (brand.getTag() == null) {
+                 genericDao.create(statement + "insertbrand", brand);
+            }else {
+                genericDao.updateOrDelete(statement + "updateBrand", brand);
+            }
+        } catch (Exception e) {
+            i = 0;
+            System.out.println("更新品牌或创建品牌出错");
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+
+    public Map listBrand(Integer curPage,Integer pageSize,Map params){
+        params.put("ts","brandtotal");
+        params.put("ls","listbrand");
+        return PageHelper(curPage,pageSize,params);
+    }
+
+
+    public <T> Map PageHelper(Integer curPage,Integer pageSize,Map<String,Object> params){
+        System.out.println(params);
+        HashMap<Object, Object> map = new HashMap<>();
+//      起始页
+        int start = pageSize*(curPage - 1);
+        RowBounds rowBounds = new RowBounds(start,pageSize);
+
+
+        String ts = (String) params.get("ts");
+        String ls = (String) params.get("ls");
+//      查询总数
+        Integer total = genericDao.selectOne(statement+ts, params);
+
+//      查询符合条件的记录
+        List<T> objects = genericDao.selectList(statement+ls, params, rowBounds);
+
+        map.put("data",objects);
+        map.put("total",total);
+        map.put("code",1);
+
         return map;
     }
 }

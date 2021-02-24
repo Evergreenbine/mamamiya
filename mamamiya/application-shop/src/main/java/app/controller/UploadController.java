@@ -1,21 +1,32 @@
 package app.controller;
 
 import app.utils.FileUtils;
+import app.vo.Brand;
+import app.vo.ExportPlane;
+import org.apache.poi.hssf.usermodel.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class UploadController {
     @Value("${shopimgpath}")
     private String dirPath ;
+
+    @Autowired
+    private ExportPlane exportPlane;
 
     @PostMapping("/api/upload")
     @ResponseBody
@@ -35,4 +46,9 @@ public class UploadController {
         }
         return res;
     }
+
+
+
+
+
 }

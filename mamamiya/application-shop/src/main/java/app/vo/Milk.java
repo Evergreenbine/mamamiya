@@ -1,6 +1,5 @@
 package app.vo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
@@ -32,5 +31,9 @@ public class Milk extends Goods{
 
     public Milk(Integer gid, double price, Integer count) {
         super(gid, price, count);
+    }
+
+    public void setTag(Integer tag){
+        super.setTag(tag);
     }
 }

@@ -24,6 +24,7 @@ public class Post {
     private Integer useraccount;
     //圈子id
     private Integer cid;
+    private Integer replynums;
 
     //user的字段，懒得写resultmap了
     private Integer userid;

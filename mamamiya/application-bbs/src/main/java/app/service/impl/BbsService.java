@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface BbsService {
+
+    List<Post> mostreply();
+
     List<Circle> listCircle();
 
     Integer savePost(Post post);

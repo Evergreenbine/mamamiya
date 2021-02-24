@@ -30,4 +30,56 @@ where r.gid = m.gid
 group by r.gid
 order by nums desc;
     </select>
+
+
+
+    <!--    根据bid查询所有商品-->
+    <select id="querybybid" resultType="app.vo.Milk">
+
+
+
+    </select>
+
+<!--    数据统计方面-->
+<!--    1.查询每个品牌的商品数量-->
+    <select id="querygoodsnumsofbrand" resultType="map" parameterType="int">
+        select
+        b.bname,
+        count(m.gid) 'nums'
+        from
+            brand b
+        left join milk m on b.bid = m.bid where 1=1
+         <if test="gicd != null">
+           and  m.gcid = #{gcid}
+         </if>
+         group by b.bid
+    </select>
+<!--    2.热销商品-->
+
+    <select id="querysellgood" parameterType="map" resultType="map">
+        select
+       m.gname "name",a.nums "value"
+      from
+     (select *, count(useraccount) 'nums' from recordgood group by gid order by count(useraccount)
+     desc limit 10) a left join milk m on a.gid = m.gid and m.tag = 1;
+    </select>
+
+
+    <!--  查询商品销量  -->
+    <select id="querygoodnums" parameterType="int" resultType="map">
+            select m.gname "name",if(nums is null,0,nums) "value"
+            from milk m
+            left join
+            (select r.gid, count(useraccount) "nums" from recordgood r group by gid) a
+            on m.gid = a.gid and m.tag = 1 where 1=1
+            <if test="gcid != null">
+                and m.gcid = #{gcid}
+            </if>
+    </select>
+
+<!--    好评前6的商品-->
+    <select id="orderrate" parameterType="map" resultType="map">
+        select m.gname "name",sum(nums) "value" from (select *,count(gid) 'nums' from goodsrate where rate >= 4 group by gid,rate) a,milk m
+where a.gid = m.gid and m.tag = 1 group by a.gid order by value desc limit 6
+    </select>
 </mapper>

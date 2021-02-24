@@ -12,7 +12,7 @@ public interface MilkService {
 //    查询商品分类
     List<Map> queryGoodCata();
 
-    List<Milk> list();
+    List<Map> list();
 //    好评商品
     List<Milk> goodmilklist(Integer gcid);
 //    带条件查询
@@ -37,4 +37,6 @@ public interface MilkService {
 
 //    用户最新好评
     Map lastestGoodRate(Integer gcid);
+
+
 }

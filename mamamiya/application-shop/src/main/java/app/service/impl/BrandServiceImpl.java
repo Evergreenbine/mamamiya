@@ -60,4 +60,46 @@ public class BrandServiceImpl implements app.service.BrandService {
         }
         return map;
     }
+
+//    每个品牌的商品数量
+    @Override
+    public List<Map> countGoodNumsOfBrand(HttpServletRequest req) {
+        Integer gcid = null;
+        String gcid2 = req.getParameter("gcid");
+        if (null != gcid2 && "".equals(gcid2)) {
+             gcid = Integer.parseInt(gcid2);
+        }
+        List<Map> count = genericDao.selectList(statement + "querygoodsnumsofbrand", gcid);
+        return count;
+    }
+
+//    热销商品
+    public List<Map> sellGoodGoods(HttpServletRequest req) {
+         Integer gcid = null;
+         String gcid2 = req.getParameter("gcid");
+         if (null != gcid2 && "".equals(gcid2)) {
+             gcid = Integer.parseInt(gcid2);
+         }
+         List<Map> count = genericDao.selectList(statement + "querysellgood", null);
+         return count;
+    }
+
+//
+
+    @Override
+    public List<Map> goodofnums(HttpServletRequest req) {
+        Integer gcid = null;
+        String gcid2 = req.getParameter("gcid");
+        if (null != gcid2 && "".equals(gcid2)) {
+            gcid = Integer.parseInt(gcid2);
+        }
+        List<Map> objects = genericDao.selectList(statement + "querygoodnums", null);
+        return objects;
+    }
+
+    @Override
+    public List<Map> orderrate() {
+
+        return genericDao.selectList(statement+"orderrate",null);
+    }
 }

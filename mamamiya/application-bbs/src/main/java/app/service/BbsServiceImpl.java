@@ -21,6 +21,13 @@ public class BbsServiceImpl implements BbsService {
     private final static String statement = Circle.class.getName() + ".";
 //    private final static String postStatement = Post.class.getName()+".";
 
+
+    @Override
+    public List<Post> mostreply() {
+        List<Object> objects = genericDao.selectList(statement + "mostpost", null);
+        return null;
+    }
+
     @Override
     public List<Circle> listCircle() {
         List<Circle> circleList = genericDao.selectList(statement + "listCircle", null);

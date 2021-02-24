@@ -4,6 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.vo.Milk">
 
+<!--    -->
+
+
+
+
+
     <!--    条件查询带rate语句，不过不用了，要改动的地方太多
     select m.gid,gname,if(u.rate != null,0,u.rate) rate from milk m left join (select gid,rate,count(rate) from  goodsrate group by rate limit 1) u
     on m.gid = u.gid
@@ -16,6 +22,11 @@
     <!--根据gid查询特定的商品 考虑商品类别通过-->
     <select id="querygood" parameterType="int" resultType="app.vo.Milk">
         select * from milk where gid = #{gid} and tag = 1
+    </select>
+
+<!--    查询商品 为导出文件特制-->
+    <select id="listtwotwo" parameterType="map" resultType="map">
+          select * from milk m where m.tag = 1
     </select>
 <!--    考虑商品类别通过 管理端和服务端公用的-->
     <select id="list" parameterType="map" resultType="app.vo.Milk">

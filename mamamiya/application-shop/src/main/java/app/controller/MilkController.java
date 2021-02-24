@@ -37,10 +37,10 @@ public class MilkController {
 
     @GetMapping("/api/milks")
     @ResponseBody
-    public ResponceResult<List<Milk>> listMilk(){
+    public ResponceResult<List<Map>> listMilk(){
         ResponceResult result = null;
         try {
-            List<Milk> list = milkService.list();
+            List<Map> list = milkService.list();
             result = ResponceResult.successMessage(HttpStatus.OK,"处理成功",list);
         }catch (Exception e){
             result = ResponceResult.successMessage(HttpStatus.OK,"处理失败",null);
@@ -187,4 +187,7 @@ public class MilkController {
     public Map lastestGoodRate(@PathVariable("gcid") Integer gcid){
         return milkService.lastestGoodRate(gcid);
     }
+
+
+
 }

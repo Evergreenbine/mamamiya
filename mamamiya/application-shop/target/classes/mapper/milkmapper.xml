@@ -17,6 +17,11 @@
     <select id="querygood" parameterType="int" resultType="app.vo.Milk">
         select * from milk where gid = #{gid} and tag = 1
     </select>
+
+<!--    查询商品 为导出文件特制-->
+    <select id="listtwotwo" parameterType="map" resultType="map">
+          select * from milk m where m.tag = 1
+    </select>
 <!--    考虑商品类别通过 管理端和服务端公用的-->
     <select id="list" parameterType="map" resultType="app.vo.Milk">
         select * from milk m,brand b where m.bid = b.bid and m.tag = 1 and b.tag = 1

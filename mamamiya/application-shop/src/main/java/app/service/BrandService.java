@@ -24,4 +24,17 @@ public interface BrandService {
 
 
 
+
+
+//    查询每个品牌的数量
+    List<Map> countGoodNumsOfBrand(HttpServletRequest req);
+
+//
+    List<Map> sellGoodGoods(HttpServletRequest req);
+// 商品的销售量
+    List<Map> goodofnums(HttpServletRequest req);
+
+
+    List<Map>  orderrate();
+
 }

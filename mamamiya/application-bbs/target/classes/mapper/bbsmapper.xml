@@ -3,6 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.vo.Circle">
+<!--    最多回复-->
+    <select id="mostpost" resultType="app.vo.Post">
+        select r.pid,p.title,count(r.useraccount) "replynums" from replypost r,post p where r.pid = p.pid group by pid limit 10
+    </select>
+
     <!--    新建圈子-->
     <insert id="createCircle" parameterType="app.vo.Circle">
         insert into circle(cname, introduce,avator)

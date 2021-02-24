@@ -23,6 +23,12 @@ public class BbsController {
     @Autowired
     private BbsService bbsService;
 
+//    查询最多回复的贴子
+    public List<Post> mostreply(){
+
+        return null;
+    }
+
 //   查询所有圈子
     @GetMapping("/api/circle")
     @ResponseBody

@@ -63,9 +63,9 @@ public class MilkServiceImpl implements MilkService {
 
 //    废弃
     @Override
-    public List<Milk> list() {
+    public List<Map> list() {
 
-        List<Milk> milks = genericDao.selectList(statement+"list",null);
+        List<Map> milks = genericDao.selectList(statement+"listtwotwo",null);
         System.out.println(milks);
         return milks;
     }
@@ -81,10 +81,7 @@ public class MilkServiceImpl implements MilkService {
 //    带条件查询
     @Override
     public List<Milk> list(Map m) {
-//        int pageIndex=1, pageSize=10;
-//        int start = pageSize * (pageIndex - 1);
-//        int end = pageSize;
-//        RowBounds rowBounds = new RowBounds(start,end);
+//
         List<Milk> milks = null;
         try {
             milks = genericDao.selectList(statement + "list", m);
@@ -93,6 +90,7 @@ public class MilkServiceImpl implements MilkService {
             for (Milk milk : milks) {
 //                这样很傻逼，查那么多次数据库，是要搞爆数据库的哈哈，但是为了省事不想写很复杂的sql
                 Map object = genericDao.selectOne(statement + "queryrate", milk.getGid());
+                System.out.println(object);
                 milk.setRate((Integer) object.get("rate"));
             }
 

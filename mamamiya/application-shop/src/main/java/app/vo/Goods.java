@@ -30,6 +30,7 @@ public class Goods extends Brand {
 
         private Integer qcid;
 
+        private Integer Tag;
 
         public Goods() {
         }

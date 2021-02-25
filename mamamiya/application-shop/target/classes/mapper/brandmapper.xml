@@ -82,4 +82,6 @@ order by nums desc;
         select m.gname "name",sum(nums) "value" from (select *,count(gid) 'nums' from goodsrate where rate >= 4 group by gid,rate) a,milk m
 where a.gid = m.gid and m.tag = 1 group by a.gid order by value desc limit 6
     </select>
+
+<!--    导出销售记录-->
 </mapper>

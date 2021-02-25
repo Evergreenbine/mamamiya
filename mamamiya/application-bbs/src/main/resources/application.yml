@@ -25,6 +25,8 @@ spring:
 #    static-locations: classpath:/static
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #shopimgpath: G:\SchoolProject\mamamiya\mamamiya\application-shop\src\main\resources\static\
 bbsimgpath: G:\SchoolProject\mamamiya\mamamiya\application-bbs\src\main\resources\static

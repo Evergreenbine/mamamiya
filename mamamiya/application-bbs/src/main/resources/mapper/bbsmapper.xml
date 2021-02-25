@@ -77,6 +77,17 @@
 
 
 <!--    知识的-->
+<!--    查询知识的所有分类-->
+    <select id="querykonwcata" resultType="map">
+        select * from kcata;
+    </select>
+<!--    新建知识-->
+    <insert id="createkonw" parameterType="app.vo.KnowlegeVo">
+        insert into
+            konwledge( title, content, createtime, price, isfree, cata, img)
+        value
+            (#{title},#{content},#{createtime},#{price},#{isfree},#{cata},#{img})
+    </insert>
 <!--    查询指定id-->
     <select id="queryKonwById" parameterType="int" resultType="app.vo.KnowlegeVo">
         select * from konwledge
@@ -85,7 +96,33 @@
 
 <!--    根据分类查询所有知识-->
     <select id="querykonw" resultType="app.vo.KnowlegeVo">
-        select * from konwledge where cata = #{cid}
+        select * from konwledge where 1=1
+        <if test="cata != null">
+            and cata = #{cid}
+        </if>
+    </select>
+<!--    查询所有知识总数-->
+    <select id="querykonwtotal" resultType="int">
+        select count(1) "count" from konwledge where 1=1
+        <if test="cata != null">
+            and cata = #{cid}
+        </if>
+    </select>
+
+<!--    插入浏览表-->
+    <insert id="lookup" parameterType="map">
+        insert into lookup(kid,looktime) value (#{kid},#{looktime})
+    </insert>
+
+<!--    查询有用表-->
+    <insert id="thinkuse" parameterType="map" >
+        insert into kuse(kid,useraccount) value(#{kid},#{useraccount})
+    </insert>
+    <select id="numsofuse"  parameterType="int" resultType="int">
+        select count(1) "nums" from kuse where kid= #{kid}
+    </select>
+    <select id="whothinkuser" parameterType="map" resultType="int">
+        select count(*) from kuse where useraccount = #{useraccount} and kid = #{kid}
     </select>
 <!--    查看该用户对应的知识是否免费-->
     <select id="queryIsFree" parameterType="map" resultType="map">
@@ -95,7 +132,7 @@
 
 <!--    知识付费-->
     <insert id="purchasekonw" parameterType="map" >
-        insert into konwuser(kid, userid) value (#{kid},#{useraccount})
+        insert into konwuser(kid, userid,buytime) value (#{kid},#{useraccount},#{buytime})
     </insert>
     <update id="demoney" parameterType="map">
         update user set monney = #{monney} where useraccount = #{useraccount}
@@ -173,6 +210,39 @@
 <!--    查询所有资讯-->
     <select id="queryallnew" parameterType="map" resultType="app.vo.News">
         select infoid,title,content,inf.icid,infc.tagname from info inf,infocata infc where inf.icid = infc.icid group by inf.icid,inf.infoid
+    </select>
 
+
+
+<!--    查询购买数量最多的知识-->
+    <select id="goodusekonw" parameterType="map" resultType="map">
+       select kid "name",count(userid) "value" from konwuser where 1=1
+        <if test="stime != null and  etime != null">
+            and buytime between #{stime} and #{etime}
+        </if>
+        group by kid  order by count(userid) desc limit 10
+    </select>
+
+<!--    浏览知识前十-->
+    <select id="lookkonw" parameterType="map" resultType="map">
+       select kid "name",count(kid) "value" from lookup
+        where 1=1
+        <if test="stime != null and etime != null">
+          and  looktime between #{stime} and #{etime}
+        </if>
+        group by kid order by value desc limit 10
+    </select>
+
+    <select id="mostuse" resultType="map">
+        select kid name,count(useraccount) value from kuse group by kid;
+    </select>
+
+    <select id="everylook" resultType="map">
+        select k.kid,count(l.kid) nums from konwledge k left join lookup l on k.kid = l.kid
+        where 1=1
+        <if test="stime != null and etime != null">
+          and   l.looktime between  stime  and etime
+        </if>
+        group by k.kid order by nums desc ;
     </select>
 </mapper>

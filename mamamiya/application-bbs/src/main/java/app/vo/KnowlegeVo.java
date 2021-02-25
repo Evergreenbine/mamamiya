@@ -15,4 +15,5 @@ public class KnowlegeVo {
     private Double price;
     private Integer isfree;
     private Integer cata;
+    private String img;
 }

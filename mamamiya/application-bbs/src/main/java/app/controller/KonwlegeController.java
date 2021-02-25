@@ -2,12 +2,15 @@ package app.controller;
 
 import app.service.KonwlegeService;
 import app.vo.*;
+import cn.hutool.core.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,26 @@ public class KonwlegeController {
     @Autowired
     private KonwlegeService konwlegeService;
 
+
+
+//    查询知识分类
+    @GetMapping("/api/konwcata")
+    @ResponseBody
+    public List<Map> getkonwcata(){
+
+        return konwlegeService.querykcata();
+    }
+//    创建知识
+    @PostMapping("/api/konwcreate")
+    @ResponseBody
+    public Integer createKonw(@RequestBody KnowlegeVo knowlegeVo){
+        return konwlegeService.createKonw(knowlegeVo);
+    }
+    @GetMapping("/api/lookup/{kid}")
+    @ResponseBody
+    public Integer lookup(@PathVariable("kid") Integer kid){
+        return konwlegeService.lookup(kid);
+    }
 
     @GetMapping("/api/konw/{kid}")
     @ResponseBody
@@ -56,10 +79,12 @@ public class KonwlegeController {
         Integer u = Integer.parseInt(useraccount);
         String price = request.getParameter("price");
         Double p = Double.parseDouble(price);
+        Date date = new Date();
+        String buytime = DateUtil.format(date,"yyyy/MM/dd");
         map.put("kid",kid);
         map.put("useraccount",u);
         map.put("price",p);
-
+        map.put("buytime",buytime);
         return konwlegeService.purchase((HashMap) map);
     }
 
@@ -128,4 +153,117 @@ public class KonwlegeController {
         return konwlegeService.createReplyPost(replyPost);
 //        return konwlegeService.createReplyPost(replyPost);
     }
+
+
+    @GetMapping("/api/allkonws")
+    @ResponseBody
+    public Map listBrand(HttpServletRequest req){
+
+        HashMap<Object, Object> map = new HashMap<>();
+        Integer curPage = this.getParamater("curpage",req);
+        System.out.println("curpage是"+curPage);
+        map.put("curpage",curPage);
+        return konwlegeService.listKonw(curPage,5,map);
+
+//        return null;
+    }
+
+//    认为有用
+    @GetMapping("/api/thinkuse")
+    @ResponseBody
+    public Integer thinkuser(HttpServletRequest req){
+    int i = 1;
+
+    try {
+        HashMap<Object, Object> map = new HashMap<>(2);
+        Integer useraccount = this.getParamater("useraccount",req);
+        Integer kid = this.getParamater("kid",req);
+
+        map.put("useraccount",useraccount);
+        map.put("kid",kid);
+
+        konwlegeService.thinkuser(map);
+    } catch (Exception e) {
+        i = 0;
+        System.out.println("插入浏览表出错");
+        e.printStackTrace();
+    }
+    return i;
+}
+
+//   查询该知识是否认为有用
+    @GetMapping("/api/isuse")
+    @ResponseBody
+   public Map isuse(HttpServletRequest req) {
+
+
+        try {
+            Integer useraccount = this.getParamater("useraccount", req);
+            Integer kid = this.getParamater("kid", req);
+
+            HashMap<Object, Object> map = new HashMap<>(2);
+            map.put("useraccount", useraccount);
+            map.put("kid", kid);
+            Integer isuse = konwlegeService.isuse(map);
+//            System.out.println(isuse);
+            Integer countuse = konwlegeService.countuse(kid);
+            System.out.println(isuse);
+            map = new HashMap<>(2);
+            map.put("count", countuse);
+            if (isuse > 0 ) {
+                map.put("isuse", 1);
+            } else {
+                map.put("isuse", 0);
+            }
+            return map;
+        } catch (Exception e) {
+
+            System.out.println("查询有用出错");
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private Integer getParamater(String paramsName,HttpServletRequest req){
+        String parameter = req.getParameter(paramsName);
+        int i;
+        if (!StringUtils.isEmpty(parameter)) {
+            i =  Integer.parseInt(parameter);
+        }else {
+            throw new NullPointerException("参数为空");
+        }
+        return i;
+    }
+
+//    数据统计方面
+
+    @GetMapping("/api/mostbuy")
+    @ResponseBody
+    public List<Map> mostbuy(HttpServletRequest req){
+    String stime =req.getParameter("stime");
+    String etime =req.getParameter("etime");
+    return konwlegeService.mostbuy(stime,etime);
+    }
+    @GetMapping("/api/mostlook")
+    @ResponseBody
+    public List<Map> mostlook(HttpServletRequest req){
+    String stime =req.getParameter("stime");
+    String etime =req.getParameter("etime");
+    return konwlegeService.mostlook(stime,etime);
+    }
+
+    @GetMapping("/api/mostuse")
+    @ResponseBody
+    public List<Map> mostuse(){
+        return konwlegeService.mostuse();
+    }
+
+    @GetMapping("/api/everylook")
+    @ResponseBody
+    public Map everlook(){
+
+        return konwlegeService.everylook(null);
+    }
+
 }

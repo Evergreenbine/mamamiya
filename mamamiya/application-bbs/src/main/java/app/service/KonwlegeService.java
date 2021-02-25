@@ -8,9 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.zip.DataFormatException;
 
 @Service
@@ -27,7 +25,7 @@ public class KonwlegeService {
     }
 
     public List<KnowlegeVo> getKonwAll(Integer cata){
-//        genericDao.selectList("",1,new RowBounds());
+
         return genericDao.selectList(statement+"querykonw",cata);
     }
 
@@ -149,6 +147,147 @@ public class KonwlegeService {
         }
         return i;
     }
+
+//    查询知识分类
+    public List<Map>  querykcata(){
+        List<Map> map = genericDao.selectList(statement + "querykonwcata", null);
+        System.out.println(map);
+        return map;
+    }
+
+    public Integer createKonw(KnowlegeVo knowlegeVo){
+        int i = 1;
+        try {
+             genericDao.create(statement + "createkonw", knowlegeVo);
+        } catch (Exception e) {
+            i = 0;
+            System.out.println("创建知识出错");
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    public Map listKonw(Integer curPage,Integer pageSize,Map params){
+        params.put("ts","querykonwtotal");
+        params.put("ls","querykonw");
+        return PageHelper(curPage,pageSize,params);
+    }
+
+    public <T> Map PageHelper(Integer curPage,Integer pageSize,Map<String,Object> params){
+        System.out.println(params);
+        HashMap<Object, Object> map = new HashMap<>();
+//      起始页
+        int start = pageSize*(curPage - 1);
+        RowBounds rowBounds = new RowBounds(start,pageSize);
+
+
+        String ts = (String) params.get("ts");
+        String ls = (String) params.get("ls");
+//      查询总数
+        Integer total = genericDao.selectOne(statement+ts, params);
+
+//      查询符合条件的记录
+        List<T> objects = genericDao.selectList(statement+ls, params, rowBounds);
+
+        map.put("data",objects);
+        map.put("total",total);
+        map.put("code",1);
+
+        return map;
+    }
+
+//    插入浏览表
+    public Integer lookup(Integer kid){
+        int i = 1;
+        try {
+            String date = DateUtil.format(new Date(), "yyyy/MM/dd");
+            System.out.println(date);
+            HashMap<Object, Object> map = new HashMap<>(2);
+            map.put("kid",kid);
+            map.put("looktime",date);
+            genericDao.create(statement + "lookup", map);
+        } catch (Exception e) {
+            i = 0;
+            System.out.println("插入浏览表出错");
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+//    认为有用
+    public Integer thinkuser(Map map){
+    int i = 1;
+    try {
+        genericDao.create(statement + "thinkuse", map);
+    } catch (Exception e) {
+        i = 0;
+        System.out.println("插入浏览表出错");
+        e.printStackTrace();
+    }
+    return i;
+}
+// 查询某人认为这知识是否有用
+    public Integer isuse(Map map){
+
+        try {
+           return genericDao.selectOne(statement + "whothinkuser", map);
+        } catch (Exception e) {
+
+            System.out.println("查询有用出错");
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public Integer countuse(Integer kid){
+
+        try {
+           return genericDao.selectOne(statement + "numsofuse", kid);
+        } catch (Exception e) {
+
+            System.out.println("查询有用表出错");
+            e.printStackTrace();
+            return -1;
+        }
+
+    }
+
+//    数据统计方面
+    public List<Map> mostbuy(String stime,String etime){
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("stime",stime);
+        map.put("etime",etime);
+        return genericDao.selectList(statement+"goodusekonw",map);
+    }
+
+    public List<Map> mostlook(String stime,String etime){
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("stime",stime);
+        map.put("etime",etime);
+        return genericDao.selectList(statement+"lookkonw",map);
+    }
+
+    public List<Map> mostuse(){
+        return genericDao.selectList(statement+"mostuse",null);
+    }
+
+    public Map everylook(HashMap map){
+        List<Map> objects = genericDao.selectList(statement + "everylook", map);
+        ArrayList<Object> kid = new ArrayList<>();
+        ArrayList<Object> nums = new ArrayList<>();
+
+        for (Map object : objects) {
+            kid.add(object.get("kid"));
+            nums.add(object.get("nums"));
+        }
+
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put("kid",kid);
+        params.put("nums",nums);
+        return params;
+
+    };
+
 }
 
 

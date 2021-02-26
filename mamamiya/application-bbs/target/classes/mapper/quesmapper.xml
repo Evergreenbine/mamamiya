@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.vo.Question">
+<!--    问答-->
+<!--    回复我的-->
+    <select id="replyme" parameterType="int" resultType="map">
+     select
+  q.title,  r.*,u.useraccount,u.username,u.avator
+from
+    reply r,user u,question q
+where
+        ruid = #{useraccount}
+  and
+        r.useraccount = u.useraccount
+  and
+        r.qid = q.qid
+  and
+        r.tag = 1;
+    </select>
+    <select id="replymetotal" parameterType="int" resultType="int">
+         select
+           count(1) nums
+        from
+            reply r
+        where
+            ruid = #{useraccount}
+        and
+            r.tag = 1;
+    </select>
+
+
+<!--    我的回复-->
+    <select id="myreplyto" parameterType="int" resultType="map">
+       select
+    q.title,r.*,u.avator
+from
+    reply r, question q,user u
+where
+        r.qid = q.qid
+  and
+       r.ruid = u.useraccount
+  and
+        r.useraccount = #{useraccount}
+  and
+        r.tag = 1;
+    </select>
+    <select id="myreplytotal" parameterType="int" resultType="int">
+        select
+            count(1)
+        from
+            reply r, question q
+        where
+            r.qid = q.qid
+        and
+            r.useraccount = #{useraccount}
+        and
+            r.tag = 1;
+    </select>
+
+
+<!--    我的贴子-->
+    <select id="mypost" parameterType="int" resultType="map">
+        select pid,title,c.cname from post p , circle c where useraccount = #{useraccount} and p.cid = c.cid and c.tag = 1 and p.tag =1;
+    </select>
+    <select id="myposttotal" parameterType="int" resultType="int">
+        select
+            count(1)
+        from
+            post p , circle c
+        where
+            useraccount = #{useraccount}
+        and
+            p.cid = c.cid
+        and c.tag = 1 and p.tag =1;
+    </select>
+
+<!--    回复我的贴子-->
+    <select id="myreplypost" parameterType="int" resultType="map">
+        select r.*,p.title
+from replypost r,
+     post p,
+     circle c
+where r.pid = p.pid
+  and p.cid = c.cid
+  and r.ruid = #{useraccount}
+  and p.tag = 1
+  and r.tag = 1
+  and c.tag = 1;
+    </select>
+
+<!--    我关注的圈子-->
+    <select id="myfollow" parameterType="int" resultType="map">
+        select
+            c.cname,c.cid
+        from
+            follow f , circle c
+        where
+            f.cid = c.cid
+        and
+            c.tag = 1
+        and
+            f.useraccount = #{useraccount};
+    </select>
+
+<!--    采纳该答案-->
+    <update id="okd" parameterType="int">
+        update reply set `use` = 1 where rid = #{rid}
+    </update>
+</mapper>

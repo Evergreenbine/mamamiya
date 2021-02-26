@@ -214,6 +214,9 @@
 
 
 
+
+
+
 <!--    查询购买数量最多的知识-->
     <select id="goodusekonw" parameterType="map" resultType="map">
        select kid "name",count(userid) "value" from konwuser where 1=1
@@ -244,5 +247,20 @@
           and   l.looktime between  stime  and etime
         </if>
         group by k.kid order by nums desc ;
+    </select>
+
+<!--    问答-->
+<!--    回复我的-->
+    <select id="replyme" parameterType="int" resultType="map">
+        select
+            r.*,u.useraccount,u.username
+        from
+            reply r,user u
+        where
+            ruid = #{useraccount}
+        and
+            r.useraccount = u.useraccount
+        and
+            r.tag = 1;
     </select>
 </mapper>

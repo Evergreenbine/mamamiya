@@ -2,265 +2,110 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="app.vo.Circle">
-<!--    最多回复-->
-    <select id="mostpost" resultType="app.vo.Post">
-        select r.pid,p.title,count(r.useraccount) "replynums" from replypost r,post p where r.pid = p.pid group by pid limit 10
-    </select>
-
-    <!--    新建圈子-->
-    <insert id="createCircle" parameterType="app.vo.Circle">
-        insert into circle(cname, introduce,avator)
-        value(#{cname},#{introduce},#{avator})
-    </insert>
-
-<!--    删除圈子-->
-    <update id="deletecircle" parameterType="int">
-        update circle set tag = 0 where  cid = #{cid}
-    </update>
-<!--    删除贴子-->
-    <update id="deletepost" parameterType="map">
-        update post set tag = 0 where 1=1
-        <if test="cid != null">
-            and cid = #{cid}
-        </if>
-        <if test="pid !=null">
-            and pid = #{pid}
-        </if>
-    </update>
-<!-- 列出所有圈子-->
-    <select id="listCircle" parameterType="Integer" resultType="app.vo.Circle">
-        select * from circle where tag = 1
-        <if test="limit != null">
-            limit #{limit} ;
-        </if>
-
-    </select>
-
-<!--    创建贴子-->
-    <insert id="createPost" parameterType="app.vo.Post">
-        insert  into post(title, author, content, time, useraccount, cid) value (
-        #{title},#{author},#{content},#{time},#{useraccount},#{cid}
-        )
-    </insert>
-
-<!--    关注圈子-->
-    <insert id="focuscircle" parameterType="map">
-        insert into follow(cid, useraccount) value (#{cid},#{useraccount})
-    </insert>
-<!--    取消关注圈子-->
-    <delete id="nofollow" parameterType="map">
-        delete from follow where cid = #{cid} and useraccount = #{useraccount}
-    </delete>
-<!--    查询某人是否关注圈子-->
-    <select id="isfocuscircle" parameterType="map" resultType="int">
-        select count(*) from follow where cid = #{cid} and useraccount = #{useraccount}
-    </select>
-
-
-
-<!--    查询所有贴子-->
-    <select id="queryPost" parameterType="map" resultType="app.vo.Post">
-        select * from post p ,user u where p.useraccount = u.useraccount and p.cid = #{cid} and p.tag = 1
-        <if test="pid != null">
-             and p.pid = #{pid}
-        </if>
-        <if test="useraccount != null">
-            and u.useraccount = #{useraccount}
-        </if>
-    </select>
-
-<!--    查询圈子的关注人数-->
-    <select id="follonums" parameterType="int" resultType="app.vo.Circle">
-        select  count(*) as "follownums" from follow where cid = #{cid}
-    </select>
-
-
-<!--    知识的-->
-<!--    查询知识的所有分类-->
-    <select id="querykonwcata" resultType="map">
-        select * from kcata;
-    </select>
-<!--    新建知识-->
-    <insert id="createkonw" parameterType="app.vo.KnowlegeVo">
-        insert into
-            konwledge( title, content, createtime, price, isfree, cata, img)
-        value
-            (#{title},#{content},#{createtime},#{price},#{isfree},#{cata},#{img})
-    </insert>
-<!--    查询指定id-->
-    <select id="queryKonwById" parameterType="int" resultType="app.vo.KnowlegeVo">
-        select * from konwledge
-        where kid = #{kid};
-    </select>
-
-<!--    根据分类查询所有知识-->
-    <select id="querykonw" resultType="app.vo.KnowlegeVo">
-        select * from konwledge where 1=1
-        <if test="cata != null">
-            and cata = #{cid}
-        </if>
-    </select>
-<!--    查询所有知识总数-->
-    <select id="querykonwtotal" resultType="int">
-        select count(1) "count" from konwledge where 1=1
-        <if test="cata != null">
-            and cata = #{cid}
-        </if>
-    </select>
-
-<!--    插入浏览表-->
-    <insert id="lookup" parameterType="map">
-        insert into lookup(kid,looktime) value (#{kid},#{looktime})
-    </insert>
-
-<!--    查询有用表-->
-    <insert id="thinkuse" parameterType="map" >
-        insert into kuse(kid,useraccount) value(#{kid},#{useraccount})
-    </insert>
-    <select id="numsofuse"  parameterType="int" resultType="int">
-        select count(1) "nums" from kuse where kid= #{kid}
-    </select>
-    <select id="whothinkuser" parameterType="map" resultType="int">
-        select count(*) from kuse where useraccount = #{useraccount} and kid = #{kid}
-    </select>
-<!--    查看该用户对应的知识是否免费-->
-    <select id="queryIsFree" parameterType="map" resultType="map">
-        select * from konwuser where kid = #{kid} and userid = #{useraccount}
-    </select>
-
-
-<!--    知识付费-->
-    <insert id="purchasekonw" parameterType="map" >
-        insert into konwuser(kid, userid,buytime) value (#{kid},#{useraccount},#{buytime})
-    </insert>
-    <update id="demoney" parameterType="map">
-        update user set monney = #{monney} where useraccount = #{useraccount}
-    </update>
-    <select id="getmoney" parameterType="int" resultType="double">
-        select monney from user where useraccount = #{useraccount}
-    </select>
-
-<!--    查询问题分类-->
-    <select id="queryQuesCata"  resultType="app.vo.Qcata">
-        select * from qcata;
-    </select>
-
-<!--    新建提问-->
-    <insert id="createques" parameterType="app.vo.Question">
-        insert into question(useraccount, title, content, qcid, createtime)
-        value(#{useraccount},#{title},#{content},#{qcid},#{createtime})
-    </insert>
-
-<!--    按类型查询问题-->
-    <select id="queryQuesbycata" parameterType="map" resultType="app.vo.Question">
-        select * from question q,user u where  q.useraccount = u.useraccount and qcid = #{qcid}
-    </select>
-
-<!--    按qid查找问题-->
-    <select id="quesryQuesByqid" parameterType="map" resultType="app.vo.Question">
-         select * from question q,user u where  q.useraccount = u.useraccount and qid = #{qid}
-    </select>
-
-<!--    按qid 查找回复-->
-    <select id="quesreply" parameterType="int" resultType="app.vo.Reply">
-        select * from reply r ,user u where r.useraccount = u.useraccount and r.qid = #{qid}
-    </select>
-
-<!--    回复信息-->
-    <insert id="createreply" parameterType="app.vo.Reply">
-        insert into  reply(ruid, useraccount, content, qid, createtime)
-        value (#{ruid},#{useraccount},#{content},#{qid},#{createtime})
-    </insert>
-
-<!--    回复贴子-->
-    <insert id="createreplypost" parameterType="app.vo.ReplyPost">
-        insert into replypost(useraccount, content, pid, createtime, ruid,rcontent,floor,rname)
-        value (#{useraccount},#{content},#{pid},#{createtime},#{ruid},#{rcontent},#{floor},#{rname})
-    </insert>
-
-<!--    查询所有回复的贴子-->
-    <select id="querypost" parameterType="map" resultType="app.vo.ReplyPost">
-        select * from replypost r,user u where r.useraccount = u.useraccount and r.tag =1 and u.tag = 1 and pid = #{pid};
-    </select>
-<!--    查询被回复者信息-->
-
-
-
-
-<!--    资讯网-->
-<!--    修改资讯标签-->
-    <update id="updateTag" parameterType="map">
-        update infocata
-        <set>
-            <if test="tagname != null">
-                tagname = #{tagname},
-            </if>
-            <if test="avator != null">
-                avator != null
-            </if>
-        </set>
-        where icid = #{icid}
-    </update>
-
-<!--    查询所有资讯标签-->
-    <select id="querytag" resultType="int">
-        select icid from infocata
-    </select>
-<!--    查询所有资讯-->
-    <select id="queryallnew" parameterType="map" resultType="app.vo.News">
-        select infoid,title,content,inf.icid,infc.tagname from info inf,infocata infc where inf.icid = infc.icid group by inf.icid,inf.infoid
-    </select>
-
-
-
-
-
-
-<!--    查询购买数量最多的知识-->
-    <select id="goodusekonw" parameterType="map" resultType="map">
-       select kid "name",count(userid) "value" from konwuser where 1=1
-        <if test="stime != null and  etime != null">
-            and buytime between #{stime} and #{etime}
-        </if>
-        group by kid  order by count(userid) desc limit 10
-    </select>
-
-<!--    浏览知识前十-->
-    <select id="lookkonw" parameterType="map" resultType="map">
-       select kid "name",count(kid) "value" from lookup
-        where 1=1
-        <if test="stime != null and etime != null">
-          and  looktime between #{stime} and #{etime}
-        </if>
-        group by kid order by value desc limit 10
-    </select>
-
-    <select id="mostuse" resultType="map">
-        select kid name,count(useraccount) value from kuse group by kid;
-    </select>
-
-    <select id="everylook" resultType="map">
-        select k.kid,count(l.kid) nums from konwledge k left join lookup l on k.kid = l.kid
-        where 1=1
-        <if test="stime != null and etime != null">
-          and   l.looktime between  stime  and etime
-        </if>
-        group by k.kid order by nums desc ;
-    </select>
-
+<mapper namespace="app.vo.Question">
 <!--    问答-->
 <!--    回复我的-->
     <select id="replyme" parameterType="int" resultType="map">
-        select
-            r.*,u.useraccount,u.username
+     select
+  q.title,  r.*,u.useraccount,u.username,u.avator
+from
+    reply r,user u,question q
+where
+        ruid = #{useraccount}
+  and
+        r.useraccount = u.useraccount
+  and
+        r.qid = q.qid
+  and
+        r.tag = 1;
+    </select>
+    <select id="replymetotal" parameterType="int" resultType="int">
+         select
+           count(1) nums
         from
-            reply r,user u
+            reply r
         where
             ruid = #{useraccount}
         and
-            r.useraccount = u.useraccount
+            r.tag = 1;
+    </select>
+
+
+<!--    我的回复-->
+    <select id="myreplyto" parameterType="int" resultType="map">
+       select
+    q.title,r.*,u.avator
+from
+    reply r, question q,user u
+where
+        r.qid = q.qid
+  and
+       r.ruid = u.useraccount
+  and
+        r.useraccount = #{useraccount}
+  and
+        r.tag = 1;
+    </select>
+    <select id="myreplytotal" parameterType="int" resultType="int">
+        select
+            count(1)
+        from
+            reply r, question q
+        where
+            r.qid = q.qid
+        and
+            r.useraccount = #{useraccount}
         and
             r.tag = 1;
     </select>
+
+
+<!--    我的贴子-->
+    <select id="mypost" parameterType="int" resultType="map">
+        select pid,title,c.cname from post p , circle c where useraccount = #{useraccount} and p.cid = c.cid and c.tag = 1 and p.tag =1;
+    </select>
+    <select id="myposttotal" parameterType="int" resultType="int">
+        select
+            count(1)
+        from
+            post p , circle c
+        where
+            useraccount = #{useraccount}
+        and
+            p.cid = c.cid
+        and c.tag = 1 and p.tag =1;
+    </select>
+
+<!--    回复我的贴子-->
+    <select id="myreplypost" parameterType="int" resultType="map">
+        select r.*,p.title
+from replypost r,
+     post p,
+     circle c
+where r.pid = p.pid
+  and p.cid = c.cid
+  and r.ruid = #{useraccount}
+  and p.tag = 1
+  and r.tag = 1
+  and c.tag = 1;
+    </select>
+
+<!--    我关注的圈子-->
+    <select id="myfollow" parameterType="int" resultType="map">
+        select
+            c.cname,c.cid
+        from
+            follow f , circle c
+        where
+            f.cid = c.cid
+        and
+            c.tag = 1
+        and
+            f.useraccount = #{useraccount};
+    </select>
+
+<!--    采纳该答案-->
+    <update id="okd" parameterType="int">
+        update reply set `use` = 1 where rid = #{rid}
+    </update>
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +82,8 @@ public class GenericDaoImpl implements GenericDao {
         System.out.println(bean.getClass().getName());
 
     }
+
+
 
 
 }

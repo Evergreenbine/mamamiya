@@ -62,7 +62,14 @@ where
 
 <!--    我的贴子-->
     <select id="mypost" parameterType="int" resultType="map">
-        select pid,title,c.cname from post p , circle c where useraccount = #{useraccount} and p.cid = c.cid and c.tag = 1 and p.tag =1;
+        select
+        pid,title,c.cname
+        from
+        post p , circle c
+        where useraccount = #{useraccount}
+        and p.cid = c.cid
+        and c.tag = 1
+        and p.tag =1;
     </select>
     <select id="myposttotal" parameterType="int" resultType="int">
         select
@@ -76,24 +83,95 @@ where
         and c.tag = 1 and p.tag =1;
     </select>
 
-<!--    回复我的贴子-->
+<!--    回复我的贴子
+    这条语句还是挺难的，因为要排除掉我是层主时，被回复的内容
+    1.先找出我的贴子
+    2.再与回复表左连接，这样就看出哪些贴子被回复了，哪些贴子没有被回复
+    3.再将左连接换成内连接，排除掉没有被回复的贴子
+    4.再查出回复人的信息
+    5.再排除掉我回复层主时的信息
+
+    replypost表字段备注：
+     rcontent:是记录被回复层主的话的
+     ruid：是被回复者的id
+     useraccount：是回复者的id
+     rname：是被回复层主的名字,这个有点色值不好，但省事，因为假如我以后改名了，它就只能记录以前的名字，名字可以这样，但如果是useraccount绝不可以这样，
+     因为如果useraccount变了，但这用户又没杯删除，以后也找不到这用户了
+     content：就是回复的内容
+-->
     <select id="myreplypost" parameterType="int" resultType="map">
-        select r.*,p.title
-from replypost r,
-     post p,
-     circle c
-where r.pid = p.pid
+       select p.pid,
+       p.title,
+       r.pid,
+       r.useraccount,
+       r.content,
+       u.avator,
+       u.username,
+       r.createtime
+from (
+         select pid,
+                title,
+                c.cname,p.tag,p.cid
+         from post p,
+              circle c
+         where useraccount = #{useraccount}
+           and p.cid = c.cid
+           and c.tag = 1
+           and p.tag = 1) p,
+     replypost r,
+     user u,circle c
+where p.pid = r.pid
+  and r.useraccount = u.useraccount  and r.useraccount != #{useraccount}
   and p.cid = c.cid
-  and r.ruid = #{useraccount}
-  and p.tag = 1
-  and r.tag = 1
-  and c.tag = 1;
+  and p.tag = 1 and  r.tag = 1 and c.tag =1;
     </select>
+    <select id="myreplyposttotal" parameterType="int" resultType="int">
+      select count(1)
+from (
+         select pid,
+                title,
+                c.cname,p.tag,p.cid
+         from post p,
+              circle c
+         where useraccount = #{useraccount}
+           and p.cid = c.cid
+           and c.tag = 1
+           and p.tag = 1) p,
+     replypost r,
+     user u,circle c
+where p.pid = r.pid
+  and r.useraccount = u.useraccount and r.useraccount != #{useraccount}
+  and p.cid = c.cid
+  and p.tag = 1 and  r.tag = 1 and c.tag =1;
+    </select>
+<!--回复我是层主时的信息-->
+    <select id="replumefloor" parameterType="int" resultType="map">
+        select *
+            from replypost r ,post p,user u where r.pid = p.pid and ruid = #{useraccount} and floor is not null and p.tag = 1 ;
+    </select>
+    <select id="replumefloortotal" parameterType="int" resultType="int">
+        select count(1)
+            from replypost r ,post p,user u where r.pid = p.pid and ruid = #{useraccount} and floor is not null and p.tag = 1 ;
+    </select>
+
+
 
 <!--    我关注的圈子-->
     <select id="myfollow" parameterType="int" resultType="map">
         select
             c.cname,c.cid
+        from
+            follow f , circle c
+        where
+            f.cid = c.cid
+        and
+            c.tag = 1
+        and
+            f.useraccount = #{useraccount};
+    </select>
+    <select id="myfollowtotal" resultType="int" parameterType="int">
+        select
+           count(1)
         from
             follow f , circle c
         where

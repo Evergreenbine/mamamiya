@@ -62,7 +62,14 @@ where
 
 <!--    我的贴子-->
     <select id="mypost" parameterType="int" resultType="map">
-        select pid,title,c.cname from post p , circle c where useraccount = #{useraccount} and p.cid = c.cid and c.tag = 1 and p.tag =1;
+        select
+        pid,title,c.cname
+        from
+        post p , circle c
+        where useraccount = #{useraccount}
+        and p.cid = c.cid
+        and c.tag = 1
+        and p.tag =1;
     </select>
     <select id="myposttotal" parameterType="int" resultType="int">
         select
@@ -78,22 +85,67 @@ where
 
 <!--    回复我的贴子-->
     <select id="myreplypost" parameterType="int" resultType="map">
-        select r.*,p.title
-from replypost r,
-     post p,
-     circle c
-where r.pid = p.pid
+       select p.pid,
+       p.title,
+       r.pid,
+       r.useraccount,
+       r.content,
+       u.avator,
+       u.username,
+       r.createtime
+from (
+         select pid,
+                title,
+                c.cname,p.tag,p.cid
+         from post p,
+              circle c
+         where useraccount = #{useraccount}
+           and p.cid = c.cid
+           and c.tag = 1
+           and p.tag = 1) p,
+     replypost r,
+     user u,circle c
+where p.pid = r.pid
+  and r.useraccount = u.useraccount  and r.useraccount != #{useraccount}
   and p.cid = c.cid
-  and r.ruid = #{useraccount}
-  and p.tag = 1
-  and r.tag = 1
-  and c.tag = 1;
+  and p.tag = 1 and  r.tag = 1 and c.tag =1;
+    </select>
+    <select id="myreplyposttotal" parameterType="int" resultType="int">
+      select count(1)
+from (
+         select pid,
+                title,
+                c.cname,p.tag,p.cid
+         from post p,
+              circle c
+         where useraccount = #{useraccount}
+           and p.cid = c.cid
+           and c.tag = 1
+           and p.tag = 1) p,
+     replypost r,
+     user u,circle c
+where p.pid = r.pid
+  and r.useraccount = u.useraccount and r.useraccount != #{useraccount}
+  and p.cid = c.cid
+  and p.tag = 1 and  r.tag = 1 and c.tag =1;
     </select>
 
 <!--    我关注的圈子-->
     <select id="myfollow" parameterType="int" resultType="map">
         select
             c.cname,c.cid
+        from
+            follow f , circle c
+        where
+            f.cid = c.cid
+        and
+            c.tag = 1
+        and
+            f.useraccount = #{useraccount};
+    </select>
+    <select id="myfollowtotal" resultType="int" parameterType="int">
+        select
+           count(1)
         from
             follow f , circle c
         where

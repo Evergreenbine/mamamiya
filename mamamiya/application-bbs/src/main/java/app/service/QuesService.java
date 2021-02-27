@@ -42,11 +42,37 @@ public class QuesService {
         return PageHelper(curPage,pageSize,params);
     }
 
-//    我回复的贴子
+//    我回复的贴子 这个方法名应该是mypost
     public Map myreplypost(Integer curpage,Integer pageSize, Map params){
         params.put("ts","myposttotal");
         params.put("ls","mypost");
         return PageHelper(curpage,pageSize,params);
+    }
+//    回复我的贴子
+    public Map myrepl(Integer curpage,Integer pageSize, Map params){
+        params.put("ts","myreplyposttotal");
+        params.put("ls","myreplypost");
+        return PageHelper(curpage,pageSize,params);
+    }
+
+//    回复我的层主
+    public Map myreplyfloor(Integer curpage,Integer pageSize, Map params){
+        params.put("ts","replumefloor");
+        params.put("ls","replumefloortotal");
+        return PageHelper(curpage,pageSize,params);
+    }
+
+//    我关注的圈子
+    public Map myfollowcircle(Integer curpage,Integer pageSize, Map params){
+        params.put("ts","myfollowtotal");
+        params.put("ls","myfollow");
+        Map map = PageHelper(curpage, pageSize, params);
+        List<Map> data = (List<Map>) map.get("data");
+        for (Map datum : data) {
+           datum.put("isfollow",1);
+        }
+
+        return map;
     }
 
     public <T> Map PageHelper(Integer curPage,Integer pageSize,Map<String,Object> params){

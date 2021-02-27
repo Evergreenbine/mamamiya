@@ -76,6 +76,7 @@ public class QuestionContoller {
         return quesService.myrepl(curpage, 4, map);
     }
 
+//   我做为层主时，别人回复我的
     public Map myreplyfloor(HttpServletRequest req){
         Integer curpage = this.getParamater("curpage", req);
         Integer useraccount = this.getParamater("useraccount", req);

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//回复问答的对象
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

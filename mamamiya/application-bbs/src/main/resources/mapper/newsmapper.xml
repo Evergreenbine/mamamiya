@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.vo.News">
+<!--    查询资讯条件-->
+    <select id="infobycondition" resultType="map" parameterType="map">
+         select * from info where 1=1 and tag = 1
+         <if test="infoid != null">
+             and infoid = #{infoid}
+         </if>
+    </select>
+<!-- 浏览资讯记录-->
+    <insert id="looknews" parameterType="map">
+        insert into lookupnews(useraccount, infoid, time)
+        value (#{useraccount},#{infoid},#{time})
+    </insert>
+<!-- 根据资讯id查询所有回复-->
+    <select id="quesfastnewsbyruid" parameterType="map" resultType="map">
+        select r.*,u.avator,u.username from replyinfo r ,user u where  r.useraccount = u.useraccount
+        <if test="infoid != null">
+            and infoid = #{infoid}
+        </if>
+
+    </select>
+
+<!--    查询所有我回复资讯的，即我不是层主的信息 -->
+    <select id="replytoinfo" parameterType="map" resultType="map">
+        select r.*,u.username,u.avator from replyinfo r,user u where r.useraccount = u.useraccount and infoid = #{infoid} and ruid is null ;
+    </select>
+    <!--查询回复我的-->
+    <select id="replymyinfo" parameterType="int" resultType="map">
+        select r.*,u.avator,u.username from replyinfo r, user u where r.useraccount = u.useraccount and  ruid = #{useraccount} order by createtime desc
+    </select>
+
+
+<!--    创建回复-->
+    <insert id="createinfo" parameterType="app.vo.ReplyInfo">
+        insert into
+            replyinfo(ruid, useraccount, content, infoid, createtime, rcontent, floor, rname)
+        value
+            (#{ruid},#{useraccount},#{content},#{infoid},#{createtime},#{rcontent},#{floor},#{rname})
+    </insert>
+</mapper>

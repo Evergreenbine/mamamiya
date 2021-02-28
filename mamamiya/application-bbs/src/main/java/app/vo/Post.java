@@ -25,6 +25,8 @@ public class Post {
     //圈子id
     private Integer cid;
     private Integer replynums;
+    //是否通过审核
+    private Integer pass;
 
     //user的字段，懒得写resultmap了
     private Integer userid;

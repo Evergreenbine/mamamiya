@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.vo.Order">
+    <select id="querymonney" parameterType="int" resultType="double">
+        select monney from user where useraccount = #{useraccount} and tag = 1
+    </select>
+<!--    创建订单 -->
+    <insert id="createoreder" parameterType="app.vo.Order">
+        insert into goodorder(orderid, address, state, totalmount, totalnums, useraccount, createtime, updatetime,paymoney)
+        value (#{orderid},#{address},#{state},#{totalmount},#{totalnums},#{useraccount},#{createtime},#{updatetime},#{paymoney})
+    </insert>
+<!--    创建订单详情表-->
+    <insert id="createorderdetail" parameterType="app.vo.OrderDetail">
+        insert into orderdetail(gid, nums, price, orderid)
+        value (#{gid},#{nums},#{price},#{orderid})
+    </insert>
+<!--    更新订单-->
+    <update id="updateorder" parameterType="map">
+        update goodorder 
+        <set>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="totalmount != null">
+                totalmount = #{totalmount},
+            </if>
+            <if test="totalnums != null">
+                totalnums = #{totalnums},
+            </if>
+            <if test="useraccount != null">
+                useraccount = #{useraccount},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if> 
+            <if test="updatetime != null">
+                updatetime = #{updatetime}
+            </if>
+        </set>
+        where orderid = #{orderid}
+    </update>
+
+<!--    查询订单信息-->
+    <select id="selectorder" parameterType="map" resultType="map">
+
+        select g.*,u.address ,o.* from goodorder g,orderstate o,user u
+         where
+            g.state = o.orid
+         and
+            u.useraccount = g.useraccount
+        <if test="orderid != null">
+         and   g.orderid = #{orderid}
+        </if>
+        <if test="state != null">
+        and g.state = #{state}
+        </if>
+        <if test="useraccount != null and useraccount != '' ">
+        and g.useraccount = #{useraccount}
+        </if>
+        order by g.createtime desc
+    </select>
+
+<!--    查询订单详情-->
+    <select id="queryordertail" parameterType="app.vo.OrderDetail" resultType="map">
+       select * from orderdetail o,milk m where o.gid = m.gid and orderid = #{orderid};
+    </select>
+
+
+</mapper>

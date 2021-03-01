@@ -31,5 +31,9 @@ public interface BbsService {
 
     Integer nofollow(HashMap map);
 
+     List<Map> countofbbs();
+    List<Map> numsOfCircle();
+    public List<Map> useNumsOfQues();
+
 
 }

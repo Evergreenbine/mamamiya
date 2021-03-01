@@ -150,9 +150,22 @@ limit 8;
     <update id="purchase" parameterType="map">
         update milk set store = store - #{count} where  gid = #{gid} and tag = 1
     </update>
+    <update id="addstore" parameterType="map">
+        update milk set store = store + #{count} where  gid = #{gid} and tag = 1
+    </update>
     <update id="demoney" parameterType="map">
         update user set monney = monney - #{monney} where useraccount = #{useraccount} and tag = 1
     </update>
+
+    <update id="addmoney" parameterType="map">
+        update user set monney = monney + #{monney} where useraccount = #{useraccount} and tag = 1
+    </update>
+<!--    删除购买记录-->
+    <delete id="delerecordgood" parameterType="map">
+          delete from recordgood where orderid = #{orderid}
+    </delete>
+
+
     <!--    插入订单表-->
     <insert id="createorder" parameterType="map">
     insert into shoporder(orderid, otime) value (#{orderid},#{otime})

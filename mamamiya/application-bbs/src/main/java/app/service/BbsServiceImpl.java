@@ -150,4 +150,36 @@ public class BbsServiceImpl implements BbsService {
     }
 //    查看回复帖子
 
+
+// 论坛数据统计
+//    贴子的回复数
+    public List<Map> countofbbs(){
+        List<Map> o = null;
+        try {
+          o =  genericDao.selectList(statement + "postofnums", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+//    圈子的关注数
+    public List<Map> numsOfCircle(){
+        List<Map> o = null;
+        try {
+          o =  genericDao.selectList(statement + "follownumsofcircle", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+//    问题已采纳的回答数
+    public List<Map> useNumsOfQues(){
+        List<Map> o = null;
+        try {
+          o =  genericDao.selectList(statement + "numsofusequestion", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
 }

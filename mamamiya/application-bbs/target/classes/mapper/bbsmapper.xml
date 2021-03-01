@@ -65,6 +65,7 @@
         <if test="pid != null">
              and p.pid = #{pid}
         </if>
+
         <if test="useraccount != null">
             and u.useraccount = #{useraccount}
         </if>
@@ -215,7 +216,40 @@
 
 
 
+<!--    论坛数据统计-->
+    <select id="postofnums"  resultType="map">
+        select r.pid name, count(1) value
+        from replypost r,post p
+        where r.pid = p.pid
+        and p.tag = 1
+        and p.pass = 1
+        group by r.pid;
+    </select>
+<!--    圈子关注数的统计-->
+    <select id="follownumsofcircle" resultType="map">
+        select
+        c.cname name ,count(useraccount) value
+        from follow f,circle c
+        where f.cid = c.cid
+        group by f.cid;
+    </select>
+<!--    每个问题下面已采纳的回复数-->
+    <select id="numsofusequestion" resultType="map">
+        select q.qid name ,count(r.qid) value from question q left join
+(select qid from reply r where  tag =1 and `use` =1) r
+on q.qid = r.qid  group by q.qid
+    </select>
 
+
+<!--    贴子的回复-->
+    <select id="query" parameterType="int" resultType="map">
+        select r.pid name, count(1) value
+            from replypost r,post p where
+r.pid = p.pid and p.tag = 1 and p.pass = 1
+group by r.pid order by  value desc
+    </select>
+
+<!--知识数据统计-->
 
 <!--    查询购买数量最多的知识-->
     <select id="goodusekonw" parameterType="map" resultType="map">

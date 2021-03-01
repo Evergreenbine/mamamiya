@@ -170,5 +170,23 @@ public class BbsController {
    }
 
 
+//   论坛数据统计实现
+    @GetMapping("/api/countofbbs")
+    @ResponseBody
+     public List<Map> countofbbs(){
+        return bbsService.countofbbs();
+     }
+
+     @GetMapping("/api/numsofcirle")
+     @ResponseBody
+    public List<Map> numsOfCircle(){
+        return bbsService.numsOfCircle();
+    }
+
+    @GetMapping("/api/unofq")
+    @ResponseBody
+    public List<Map> useNumsOfQues(){
+        return bbsService.useNumsOfQues();
+    }
 
 }

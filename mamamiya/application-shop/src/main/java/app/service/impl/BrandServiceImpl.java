@@ -102,4 +102,12 @@ public class BrandServiceImpl implements app.service.BrandService {
 
         return genericDao.selectList(statement+"orderrate",null);
     }
+
+//    首页
+
+    @Override
+    public List<Map> sellGoodBrandIndex() {
+        List<Map> objects = genericDao.selectList(statement + "sellgoodbrandindex", null);
+        return objects;
+    }
 }

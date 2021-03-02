@@ -30,7 +30,9 @@
     </select>
     <!--查询回复我的-->
     <select id="replymyinfo" parameterType="int" resultType="map">
-        select r.*,u.avator,u.username from replyinfo r, user u where r.useraccount = u.useraccount and  ruid = #{useraccount} order by createtime desc
+        select r.*,u.avator,u.username from replyinfo r, user u where r.useraccount = u.useraccount and  ruid = #{useraccount}
+        and infoid = #{infoid}
+        order by createtime desc
     </select>
 
 
@@ -41,4 +43,44 @@
         value
             (#{ruid},#{useraccount},#{content},#{infoid},#{createtime},#{rcontent},#{floor},#{rname})
     </insert>
+
+
+<!--    查询所有用户-->
+    <select id="listUser" resultType="map">
+        select * from user where 1=1
+        <if test="useraccount != null">
+            and  useraccount = #{useraccount}
+        </if>
+        and tag = 1;
+    </select>
+
+    <select id="ltuser" resultType="int">
+        select
+            count(1)
+        from
+            user
+        where
+            1=1;
+    </select>
+
+<!--    今日资讯-->
+    <select id="todaynews" resultType="map">
+        select
+            i.title,i.infoid, count(l.infoid) "nums"
+        from
+            info i
+        left join
+            lookupnews l on i.infoid = l.infoid
+        where
+         1=1
+         <if test="createtime != null">
+           and i.createtime = #{createtime}
+         </if>
+        group by
+            i.infoid
+        order by
+            nums
+        desc limit 12;
+    </select>
+
 </mapper>

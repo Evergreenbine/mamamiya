@@ -5,9 +5,14 @@
 <mapper namespace="app.vo.User">
 
     <select id="findUser" parameterType="int" resultType="app.vo.User">
-        select * from user where
-        useraccount = #{useraccount} and tag = 1;
+        select * from user where 1=1
+        <if test="useraccount != null">
+            and  useraccount = #{useraccount}
+        </if>
+         and tag = 1;
     </select>
+
+
     
     <update id="updateUser" parameterType="app.vo.User">
         update user set

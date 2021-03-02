@@ -37,4 +37,8 @@ public interface BrandService {
 
     List<Map>  orderrate();
 
+
+
+    List<Map> sellGoodBrandIndex();
+
 }

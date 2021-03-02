@@ -61,6 +61,7 @@ public class NewsContoller {
         Integer curpage = this.getParamater("curpage", req);
         map.put("infoid",this.getParamater("infoid",req));
 
+
         return newsService.listreplyinfo(curpage,5,map);
     }
 
@@ -82,4 +83,20 @@ public class NewsContoller {
         return i;
     }
 
+    @GetMapping("/api/listuser")
+    @ResponseBody
+    public Map listUser(HttpServletRequest req){
+        Integer curpage = this.getParamater("curpage", req);
+        HashMap<Object, Object> params = new HashMap<>();
+        return newsService.listUser(curpage,params);
+    }
+
+
+//    查询今日的资讯
+    @GetMapping("/api/listnews")
+    @ResponseBody
+    public List<Map> listnews(){
+
+        return newsService.listNews();
+    }
 }

@@ -34,10 +34,17 @@ order by nums desc;
 
 
     <!--    根据bid查询所有商品-->
-    <select id="querybybid" resultType="app.vo.Milk">
-
-
-
+    <select id="querybybid" resultType="map">
+        select
+            *
+        from
+            milk m ,brand b
+        where
+            m.bid = b.bid
+        and
+            b.tag = 1
+        and
+            m.tag =1 and b.bid = 1;
     </select>
 
 <!--    数据统计方面-->
@@ -83,5 +90,22 @@ order by nums desc;
 where a.gid = m.gid and m.tag = 1 group by a.gid order by value desc limit 6
     </select>
 
+
+
+<!--    首页查询-->
+    <select id="sellgoodbrandindex" resultType="map">
+        select
+            r.gid,b.bname,b.img,count(r.gid) "nums"
+        from
+            recordgood r,milk m ,brand b
+        where
+            r.gid = m.gid and m.bid = b.bid
+        group by
+            r.gid
+        order by
+            nums
+        desc
+            limit 12;
+    </select>
 <!--    导出销售记录-->
 </mapper>

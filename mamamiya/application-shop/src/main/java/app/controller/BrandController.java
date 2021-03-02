@@ -187,7 +187,17 @@ public class BrandController {
     }
 
 
+//    根据bid搜索所有商品
 
+
+
+
+//   首页
+    @GetMapping("/api/sellgoodbrandindex")
+    @ResponseBody
+    public List<Map> sellGoodBrand(){
+        return brandService.sellGoodBrandIndex();
+    }
 
 
 }

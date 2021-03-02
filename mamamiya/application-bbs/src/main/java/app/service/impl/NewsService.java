@@ -30,7 +30,7 @@ public class NewsService {
         }
         return i;
     }
-
+//   查询所有资讯
     public  List<ArrayList> listAll(HashMap map){
         try{
 
@@ -101,7 +101,11 @@ public class NewsService {
         for (Map datum : data) {
 //            获取useraccount
             Integer useraccount = (Integer) datum.get("useraccount");
-            List<Map> mapList = genericDao.selectList(state + "replymyinfo", useraccount);
+            Integer infoid = (Integer) params.get("infoid");
+            HashMap<Object, Object> m = new HashMap<>();
+            m.put("infoid",infoid);
+            m.put("useraccount",useraccount);
+            List<Map> mapList = genericDao.selectList(state + "replymyinfo", m);
 //            将楼主装进去
             louzhu.add(datum);
 //            创建一个数组，装回复楼主的信息
@@ -164,6 +168,21 @@ public class NewsService {
         return map;
     }
 
+//    查询所有用户
+    public Map listUser(Integer curPage,Map params){
+        params.put("ls","listUser");
+        params.put("ts","ltuser");
+        Map map = this.PageHelper(curPage, 5, params);
+        return  map;
+    }
 
+    public List<Map> listNews(){
+        String format = DateUtil.format(new Date(), "yyyy/MM/dd");
+        List<Map> objects = genericDao.selectList(state + "todaynews", format);
+        if (objects.size() == 0) {
+           objects = genericDao.selectList(state + "todaynews", null);
+        }
+        return objects;
+    }
 
 }

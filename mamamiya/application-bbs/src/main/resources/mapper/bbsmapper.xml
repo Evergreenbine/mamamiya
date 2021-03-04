@@ -77,7 +77,29 @@
     </select>
 
 
+
+    <insert id="createlookpost" parameterType="map">
+        insert into
+            lookuppost(pid, looktime)
+        value(#{pid},#{looktime})
+    </insert>
+
+    <select id="likeposttitle" parameterType="map" resultType="map">
+        select * from post where title like concat('%',#{title},'%')
+    </select>
+
+
 <!--    知识的-->
+
+<!--    tilte模糊查询知识-->
+    <select id="querykonwbytitle" parameterType="map"  resultType="map">
+        select * from konwledge where title like concat('%',#{title},'%')
+    </select>
+    <select id="queryquesbytitle" parameterType="map"  resultType="map">
+        select * from question where title like concat('%',#{title},'%')
+    </select>
+
+
 <!--    查询知识的所有分类-->
     <select id="querykonwcata" resultType="map">
         select * from kcata;

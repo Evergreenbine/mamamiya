@@ -24,5 +24,9 @@ public class Milk extends Goods{
     /* 商品价格*/
     private double price;
 
+    private Integer c2;
+
+    private Integer c3;
+
 
 }

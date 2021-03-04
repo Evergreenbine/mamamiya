@@ -21,6 +21,34 @@ public class KonwlegeController {
     @Autowired
     private KonwlegeService konwlegeService;
 
+//    根据title模糊查询
+    @GetMapping("/api/likeposttile")
+    @ResponseBody
+    public List<Map> likeposttitle(HttpServletRequest req){
+        HashMap<Object, Object> map = new HashMap<>();
+        String title = req.getParameter("title");
+        map.put("title",title);
+        return konwlegeService.likeposttitle(map);
+    }
+
+
+
+//    根据tilte模糊查询
+    @GetMapping("/api/likequery")
+    @ResponseBody
+    public List<Map> listKonwByTitle(HttpServletRequest req){
+        Integer cata = this.getParamater("cata", req);
+
+        HashMap<Object, Object> map = new HashMap<>();
+        String title = req.getParameter("title");
+        map.put("title",title);
+
+        if(cata == 1){
+            return konwlegeService.queryKonwBytitle(map);
+        }else {
+            return konwlegeService.queryQuesBytitle(map);
+        }
+    }
 
 
 //    查询知识分类

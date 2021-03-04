@@ -19,6 +19,19 @@ public class KonwlegeService {
 
     private final static String statement = Circle.class.getName()+".";
 
+
+    public List<Map> likeposttitle(HashMap map){
+        return genericDao.selectList(statement + "likeposttitle", map);
+    }
+    public List<Map> queryKonwBytitle(HashMap map){
+        List<Map> objects = genericDao.selectList(statement + "querykonwbytitle", map);
+        return objects;
+    }
+    public List<Map> queryQuesBytitle(HashMap map){
+        List<Map> objects = genericDao.selectList(statement + "queryquesbytitle", map);
+        return objects;
+    }
+
     public KnowlegeVo getKonw(int kid){
         KnowlegeVo  k = genericDao.selectOne(statement + "queryKonwById", kid);
         return k;

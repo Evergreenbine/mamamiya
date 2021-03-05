@@ -80,7 +80,18 @@ public class BrandServiceImpl implements app.service.BrandService {
          if (null != gcid2 && "".equals(gcid2)) {
              gcid = Integer.parseInt(gcid2);
          }
-         List<Map> count = genericDao.selectList(statement + "querysellgood", null);
+        String stime = null;
+        String etime = null;
+        HashMap<Object, Object> map = null;
+      if(  null != req.getParameter("stime") && null != req.getParameter("etime")) {
+         stime  = req.getParameter("stime").replace('-', '/');
+          etime = req.getParameter("etime").replace('-', '/');
+
+        map   = new HashMap<>();
+          map.put("stime", stime);
+          map.put("etime", etime);
+      }
+        List<Map> count = genericDao.selectList(statement + "querysellgood", map);
          return count;
     }
 
@@ -93,7 +104,20 @@ public class BrandServiceImpl implements app.service.BrandService {
         if (null != gcid2 && "".equals(gcid2)) {
             gcid = Integer.parseInt(gcid2);
         }
-        List<Map> objects = genericDao.selectList(statement + "querygoodnums", null);
+        String stime = null;
+        String etime = null;
+        HashMap<Object, Object> map = null;
+        if(  null != req.getParameter("stime") && null != req.getParameter("etime")) {
+            stime  = req.getParameter("stime").replace('-', '/');
+            etime = req.getParameter("etime").replace('-', '/');
+
+            map   = new HashMap<>();
+            map.put("stime", stime);
+            map.put("etime", etime);
+        }
+
+
+        List<Map> objects = genericDao.selectList(statement + "querygoodnums", map);
         return objects;
     }
 

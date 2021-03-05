@@ -62,12 +62,16 @@ order by nums desc;
          group by b.bid
     </select>
 <!--    2.热销商品-->
-
     <select id="querysellgood" parameterType="map" resultType="map">
         select
        m.gname "name",a.nums "value"
       from
-     (select *, count(useraccount) 'nums' from recordgood group by gid order by count(useraccount)
+     (select *, count(useraccount) 'nums' from recordgood
+     where 1=1
+     <if test="stime != null and etime != null">
+      and buytime between  #{stime}  and  #{etime }
+     </if>
+     group by gid order by count(useraccount)
      desc limit 10) a left join milk m on a.gid = m.gid and m.tag = 1;
     </select>
 
@@ -77,7 +81,13 @@ order by nums desc;
             select m.gname "name",if(nums is null,0,nums) "value"
             from milk m
             left join
-            (select r.gid, count(useraccount) "nums" from recordgood r group by gid) a
+            (select r.gid, count(useraccount) "nums" from recordgood r
+        where 1=1
+        <if test="stime != null and etime != null">
+            and buytime between  #{stime}  and  #{etime }
+        </if>
+
+             group by gid) a
             on m.gid = a.gid and m.tag = 1 where 1=1
             <if test="gcid != null">
                 and m.gcid = #{gcid}

@@ -7,7 +7,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
@@ -48,6 +50,7 @@ public class KonwlegeService {
     }
 
 //    知识付费
+    @Transactional
     public Integer purchase(HashMap map){
         int i = 1;
         try {
@@ -231,6 +234,8 @@ public class KonwlegeService {
     public Integer thinkuser(Map map){
     int i = 1;
     try {
+        String format = DateUtil.format(new Date(), "yyyy/MM/dd");
+        map.put("ktime",format);
         genericDao.create(statement + "thinkuse", map);
     } catch (Exception e) {
         i = 0;
@@ -280,11 +285,16 @@ public class KonwlegeService {
         return genericDao.selectList(statement+"lookkonw",map);
     }
 
-    public List<Map> mostuse(){
-        return genericDao.selectList(statement+"mostuse",null);
+    public List<Map> mostuse(String stime,String etime){
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("stime",stime);
+
+        map.put("etime",etime);
+        return genericDao.selectList(statement+"mostuse",map);
     }
 
     public Map everylook(HashMap map){
+
         List<Map> objects = genericDao.selectList(statement + "everylook", map);
         ArrayList<Object> kid = new ArrayList<>();
         ArrayList<Object> nums = new ArrayList<>();

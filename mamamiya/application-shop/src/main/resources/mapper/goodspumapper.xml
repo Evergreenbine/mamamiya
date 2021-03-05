@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.vo.Goods">
+
+<!--    创建分类 -->
+    <insert id="creategoodcata" parameterType="app.vo.GoodCata">
+        insert into goodcata(gname, parrentid, isparrent,grade)
+        value (#{gname},#{parrentid},#{isparrent},#{grade})
+    </insert>
+<!--    查询分类-->
+    <select id="querygoodcata" parameterType="map" resultType="app.vo.GoodCata">
+        select * from goodcata where  1=1
+        <if test="gname != null" >
+            and gname = #{gname}
+        </if>
+        <if test="parrentid != null">
+            and parrentid = #{parrentid}
+        </if>
+        <if test="isparrent != null">
+            and isparrent = #{isparrent}
+        </if>
+        <if test="grade != null">
+            and grade = #{grade}
+        </if>
+    </select>
+
+</mapper>

@@ -29,6 +29,12 @@ public class BbsController {
         return null;
     }
 
+    @GetMapping("/api/lookuppost/{pid}")
+    @ResponseBody
+    public Integer lookuppost(@PathVariable("pid")Integer pid){
+            return bbsService.lookuppost(pid);
+    }
+
 //   查询所有圈子
     @GetMapping("/api/circle")
     @ResponseBody

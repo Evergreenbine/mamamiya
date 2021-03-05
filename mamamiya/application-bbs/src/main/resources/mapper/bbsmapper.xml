@@ -136,10 +136,13 @@
     <insert id="lookup" parameterType="map">
         insert into lookup(kid,looktime) value (#{kid},#{looktime})
     </insert>
+    <insert id="insertlookpost" parameterType="map">
+        insert into lookuppost(pid, looktime) value (#{pid},#{looktime})
+    </insert>
 
 <!--    查询有用表-->
     <insert id="thinkuse" parameterType="map" >
-        insert into kuse(kid,useraccount) value(#{kid},#{useraccount})
+        insert into kuse(kid,useraccount,ktime) value(#{kid},#{useraccount},#{ktime})
     </insert>
     <select id="numsofuse"  parameterType="int" resultType="int">
         select count(1) "nums" from kuse where kid= #{kid}
@@ -293,14 +296,19 @@ group by r.pid order by  value desc
     </select>
 
     <select id="mostuse" resultType="map">
-        select kid name,count(useraccount) value from kuse group by kid;
+        select kid name,count(useraccount) value from kuse
+        where 1=1
+        <if test="stime != null and etime != null">
+            and  ktime between #{stime} and #{etime}
+        </if>
+        group by kid;
     </select>
 
     <select id="everylook" resultType="map">
         select k.kid,count(l.kid) nums from konwledge k left join lookup l on k.kid = l.kid
         where 1=1
         <if test="stime != null and etime != null">
-          and   l.looktime between  stime  and etime
+          and   l.looktime between  #{stime}  and #{etime}
         </if>
         group by k.kid order by nums desc ;
     </select>

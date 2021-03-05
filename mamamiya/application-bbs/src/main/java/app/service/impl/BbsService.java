@@ -33,7 +33,14 @@ public interface BbsService {
 
      List<Map> countofbbs();
     List<Map> numsOfCircle();
-    public List<Map> useNumsOfQues();
+    List<Map> useNumsOfQues();
+
+
+
+
+
+//    插入浏览记录
+Integer lookuppost(Integer pid);
 
 
 }

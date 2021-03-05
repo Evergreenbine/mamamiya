@@ -172,8 +172,8 @@ limit 8;
 </insert>
     <!--    插入购买记录表-->
     <insert id="newpurchaserecord" parameterType="map">
-        insert into recordgood(gid, useraccount,orderid)
-        value (#{gid},#{useraccount},#{orderid})
+        insert into recordgood(gid, useraccount,orderid,buytime)
+        value (#{gid},#{useraccount},#{orderid},#{buytime})
     </insert>
     <!--    根据商品结账 /////-->
 

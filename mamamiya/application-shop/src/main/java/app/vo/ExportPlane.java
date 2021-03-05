@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ import java.util.Map;
 @Controller
 public class ExportPlane {
 
-    private final static String[] brand = {"bid","bname","img","gcid"};
+    private final static String[] brand = {"商品名","商品销量"};
     private final static String[] milk = {"gid","gname","price","store","createtime","recommond","rate","cata","stage","age","bid","img","tag","gcid"};
     private final static HashMap header = new HashMap();
 
@@ -37,14 +39,14 @@ public class ExportPlane {
 
     //    导出数据品牌表
     @GetMapping("/api/export/brand")
-    public void exportBrand(HttpServletResponse resp){
+    public void exportBrand(HttpServletRequest req,HttpServletResponse resp){
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-
+//        创建一个sheet
         HSSFSheet sheet= workbook.createSheet("brand");
-
+//    设置每篇的列长
         sheet.setDefaultColumnWidth(10);
-
+//    创建第0行
         HSSFRow headrow = sheet.createRow(0);
         /* 初始化头部 */
         for (int i = 0; i < brand.length; i++) {
@@ -56,22 +58,34 @@ public class ExportPlane {
             cell.setCellValue(text);
         }
 
-        List<Brand> brands = brandService.list();
-//        System.out.println(brands);
-        for (int i = 0; i < brands.size(); i++) {
+        List<Map> cc =  brandService.goodofnums(req);
+
+//
+        for (int i = 0; i < cc.size(); i++) {
 //            创建第一行
             HSSFRow row = sheet.createRow(i+1);
 
-            Brand brand = brands.get(i);
+            String name = (String) cc.get(i).get("name");
+            String value = String.valueOf(cc.get(i).get("value"));
 
-            row.createCell(0).setCellValue(new HSSFRichTextString(String.valueOf(brand.getBid())));
-            row.createCell(1).setCellValue(new HSSFRichTextString(brand.getBname()));
-            row.createCell(2).setCellValue(new HSSFRichTextString(brand.getImg()));
-            row.createCell(3).setCellValue(new HSSFRichTextString(String.valueOf(brand.getGcid())));
+            row.createCell(0).setCellValue(name);
+            row.createCell(1).setCellValue(value);
+
 
         }
+
+        HSSFRow row =sheet.createRow(cc.size()+5);
+
+        String stime = req.getParameter("stime").replace('-', '/');
+        String etime = req.getParameter("etime").replace('-', '/');
+
+        row.createCell(0).setCellValue("开始时间");
+        row.createCell(1).setCellValue(stime);
+        row.createCell(2).setCellValue("结束时间");
+        row.createCell(3).setCellValue(etime);
+
         resp.setContentType("application/octet-stream");
-        resp.setHeader("Content-disposition", "attachment;filename=employee.xls");
+        resp.setHeader("Content-disposition", "attachment;filename=商品销售表.xls");
         try {
             resp.flushBuffer();
             workbook.write(resp.getOutputStream());

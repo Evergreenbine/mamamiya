@@ -99,8 +99,10 @@ public class OrderService {
                 orderDetail.setPrice(m.getPrice());
 
                 genericDao.create(statement+"createorderdetail",orderDetail);
-
+                Date date = new Date();
+                String format = DateUtil.format(date, "yyyy/MM/dd");
                 for (int j = 0; j < m.getCount(); j++) {
+                    param.put("buytime",format);
                     genericDao.create(statemilk+"newpurchaserecord",param);
                 }
 

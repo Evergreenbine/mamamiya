@@ -5,9 +5,11 @@ import app.service.impl.BbsService;
 import app.vo.Circle;
 import app.vo.Post;
 import app.vo.ReplyPost;
+import cn.hutool.core.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,23 @@ public class BbsServiceImpl implements BbsService {
     private final static String statement = Circle.class.getName() + ".";
 //    private final static String postStatement = Post.class.getName()+".";
 
+
+
+
+    public Integer lookuppost(Integer pid){
+        int i = 1;
+        try {
+            HashMap<Object, Object> map = new HashMap<>();
+            map.put("pid",pid);
+            String format = DateUtil.format(new Date(), "yyyy/MM/dd");
+            map.put("looktime",format);
+            genericDao.create(statement + "insertlookpost", map);
+        } catch (Exception e) {
+            i = 0;
+            e.printStackTrace();
+        }
+        return i;
+    }
 
     @Override
     public List<Post> mostreply() {

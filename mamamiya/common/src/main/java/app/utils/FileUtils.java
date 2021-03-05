@@ -25,6 +25,7 @@ public class FileUtils {
         img.put(".gif", "image/gif");
 //        视频类型
         img.put(".flv","ok");
+        img.put(".MP4","ok");
 
     }
 

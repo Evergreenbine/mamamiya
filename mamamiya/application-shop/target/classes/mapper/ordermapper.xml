@@ -48,7 +48,7 @@
 <!--    查询订单信息-->
     <select id="selectorder" parameterType="map" resultType="map">
 
-        select g.*,u.address ,o.* from goodorder g,orderstate o,user u
+        select g.*,u.address "addresss",u.username ,o.* from goodorder g,orderstate o,user u
          where
             g.state = o.orid
          and

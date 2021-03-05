@@ -6,10 +6,7 @@ import app.vo.ReplyInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -22,11 +19,28 @@ public class NewsContoller {
     @Autowired
     private NewsService newsService;
 
+//    首页查询
+
+    @GetMapping("/api/queryIndexKonw")
+    @ResponseBody
+    public List<Map> queryIndexKonw(){
+        return newsService.queryIndexKonw();
+    }
+
+    @GetMapping("/api/createkcata")
+    @ResponseBody
+    public Integer createkcata(@RequestParam("kname") String kname){
+        return newsService.createkcata(kname);
+    }
+
     @GetMapping("/api/getAllNews")
     @ResponseBody
     public  List<ArrayList> getAll(HashMap map){
      return    newsService.listAll(map);
     }
+
+
+
 
 // 根据id查询资讯
 
@@ -81,6 +95,16 @@ public class NewsContoller {
             throw new NullPointerException("参数为空");
         }
         return i;
+    }
+
+
+
+    @GetMapping("/api/newall")
+    @ResponseBody
+    public Map newsall(HttpServletRequest req){
+        Integer curpage = this.getParamater("curpage",req);
+        Map<Object, Object> map = new HashMap<>();
+        return (Map) newsService.newsall(curpage,map);
     }
 
     @GetMapping("/api/listuser")

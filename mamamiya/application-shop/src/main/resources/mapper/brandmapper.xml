@@ -105,7 +105,7 @@ where a.gid = m.gid and m.tag = 1 group by a.gid order by value desc limit 6
 <!--    首页查询-->
     <select id="sellgoodbrandindex" resultType="map">
         select
-            r.gid,b.bname,b.img,count(r.gid) "nums"
+            r.gid,b.bname,b.img,b.bid,count(r.gid) "nums"
         from
             recordgood r,milk m ,brand b
         where

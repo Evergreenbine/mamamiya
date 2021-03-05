@@ -51,7 +51,7 @@ public class BbsController {
     public Integer savePost(HttpServletRequest request, @RequestBody Post post) {
 
         Date date =new Date();
-        String date2 = DateFormatUtils.format(date, "yyyy/mm/dd");
+        String date2 = DateFormatUtils.format(date, "yyyy/MM/dd");
         post.setTime(date2);
         return  bbsService.savePost(post);
     }
@@ -63,6 +63,10 @@ public class BbsController {
     public ResponceResult getPost(HttpServletRequest req){
         ResponceResult<List<Post>> res;
         Map m = new HashMap<>(2);
+        String isadmin = req.getParameter("isadmin");
+        System.out.println(isadmin);
+
+        m.put("isadmin",isadmin);
 
         String cid = req.getParameter("cid");
         String pid = req.getParameter("pid");
@@ -193,6 +197,14 @@ public class BbsController {
     @ResponseBody
     public List<Map> useNumsOfQues(){
         return bbsService.useNumsOfQues();
+    }
+
+    @PostMapping("/api/updatepost")
+    @ResponseBody
+    public Integer updatepost(HttpServletRequest req,@RequestBody Post post){
+        System.out.println(post);
+        return bbsService.updatePost(req,post);
+
     }
 
 }

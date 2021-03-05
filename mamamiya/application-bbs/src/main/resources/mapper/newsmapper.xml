@@ -3,9 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.vo.News">
+
+
+<!--    首页   -->
+    <select id="queryindexkonw" resultType="map">
+        select k.title,k.kid,k.isfree from konwledge k,
+            (select kid,count(kid)"nums" from lookup group by kid order by nums desc) a
+        where k.kid = a.kid and isfree = 1;
+    </select>
 <!--    查询资讯条件-->
     <select id="infobycondition" resultType="map" parameterType="map">
          select * from info where 1=1 and tag = 1
+         <if test="infoid != null">
+             and infoid = #{infoid}
+         </if>
+    </select>
+    <select id="infobyconditionall" resultType="int" parameterType="int">
+         select count(1) from info where 1=1 and tag = 1
          <if test="infoid != null">
              and infoid = #{infoid}
          </if>
@@ -28,6 +42,10 @@
     <select id="replytoinfo" parameterType="map" resultType="map">
         select r.*,u.username,u.avator from replyinfo r,user u where r.useraccount = u.useraccount and infoid = #{infoid} and ruid is null ;
     </select>
+    <select id="replytoinfoall" parameterType="map" resultType="int">
+        select count(1) from replyinfo r,user u where r.useraccount = u.useraccount and infoid = #{infoid} and ruid is null ;
+    </select>
+
     <!--查询回复我的-->
     <select id="replymyinfo" parameterType="int" resultType="map">
         select r.*,u.avator,u.username from replyinfo r, user u where r.useraccount = u.useraccount and  ruid = #{useraccount}
@@ -82,5 +100,9 @@
             nums
         desc limit 12;
     </select>
+
+    <insert id="createkata" parameterType="java.lang.String">
+        insert into kcata(kname) value (#{kname})
+    </insert>
 
 </mapper>

@@ -20,6 +20,43 @@ public class NewsService {
     private final static String state = News.class.getName()+".";
     @Autowired
     private GenericDao genericDao;
+
+
+    public List<Map> queryIndexKonw(){
+        List<Map> objects = null;
+        try {
+          objects  = genericDao.selectList(state + "queryindexkonw", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objects;
+
+    }
+
+//    创建知识分类
+    public Integer createkcata(String name){
+        int i =1;
+        try {
+            genericDao.create(state+"createkata",name);
+        } catch (Exception e) {
+            i = 0;
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+
+
+
+//    分页查询资讯
+    public Map newsall(Integer curpage,Map map){
+        map.put("ls","infobycondition");
+        map.put("ts","infobyconditionall");
+        return PageHelper(curpage,5,map);
+    }
+
+
+
 //    修改标签
     public Integer updateTag(HashMap map){
         int i =1;
@@ -89,6 +126,7 @@ public class NewsService {
 
     public  Map listreplyinfo(Integer curPage,Integer pageSize,Map params){
         params.put("ls","replytoinfo");
+        params.put("ts","replytoinfoall");
         Map map = PageHelper(curPage, pageSize, params);
 //        一个装楼主的
         ArrayList<Object> louzhu = new ArrayList<>();
@@ -159,7 +197,9 @@ public class NewsService {
         List<T> objects = genericDao.selectList(state+ls, params, rowBounds);
 
         //      查询总数
-        Integer total = objects.size();
+        int total = genericDao.selectOne(state + ts, params);
+
+
 
         map.put("data",objects);
         map.put("total",total);

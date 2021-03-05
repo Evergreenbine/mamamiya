@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,25 @@ public class GoodCataController {
     @Autowired
     private GoodCataService goodCataService;
 
+
+//    根据bid 或者 gname 查询商品
+
+    @GetMapping("/api/likequerygood")
+    @ResponseBody
+    public List<Map> likequerygood(HttpServletRequest req){
+        System.out.println("请求了");
+        String bid = req.getParameter("bid");
+        Integer bid2 = null;
+        HashMap<Object, Object> map = new HashMap<>();
+        if(bid != null){
+            bid2 = Integer.parseInt(bid);
+            map.put("bid",bid2);
+        }
+        String gname = req.getParameter("gname");
+
+        map.put("gname",gname);
+        return goodCataService.likequerygood(map);
+    }
 
     @PostMapping("/api/creategoodcata")
     @ResponseBody

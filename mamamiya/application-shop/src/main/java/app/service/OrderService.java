@@ -47,12 +47,13 @@ public class OrderService {
         for (Milk m : milk) {
             Integer store = genericDao.selectOne(statemilk + "querystore", m.getGid());
             if (store-m.getCount() < 0){
-                total = total+m.getCount();
+//                total = total+m.getCount();
                 map.put("code",0);
                 map.put("message",m.getGid()+m.getGname()+"库存不足");
                 return  map;
             }
         }
+//        System.out.println(total);
 //      够库存就进行创建订单操作
 //          // (#{orderid},#{address},#{state},#{totalmount},#{totalnums},#{useraccount},#{createtime},#{updatetime})
         Order order = new Order();
@@ -62,8 +63,8 @@ public class OrderService {
         String orderid = this.getOrderId();
         order.setOrderid(orderid);
         order.setTotalmount(needmoneyy);
-        System.out.println("总数量是"+total);
-        order.setTotalnums(total);
+//        System.out.println("总数量是"+total);
+//        order.setTotalnums(total);
         order.setUseraccount(i);
         order.setCreatetime(createtime);
 
@@ -75,6 +76,9 @@ public class OrderService {
            try {
                double totalmmoney = 0;
             for (Milk m : milk) {
+//                算总数量
+                total = total+m.getCount();
+
                 HashMap<Object, Object> param = new HashMap<>();
                 param.put("gid",m.getGid());
                 param.put("count",m.getCount());
@@ -112,6 +116,7 @@ public class OrderService {
             //            改变订单状态,设置状态为已支付状态
                order.setState(2);
                order.setPaymoney(totalmmoney);
+               order.setTotalnums(total);
 
              genericDao.create(statement+"createoreder",order);
              map.put("code",1);

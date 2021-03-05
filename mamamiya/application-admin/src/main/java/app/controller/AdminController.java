@@ -76,6 +76,14 @@ public class AdminController {
 //        return null;
     }
 
+
+    @PostMapping("/api/updatebrand")
+    @ResponseBody
+    public Integer updateBrand(@RequestBody Brand brand){
+        brand.setTag(1);
+        return adminService.saveBrand(brand);
+    }
+
     private Integer getParamater(String paramsName){
         String parameter = this.req.getParameter(paramsName);
         int i;

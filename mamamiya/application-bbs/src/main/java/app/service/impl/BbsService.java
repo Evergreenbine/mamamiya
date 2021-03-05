@@ -4,6 +4,7 @@ import app.vo.Circle;
 import app.vo.Post;
 import app.vo.ReplyPost;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,9 @@ public interface BbsService {
 
 //    插入浏览记录
 Integer lookuppost(Integer pid);
+
+
+ Integer updatePost(HttpServletRequest req,Post post);
 
 
 }

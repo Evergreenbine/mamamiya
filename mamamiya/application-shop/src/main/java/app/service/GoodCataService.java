@@ -17,6 +17,11 @@ public class GoodCataService {
     private GenericDao genericDao;
     private static String statement = GoodCata.class.getName()+".";
 
+
+    public List<Map> likequerygood(HashMap map){
+       return genericDao.selectList(statement + "likequerygood", map);
+    }
+
     public Integer createGoodCata(GoodCata goodCata){
        return genericDao.create(statement+"creategoodcata",goodCata);
     }

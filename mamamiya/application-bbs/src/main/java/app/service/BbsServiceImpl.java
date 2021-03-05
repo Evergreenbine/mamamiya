@@ -9,6 +9,7 @@ import cn.hutool.core.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -200,5 +201,19 @@ public class BbsServiceImpl implements BbsService {
             e.printStackTrace();
         }
         return o;
+    }
+
+
+    @Override
+    public Integer updatePost(HttpServletRequest req,Post post) {
+        int i =1;
+        try {
+            genericDao.updateOrDelete(statement+"updatepost",post);
+        } catch (Exception e) {
+            i = 0;
+            System.out.println("更新贴子错误");
+            e.printStackTrace();
+        }
+        return i;
     }
 }

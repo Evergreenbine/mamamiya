@@ -20,16 +20,16 @@
         update brand
         <set>
             <if test="bname != null">
-                bname = #{bname}
+                bname = #{bname},
             </if>
             <if test="img != null">
-                img = #{img}
+                img = #{img},
             </if>
             <if test="gcid != null">
-                gcid = #{gcid}
+                gcid = #{gcid},
             </if>
             <if test="tag != null">
-                tag = #{tag}
+                tag = #{tag},
             </if>
         </set>
         where bid = #{bid}

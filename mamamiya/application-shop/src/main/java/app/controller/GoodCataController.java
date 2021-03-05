@@ -35,8 +35,10 @@ public class GoodCataController {
             map.put("bid",bid2);
         }
         String gname = req.getParameter("gname");
+        if (null != gname) {
 
         map.put("gname",gname);
+        }
         return goodCataService.likequerygood(map);
     }
 

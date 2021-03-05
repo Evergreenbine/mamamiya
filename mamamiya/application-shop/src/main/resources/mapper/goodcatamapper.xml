@@ -30,7 +30,7 @@
     <select id="likequerygood" parameterType="map" resultType="map">
         select * from milk m,brand b where m.bid = b.bid and b.tag = 1 and m.tag =1
         <if test="gname != null">
-            and m.gname like concat('%',#{gname},'%')
+            and gname like concat('%',#{gname},'%')
         </if>
         <if test="bid != null">
             and b.bid = #{bid}
